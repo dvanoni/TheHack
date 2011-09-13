@@ -1,3 +1,6 @@
+// Accelerometer vars
+var ax = null, ay = null, az = null;
+
 var jQT = new $.jQTouch({
 	icon: 'wimf-icon.png',
 	addGlossToIcon: false,
@@ -19,23 +22,35 @@ var jQT = new $.jQTouch({
 	useFastTouch: true
 });
 
-// Some sample Javascript functions:
-$(function(){
+function sendData() {
+	coords = getCoords();
 	
+	$.getJSON( '/api/recommend', { latitude: coords.latitude, longitude: coords.longitude }, function( data ) {
+		console.log( data );
+		
+		var html = '';
+		for( var i = 0; i < data.length; i++ ) {
+			html += '<li class="arrow"><a href="#music-player">' + data[i].artist_name + ' - ' + data[i].title + '</a></li>'
+		}
+		
+		$( '#playlist' ).html( html );
+	});
+}
+
+$(function(){
+	// Start acquiring our location
 	acquireLocation();
 	
-	// Grab accelerometer data
+	// Start grabbing accelerometer data
 	if (typeof window.DeviceMotionEvent != 'undefined') {
 
 		// Listen to motion events and update the position
 		window.addEventListener('devicemotion', function (e) {
-			x1 = e.accelerationIncludingGravity.x;
-			y1 = e.accelerationIncludingGravity.y;
-			z1 = e.accelerationIncludingGravity.z;
-			console.log( x1 + ', ' + y1 + ', ' + z1 );
-			
+			ax = e.accelerationIncludingGravity.x;
+			ay = e.accelerationIncludingGravity.y;
+			az = e.accelerationIncludingGravity.z;
 		}, false);
 	}
-	
-	// Grab geolocation data
+
+	setTimeout( sendData, 2000 );
 });

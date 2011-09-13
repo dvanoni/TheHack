@@ -8,7 +8,6 @@
 	    <meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1">
 	    <meta name="apple-mobile-web-app-capable" content="YES">
 		-->
-		
 		<style type="text/css" media="screen">@import "/static/jqtouch/jqtouch.css";</style>
 		<style type="text/css" media="screen">@import "/static/themes/apple/theme.css";</style>
 		<style type="text/css" media="screen">@import "/static/extensions/jqt.bars/jqt.bars.css";</style>
@@ -71,19 +70,7 @@
 					<h1>The Hack</h1>
 				</div>
 				<div class="s-scrollwrapper">
-					<ul class="edgetoedge">
-						<li class="arrow"><a href="#music-player">Test</a></li>
-						<li class="arrow"><a href="#music-player">Test</a></li>
-						<li class="arrow"><a href="#music-player">Test</a></li>
-						<li class="arrow"><a href="#music-player">Test</a></li>
-						<li class="arrow"><a href="#music-player">Test</a></li>
-						<li class="arrow"><a href="#music-player">Test</a></li>
-						<li class="arrow"><a href="#music-player">Test</a></li>
-						<li class="arrow"><a href="#music-player">Test</a></li>
-						<li class="arrow"><a href="#music-player">Test</a></li>
-						<li class="arrow"><a href="#music-player">Test</a></li>
-						<li class="arrow"><a href="#music-player">Test</a></li>
-						<li class="arrow"><a href="#music-player">Test</a></li>
+					<ul id='playlist' class="edgetoedge">
 						<li class="arrow"><a href="#music-player">Test</a></li>
 						<li class="arrow"><a href="#music-player">Test</a></li>
 						<li class="arrow"><a href="#music-player">Test</a></li>
