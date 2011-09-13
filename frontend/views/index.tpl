@@ -79,117 +79,8 @@
 				</li> 
 			</ul></div> 
 		</div>
-		<div id="jqt">	
-			<div id='details'>
-				<div class="toolbar">
-					<h1>Food Item</h1>
-					<a href="#" id='info_back' class="back">Back</a>
-				</div>
-				<div class='s-scrollwrapper'>
-					<div>
-						<div style='padding:32px;background-color:#CCC;border-bottom:2px solid #333;border-top:2px solid #333;'>
-							<table width='100%;'>
-								<tr><td style='text-align:center;'>
-									<img id='food-icon' src='/static/img/food/apple.png'>
-								</td><td style='color:#333;'>
-									<div id='food-name' style='font-size:16px;color:#1087be;margin-bottom:4px;font-weight:bold;'>
-										<h1>Apple ( Fuji )</h1>
-									</div>
-									<div style='margin-bottom:4px;font-size:12px;'>
-										<span style='font-weight:bold;'>Weight:</span> <span id='food-weight'>100.2g</span>
-									</div>
-								</td></tr>
-							</table>
-							<div style='text-align:center;'>
-								<span id='food-age' style='color:#666;'>5 days old</span>
-							</div>
-						</div>
-						<div style='padding:16px;'>
-							<select class='grayButton' style='width:100%;height:48px;text-align:center;' onchange='changeType(this,document.selected_food.sensor,true);'>
-								<option value='unknown'>Change Type</option>
-								<optgroup label='Dairy'>
-									<option value='milk'>Milk</option>
-								</optgroup>
-								<optgroup label='Fruits'>
-									<option value='apple'>Apple</option>
-									<option value='orange'>Orange</option>
-								</optgroup>
-								<optgroup label='Meat'>
-									<option value='beef'>Beef</option>
-									<option value='spam'>Spam</option>
-								</optgroup>	
-								<optgroup label='Veggies'>
-									<option value='pepper'>Bell Pepper</option>
-								</optgroup>
-								<optgroup label='Misc'>
-									<option value='wine'>Wine</option>
-									<option value='beer'>beer</option>
-									<option value='bread'>Bread</option>
-									<option value='muffin'>Sweets</option>
-									<option value='pizza'>Pizza</option>
-								</optgroup>
-							</select>
-							<br/>
-							<a href='#home' class='whiteButton' animation='slideright' onclick='remove_from_fridge();'>Remove from Fridge</a>
-						</div>	
-					</div>
-				</div>
-			</div>
-			<div id='recipes'>
-				<div class="toolbar">
-					<h1>Recipe Search</h1>
-				</div>
-				<div class='s-scrollwrapper'>
-					<div>
-						<ul class="plastic">
-							<li class="arrow">
-							<a href="#my_ingredients">
-								<table>
-									<tr style="height:64px;"><td>
-										<img height="64px" src='/static/img/genius.png'/>
-									</td><td style='padding-left:16px;'>	
-										Use My Ingredients
-									</td></tr>
-								</table>
-								</a>
-							</li>
-							<li class="arrow">
-							<a href="#recipe_search">
-								<table>
-									<tr><td>
-										<img width="64px" src='/static/img/recipe.png'/>
-									</td><td style='padding-left:16px;'>	
-										Browse for Recipes
-									</td></tr>
-								</table>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>	
-			<div id='connect-details'>
-				<div class="toolbar">
-					<h1>Fridge Buddy</h1>
-					<a href="#" class="back">Back</a>
-				</div>
-				<div class='s-scrollwrapper'>
-					<div>
-						<div class='info' style='padding:16px;border-bottom:2px solid #333;'>
-							<div style='float:left;'>
-								<img src='/static/img/friend.png'>
-							</div>
-							<div style='float:left; margin-left:16px;margin-top:16px;'>
-								<div id='friend-name' style='font-size:20px;margin-bottom:4px;font-weight:bold;'>Andrew Huynh</div>
-							</div>
-							<div style='clear:both;line-height:0;'></div>
-						</div>
-						<h2>Let's Get Cookin'</h2>
-						<div id='friend-recipes' style='height:1024px;'></div>
-					</div>
-				</div>
-			</div>
-			<div id='fridge-connect'>
+		<div id="jqt">
+			<div id='social'>
 				<div class="toolbar">
 					<h1>FridgeConnect</h1>
 				</div>
@@ -206,65 +97,14 @@
 					</div>
 				</div>
 			</div>
-			<div id='plan'>
+			<div id="music-player">
 				<div class="toolbar">
-					<h1>Plan A Party</h1>
-				</div>
-				<div class='s-scrollwrapper'>
-					<div>
-						<div id='party-invitees'>
-						</div>
-						<div id='party-cat'>
-							<div style='text-align:center;margin-top:32px;'>
-								<div><img src='/static/img/party_cat.png'></div>
-								<div>
-									<h1 style='font-size:36px;'>Shake to party</h1>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div id="recipe_search">
-				<div class="toolbar">
-					<h1>Find a Recipe</h1>
+					<h1>Music Player</h1>
 					<a href="#home" class="back">Back</a>
 				</div>
 				<div class='s-scrollwrapper'>
 					<div>
-						<div style='padding:8px;background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CCC), color-stop(0.6, #CCC), to(#AAA));'>
-							<ul style='margin:0;'>
-								<li><input type="text" id="query" placeHolder="Search for a recipe!" onkeyup="searchRecipes(this)"></li>
-							</ul>
-						</div>
-						<div id="search_results" style="height:1500px;"></div>
-					</div>
-				</div>
-			</div>
-			<div id="test">
-				<div class="toolbar">
-					<h1>My Ingredients</h1>
-					<a href="#home" class="back">Back</a>
-				</div>
-				<div class='s-scrollwrapper'>
-					<div>
-						<ul id="ingredient_list" class="rounded">
-						</ul>
-						<script type="text/javascript">
-							$.getJSON('api/check_fridge.php', function(items) {
-								for (i in items) {
-									if( items[i].unknown ) {
-										continue;
-									}
-									
-									var ing = items[i].name;
-									$('ul#ingredient_list').append(
-										'<li><input type="checkbox" name="ingredient" value="' + ing + '" id="foo' + i + '"\/>'
-										+ '<label class="checkbox_label" for="foo' + i + '">' + ing + '<\/label><\/li>');
-								}
-							});
-						</script>
-						<a style="margin:0 10px;color:rgba(0,0,0,.9)" href="recipe_search.php" onclick="set_search_params(this, false);" class="whiteButton">Find Recipes!</a>
+						Music player here
 					</div>
 				</div>
 			</div>
@@ -274,15 +114,13 @@
 				</div>
 				<div class="s-scrollwrapper">
 					<div>
-						<div id='fridge'>
-							<ul class="edgetoedge">
-								<li class="arrow"><a href="#test">Test</a></li>
-								<li class="arrow"><a href="#test">Test</a></li>
-								<li class="arrow"><a href="#test">Test</a></li>
-								<li class="arrow"><a href="#test">Test</a></li>
-								<li class="arrow"><a href="#test">Test</a></li>
-							</ul>
-						</div>
+						<ul class="edgetoedge">
+							<li class="arrow"><a href="#music-player">Test</a></li>
+							<li class="arrow"><a href="#music-player">Test</a></li>
+							<li class="arrow"><a href="#music-player">Test</a></li>
+							<li class="arrow"><a href="#music-player">Test</a></li>
+							<li class="arrow"><a href="#music-player">Test</a></li>
+						</ul>
 					</div>
 				</div>
 			</div>
