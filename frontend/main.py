@@ -8,21 +8,21 @@ Copyright (c) 2011 athlabs. All rights reserved.
 """
 import bottle
 from bottle import run, template, static_file
-from settings import STATIC_PATH
+from settings import STATIC_PATH, APP_DEBUG
 
-bottle.debug( True )
-MAIN = bottle.Bottle()
+bottle.debug( APP_DEBUG )
+FRONT_END = bottle.Bottle()
 
-@MAIN.route( '/static/:path#.+#')
+@FRONT_END.route( '/static/:path#.+#')
 def server_static( path ):
     '''
     Return static files situated at STATIC_PATH
     '''
     return static_file( path, root=STATIC_PATH )
     
-@MAIN.route( '/' )
+@FRONT_END.route( '/' )
 def index():
     return template( 'index' )
     
 if __name__ == '__main__':
-    run( MAIN, host='localhost', port=8080, reloader=True )
+    run( FRONT_END, host='localhost', port=8080, reloader=True )
