@@ -10,6 +10,6 @@ APP_DEBUG = True
 # Testing DB
 DB_HOST = 'localhost'
 DB_USER = 'development'
-DB_NAME = 'opencity-japan'
+DB_NAME = 'thehack'
 
 STATIC_PATH = root( 'frontend', 'static' )

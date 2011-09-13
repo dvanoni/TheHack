@@ -1,17 +1,21 @@
 #/bin/python
 
-from bottle import route, run, debug, template, request, validate, static_file
+import bottle
+from bottle import template, request
 from pprint import pprint
-import simplejson
+
+import json
 import urllib
 
 ECHONEST_KEY = 'YBBLFZVQBRPQF1VKS'
 ECHONEST_API = 'http://developer.echonest.com/api/v4/song/search'
 
+BACK_END = bottle.Bottle()
+
 class EchonestMagicError(Exception):
   pass
 
-@route('/echonest_magic', method='GET')
+@BACK_END.route('/echonest_magic', method='GET')
 def echonest_magic():
   # TODO: grab phone data
   x_coordinate = request.GET.get('x_coordinate', '').strip()
@@ -33,7 +37,7 @@ def echonest_magic():
 
   url = ECHONEST_API + '?' + urllib.urlencode(args) + '&bucket=tracks'
   
-  result = simplejson.load(urllib.urlopen(url))
+  result = json.load(urllib.urlopen(url))
 
   echonest_status = result['response']['status']
   if echonest_status['code'] != 0:
@@ -44,10 +48,3 @@ def echonest_magic():
   songs = result['response']['songs']
 
   return template('song_dump', songs=songs)
-
-@route('/static/:filename')
-def server_static(filename):
-  return static_file(filename, root='./static/')
-
-debug(True)
-run(reloader=True, port=5888)
