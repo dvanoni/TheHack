@@ -103,12 +103,15 @@ def coord_to_place_type(lat, lng):
   result = json.load(urllib.urlopen(url))
 
   if 'Error' in result:
-      # An error occurred; raise an exception
-      raise SearchError, result['Error']
-
+    # An error occurred; raise an exception
+    raise SearchError, result['Error']
+      
+  if result[ 'status' ] == 'ZERO_RESULTS':
+    raise SearchError, 'Zero results'
+  
   for t in result['results'][0]['types']:
-      if t in PLACE_TYPES:
-        return t
+    if t in PLACE_TYPES:
+      return t
 
 def get_user_category(get_request):
   # Grab phone data
