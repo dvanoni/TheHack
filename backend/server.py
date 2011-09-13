@@ -3,6 +3,9 @@
 import bottle
 from bottle import template, request
 from pprint import pprint
+from models import *
+from demo_locations import route
+from sqlalchemy.orm.exc import NoResultFound
 
 import json
 import urllib
@@ -59,26 +62,64 @@ def places_magic():
   latitude = request.GET.get('latitude', '').strip()
   longitude = request.GET.get('longitude', '').strip()
 
-  #TODO: the moma
-  latitude = '40.77905519999999'
-  longitude = '-73.96283459999999'
+  places_types = [
+    # WORKOUT
+    'gym',
+    'health',
+    # LOW KEY
+    'museum',
+    'park',
+    'aquarium',
+    'art_gallery',
+    'cafe',
+    'spa',
+    # SOCIAL
+    'bar',
+    'night_club',
+    # TRAVEL
+    'subway_station',
+    'taxi_stand',
+    'train_station',
+    # STUDY
+    'book_store',
+    'library',
+    'university',
+    'school'
+  ]
 
-  args = {\
-      'location' : '%s,%s' % (latitude, longitude),\
-      'radius'   : 10,\
-      'sensor'   : 'true',\
-      'key'      : PLACES_KEY
-  }
+  r = ''
 
-  url = PLACES_API + '?' + urllib.urlencode(args)
-  result = json.load(urllib.urlopen(url))
+  for coords in route:
+
+    args = {\
+        'location' : '%s,%s' % (coords.lat, coords.lng),\
+        'radius'   : 10,\
+        'sensor'   : 'true',\
+        'key'      : PLACES_KEY,\
+        'types'    : '|'.join(places_types)
+    }
+
+    url = PLACES_API + '?' + urllib.urlencode(args)
+    result = json.load(urllib.urlopen(url))
 
 
-  if 'Error' in result:
-    # An error occurred; raise an exception
-    raise SearchError, result['Error']
+    if 'Error' in result:
+      # An error occurred; raise an exception
+      raise SearchError, result['Error']
 
-  # grab the categories of the first place
-  place = result['results'][0]
+    r += ('%s,%s' % (coords.lat, coords.lng)) + '<br/>'
+    r += ', '.join(result['results'][0]['types']) + '<br/>'
 
-  return place['types']
+  return r
+
+@BACK_END.route('/coords', method='GET')
+def coords():
+  session = Session();
+  lat = request.GET.get('lat', '').strip()
+  lng = request.GET.get('lng', '').strip()
+
+  try:
+    location = session.query(Coordinate).filter(Coordinate.lat==lat).filter(Coordinate.lng==lng).one()
+    return str(location)
+  except NoResultFound, e:
+    return "Location was not found in our database"
