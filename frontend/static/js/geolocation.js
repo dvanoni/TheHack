@@ -78,6 +78,10 @@ function acquireLocation(event)
 	
 }
 
+function getCoords() {
+	return { 'latitude': latitude, 'longitude': longitude };
+}
+
 // Unregister for location changes when the user quits the application
 function clearWatchId() {
 	if(watchId) {

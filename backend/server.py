@@ -43,6 +43,7 @@ def recommend():
   
   # Convert lat/lng into floats
   if latitude is None or longitude is None:
+    # If no lat/lng is specified, default to the MOMA
     latitude  = 40.77905519999999
     longitude = -73.96283459999999
   else:
