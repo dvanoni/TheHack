@@ -1,19 +1,16 @@
 #/bin/python
 
 import bottle
-from bottle import template, request
-from pprint import pprint
-from models import *
-from demo_locations import route
-from sqlalchemy.orm.exc import NoResultFound
-
 import datetime
 import json
 import urllib
 
 from bottle import request
+from demo_locations import route
 from hack.helper import parse_accel, analyze_accel
+from models import *
 from pprint import pprint
+from sqlalchemy.orm.exc import NoResultFound
 
 ECHONEST_KEY = 'YBBLFZVQBRPQF1VKS'
 ECHONEST_API = 'http://developer.echonest.com/api/v4/song/search'
@@ -23,30 +20,74 @@ PLACES_API = 'https://maps.googleapis.com/maps/api/place/search/json'
 
 BACK_END = bottle.Bottle()
 
+PLACE_TYPES = [
+  # WORKOUT
+  'gym',
+  'health',
+  # LOW KEY
+  'museum',
+  'park',
+  'aquarium',
+  'art_gallery',
+  'cafe',
+  'spa',
+  # SOCIAL
+  'bar',
+  'night_club',
+  # TRAVEL
+  'subway_station',
+  'taxi_stand',
+  'train_station',
+  # STUDY
+  'book_store',
+  'library',
+  'university',
+  'school'
+]
+
 class EchonestMagicError(Exception):
   pass
 
 class SearchError(Exception):
    pass
 
-@BACK_END.route( '/recommend' )
-def recommend():
+def coord_to_place_type(lat, lng):  
+  args = {\
+        'location' : '%s,%s' % (lat, lng),\
+        'radius'   : 10,\
+        'sensor'   : 'true',\
+        'key'      : PLACES_KEY,\
+        'types'    : '|'.join(PLACE_TYPES)
+  }
+
+  url = PLACES_API + '?' + urllib.urlencode(args)
+  result = json.load(urllib.urlopen(url))
+
+  if 'Error' in result:
+      # An error occurred; raise an exception
+      raise SearchError, result['Error']
+
+  for t in result['results'][0]['types']:
+      if t in PLACE_TYPES:
+        return t
+
+def get_user_category(get_request):
   # Grab phone data
-  accel_data  = request.GET.get( 'accelerometer' )
-  timestamp   = request.GET.get( 'timestamp' )
-  latitude    = request.GET.get( 'latitude' )
-  longitude   = request.GET.get( 'longitude' )
-  
+  accel_data  = get_request.get( 'accelerometer' )
+  timestamp   = get_request.get( 'timestamp' )
+  latitude    = get_request.get( 'latitude' )
+  longitude   = get_request.get( 'longitude' )
+
   # parse phone data
   ax, ay, az = parse_accel( accel_data )
-  
+
   # Convert timestamp into a python datetime object
   try:
     timestamp = datetime.datetime.fromtimestamp( float( timestamp ) )
   except Exception:
     # use the server time if we can't parse the sucker
     timestamp = datetime.datetime.now()
-  
+
   # Convert lat/lng into floats
   if latitude is None or longitude is None:
     # If no lat/lng is specified, default to the MOMA
@@ -55,9 +96,14 @@ def recommend():
   else:
     latitude  = float( latitude )
     longitude = float( longitude )
-    
-  user_state = analyze_accel( ax, ay, az )
+
+  place_type = coord_to_place_type(latitude, longitude)
   
+@BACK_END.route( '/recommend' )
+def recommend():
+  category = get_user_category(request.GET)  
+
+  # TODO: get parameters for echonest based on category
   args = {\
       'api_key' : ECHONEST_KEY,\
 
@@ -89,54 +135,9 @@ def places_magic():
 
   for coords in route:
     r += ('%s,%s' % (coords.lat, coords.lng)) + ': '
-    r += coordToPlaceType(coords) + '<br/>'
+    r += coord_to_place_type(coords.lat, coords.lng) + '<br/>'
 
   return r
-
-def coordToPlaceType(coords):  
-  places_types = [
-      # WORKOUT
-      'gym',
-      'health',
-      # LOW KEY
-      'museum',
-      'park',
-      'aquarium',
-      'art_gallery',
-      'cafe',
-      'spa',
-      # SOCIAL
-      'bar',
-      'night_club',
-      # TRAVEL
-      'subway_station',
-      'taxi_stand',
-      'train_station',
-      # STUDY
-      'book_store',
-      'library',
-      'university',
-      'school'
-    ]
-
-  args = {\
-        'location' : '%s,%s' % (coords.lat, coords.lng),\
-        'radius'   : 10,\
-        'sensor'   : 'true',\
-        'key'      : PLACES_KEY,\
-        'types'    : '|'.join(places_types)
-  }
-
-  url = PLACES_API + '?' + urllib.urlencode(args)
-  result = json.load(urllib.urlopen(url))
-
-  if 'Error' in result:
-      # An error occurred; raise an exception
-      raise SearchError, result['Error']
-
-  for t in result['results'][0]['types']:
-      if t in places_types:
-        return t
 
 @BACK_END.route('/coords', method='GET')
 def coords():
