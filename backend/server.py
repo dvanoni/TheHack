@@ -48,6 +48,30 @@ PLACE_TYPES = [
   'school'
 ]
 
+#TODO: add weather
+USER_CATEGORIES = {
+  'studying'     : {
+      'max_tempo' : '200',
+      'max_danceability' : '.5',
+      'max_energy' : '.5'
+    },
+  'running'      : {
+      'min_tempo' : '300'
+    },
+  'commuting'    : {
+    },
+  'walking'      : {
+    },
+  'waking_up'    : {
+    },
+  'winding_down' : {
+    },
+  'pre_party'    : {
+      'min_danceability' : '.7',
+      'min_energy' : '.5'
+    }
+}
+
 class EchonestMagicError(Exception):
   pass
 
