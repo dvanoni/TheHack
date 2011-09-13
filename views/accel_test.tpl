@@ -14,9 +14,9 @@
 
 			// Listen to motion events and update the position
 			window.addEventListener('devicemotion', function (e) {
-				ax = e.accelerationIncludingGravity.x;
-				ay = e.accelerationIncludingGravity.y;
-				az = e.accelerationIncludingGravity.z;
+				ax = e.acceleration.x;
+				ay = e.acceleration.y;
+				az = e.acceleration.z;
 				
 				$( '#accel' ).html( ax + '<br>' + ay + '<br>' + az );
 			}, false);
