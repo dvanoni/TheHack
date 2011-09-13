@@ -8,16 +8,16 @@
 <meta name="apple-mobile-web-app-capable" content="YES">
 -->
 <script type='text/javascript'>
+	var ax = 0, ay = 0, az = 0;
 	$( function() {
 		// Start grabbing accelerometer data
 		if (typeof window.DeviceMotionEvent != 'undefined') {
 
 			// Listen to motion events and update the position
 			window.addEventListener('devicemotion', function (e) {
-				ax = e.accelerationIncludingGravity.x;
-				ay = e.accelerationIncludingGravity.y;
-				az = e.accelerationIncludingGravity.z;
-				
+				ax = Math.abs( Math.abs( e.accelerationIncludingGravity.x ) - ax );
+				ay = Math.abs( Math.abs( e.accelerationIncludingGravity.y ) - ay );
+				az = Math.abs( Math.abs( e.accelerationIncludingGravity.z ) - az );
 				$( '#accel' ).html( ax + '<br>' + ay + '<br>' + az );
 			}, false);
 		}
