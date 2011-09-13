@@ -1,5 +1,37 @@
 var player = {};
 
+// Track class
+function Track(trackInfo) {
+    'use strict';
+    this.trackName = null;
+    this.artistName = null;
+    this.albumName = null;
+    this.trackURL = null;
+    this.albumArtURL = null;
+
+    this.parseInput = function (input) {
+        if (input.trackName) {
+            this.trackName = input.trackName;
+        }
+        if (input.artistName) {
+            this.artistName = input.artistName;
+        }
+        if (input.albumName) {
+            this.albumName = input.albumName;
+        }
+        if (input.trackURL) {
+            this.trackURL = input.trackURL;
+        }
+        if (input.albumArtURL) {
+            this.albumArtURL = input.albumArtURL;
+        }
+    };
+
+    if (trackInfo) {
+        this.parseInput(trackInfo);
+    }
+}
+
 (function () {
     'use strict';
 
@@ -10,14 +42,6 @@ var player = {};
     player.currentTrack = 0;
     player.trackLoaded = false;
 
-    // Track class
-    function Track() {
-        this.trackName = null;
-        this.artistName = null;
-        this.albumName = null;
-        this.trackURL = null;
-        this.albumArtURL = null;
-    }
 
     player.loadSrc = function (src) {
         player.audioElem.get(0).src = src;
