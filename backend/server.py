@@ -36,7 +36,6 @@ def echonest_magic():
   }
 
   url = ECHONEST_API + '?' + urllib.urlencode(args) + '&bucket=tracks'
-  
   result = json.load(urllib.urlopen(url))
 
   echonest_status = result['response']['status']
