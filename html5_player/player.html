@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>player</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+    <script type="text/javascript" src="player.js"></script>
+    <link rel="stylesheet" href="player.css" type="text/css"/>
+</head>
+<body>
+    <div id="player">
+        <div id="player_audio">
+            <audio></audio>
+        </div>
+        <div id="player_controls">
+            <button id="player_controls_prev" onclick="player.playPrev()">prev</button>
+            <button id="player_controls_playpause" onclick="player.playPause()">play</button>
+            <button id="player_controls_next" onclick="player.playNext()">next</button>
+        </div>
+    </div>
+</body>
+</html>
