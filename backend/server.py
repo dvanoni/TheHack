@@ -1,19 +1,16 @@
 #/bin/python
 
 import bottle
-from bottle import template, request
-from pprint import pprint
-from models import *
-from demo_locations import route
-from sqlalchemy.orm.exc import NoResultFound
-
 import datetime
 import json
 import urllib
 
 from bottle import request
-from hack.helper import parse_accel
+from demo_locations import route
+from hack.helper import parse_accel, analyze_accel
+from models import *
 from pprint import pprint
+from sqlalchemy.orm.exc import NoResultFound
 
 ECHONEST_KEY = 'YBBLFZVQBRPQF1VKS'
 ECHONEST_API = 'http://developer.echonest.com/api/v4/song/search'
@@ -113,7 +110,6 @@ def coord_to_place_type(lat, lng):
       if t in PLACE_TYPES:
         return t
 
-
 def get_user_category(get_request):
   # Grab phone data
   accel_data  = get_request.get( 'accelerometer' )
@@ -123,6 +119,7 @@ def get_user_category(get_request):
 
   # parse phone data
   ax, ay, az = parse_accel( accel_data )
+  user_state = analyze_accel( ax, ay, az )
   
   # Convert timestamp into a python datetime object
   try:
@@ -130,7 +127,7 @@ def get_user_category(get_request):
   except Exception:
     # use the server time if we can't parse the sucker
     timestamp = datetime.datetime.now()
-  
+
   # Convert lat/lng into floats
   if latitude is None or longitude is None:
     # If no lat/lng is specified, default to the MOMA
@@ -144,7 +141,7 @@ def get_user_category(get_request):
   
 @BACK_END.route( '/recommend' )
 def recommend():
-  category = get_user_category(request.GET)
+  category = get_user_category(request.GET)  
 
   # TODO: use USER_CATEGORIES
   args = {
