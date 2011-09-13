@@ -104,7 +104,8 @@ def get_user_category(get_request):
 
   # parse phone data
   ax, ay, az = parse_accel( accel_data )
-
+  user_state = analyze_accel( ax, ay, az )
+  
   # Convert timestamp into a python datetime object
   try:
     timestamp = datetime.datetime.fromtimestamp( float( timestamp ) )

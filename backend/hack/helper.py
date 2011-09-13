@@ -8,6 +8,9 @@ def analyze_accel( ax, ay, az ):
     user is sitting, walking and running depending on thresholds set.
   '''
   
+  if ax is None or ay is None or az is None:
+    return states.USER_STATE_SITTING
+    
   avg_accel = ( ax + ay + az ) / 3
   
   user_state = states.USER_STATE_SITTING
