@@ -1,6 +1,6 @@
 import bottle
 
-from bottle import redirect, run, static_file
+from bottle import redirect, run, static_file, template
 
 from backend.server import BACK_END
 
@@ -22,6 +22,10 @@ def server_static( path ):
 def index():
     return redirect( '/front_end/index' )
 
+@MAIN.route( '/accel_test' )
+def accel():
+    return template( 'accel_test' )
+        
 # Attach API functions
 MAIN.mount( FRONT_END, '/front_end' )
 MAIN.mount( BACK_END, '/api' )

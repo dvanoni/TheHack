@@ -196,7 +196,7 @@ is not recognized, like...
 
       jQT.barsSettings = {
         autoLoad_iScroll: true,
-        debug: true,
+        debug: false,
         wrapperClass: 's-scrollwrapper'
       };
 
