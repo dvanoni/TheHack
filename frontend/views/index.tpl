@@ -12,12 +12,12 @@
 		<link rel="stylesheet" type="text/css" href="/static/css/master.css">
 		<link rel="stylesheet" type="text/css" href="/static/css/ladl.css">
 		
-		<script src='/static/js/jquery-1.6.3.js' type='text/javascript'></script>
+		<script src='/static/jqtouch/jquery-1.4.2.min.js' type='text/javascript'></script>
 		<script src="/static/jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
 		<script src="/static/extensions/jqt.bars/jqt.bars.js" type="application/x-javascript" charset="utf-8"></script> 
 		<script src="/static/js/wimf.js" type="application/x-javascript" charset="utf-8"></script> 
 		
-		<script type="text/javascript">
+		<script type="text/javascript" charset='utf-8'>
 			var jQT = new $.jQTouch({
 				icon: 'wimf-icon.png',
 				addGlossToIcon: false,
@@ -241,7 +241,7 @@
 					</div>
 				</div>
 			</div>
-			<div id="my_ingredients">
+			<div id="test">
 				<div class="toolbar">
 					<h1>My Ingredients</h1>
 					<a href="#home" class="back">Back</a>
@@ -275,30 +275,13 @@
 				<div class="s-scrollwrapper">
 					<div>
 						<div id='fridge'>
-							<div class='shelf'>
-								<div id='shelf-1' class='shelf-padding'>
-									<div id='1sp1' class='spot food-details'></div>
-									<div id='1sp2' class='spot food-details'></div>
-								</div>
-							</div>
-							<div class='shelf'>
-								<div id='shelf-2' class='shelf-padding'>
-									<div id='2sp1' class='spot food-details'></div>
-									<div id='2sp2' class='spot food-details'></div>
-								</div>
-							</div>
-							<div class='shelf'>
-								<div id='shelf-3' class='shelf-padding'>
-									<div id='3sp1' class='spot food-details'></div>
-									<div id='3sp2' class='spot food-details'></div>
-								</div>
-							</div>
-							<div class='shelf'>
-								<div id='shelf-4' class='shelf-padding'>
-									<div id='4sp1' class='spot food-details'></div>
-									<div id='4sp2' class='spot food-details'></div>
-								</div>
-							</div>
+							<ul class="edgetoedge">
+								<li class="arrow"><a href="#test">Test</a></li>
+								<li class="arrow"><a href="#test">Test</a></li>
+								<li class="arrow"><a href="#test">Test</a></li>
+								<li class="arrow"><a href="#test">Test</a></li>
+								<li class="arrow"><a href="#test">Test</a></li>
+							</ul>
 						</div>
 					</div>
 				</div>
