@@ -4,6 +4,17 @@
     <title>player</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
     <script type="text/javascript" src="player.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var data = {"trackName": "Flashback",
+                "artistName": "Calvin Harris",
+                "albumArtURL": "http://cdn.7static.com/static/img/sleeveart/00/006/968/0000696837_200.jpg",
+                "trackURL": "http://previews.7digital.com/clips/34/7736436.clip.mp3"};
+
+            var track = new Track(data);
+            player.addTrack(track);
+        });
+    </script>
     <link rel="stylesheet" href="player.css" type="text/css"/>
 </head>
 <body>
@@ -15,6 +26,9 @@
             <button id="player_controls_prev" onclick="player.playPrev()">prev</button>
             <button id="player_controls_playpause" onclick="player.playPause()">play</button>
             <button id="player_controls_next" onclick="player.playNext()">next</button>
+        </div>
+        <div id="player_album_art">
+            <img/>
         </div>
     </div>
 </body>
