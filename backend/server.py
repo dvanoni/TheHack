@@ -53,19 +53,34 @@ USER_CATEGORIES = {
       'max_energy' : '.5'
     },
   'running'      : {
-      'min_tempo' : '300'
+      'min_tempo' : '300',
+      'min_danceability' : '.5',
+      'min_energy' : '.5'
     },
   'commuting'    : {
+      'min_tempo' : '300',
+      'min_danceability' : '.4',
+      'min_energy' : '.35'
     },
   'walking'      : {
+      'min_tempo' : '200',
+      'min_danceability' : '.35',
+      'min_energy' : '.3'
     },
   'waking_up'    : {
+      'max_tempo' : '200',
+      'max_energy' : '.5',
+      'mood' : 'happy'
     },
   'winding_down' : {
+      'max_tempo' : '300',
+      'max_energy' : '.7',
+      'mood' : 'happy'
     },
   'pre_party'    : {
       'min_danceability' : '.7',
-      'min_energy' : '.5'
+      'min_energy' : '.5',
+      'mood' : 'happy'
     }
 }
 
