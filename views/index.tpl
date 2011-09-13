@@ -4,8 +4,10 @@
 		<meta charset="UTF-8" />
 		<title>The Hack</title>
 		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<!-- 
 	    <meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1">
 	    <meta name="apple-mobile-web-app-capable" content="YES">
+		-->
 		
 		<style type="text/css" media="screen">@import "/static/jqtouch/jqtouch.css";</style>
 		<style type="text/css" media="screen">@import "/static/themes/apple/theme.css";</style>
