@@ -1,9 +1,16 @@
 #/bin/python
 
 import bottle
+from bottle import template, request, redirect
+from pprint import pprint
+from models import *
+from demo_locations import route
+from sqlalchemy.orm.exc import NoResultFound
+
 import datetime
 import json
-import urllib
+import urllib2
+import cgi
 
 from bottle import request
 from demo_locations import route
@@ -17,6 +24,10 @@ ECHONEST_API = 'http://developer.echonest.com/api/v4/song/search'
 
 PLACES_KEY = 'AIzaSyCvfId0lM9v_F2igUi4AIRbFJHr8IlMFAY'
 PLACES_API = 'https://maps.googleapis.com/maps/api/place/search/json'
+
+FACEBOOK_APP_ID = '170844926329169'
+FACEBOOK_SECRET = '04e620adbd4f35209b04dda6269bf408'
+REDIRECT_URL    = 'thehack.dvanoni.com/api/fbgraph'
 
 BACK_END = bottle.Bottle()
 
@@ -218,3 +229,20 @@ def coords():
     return str(location)
   except NoResultFound, e:
     return "Location was not found in our database"
+
+@BACK_END.route('/facebook', method='GET')
+def facebook_login():
+  session = Session()
+  code = request.GET.get('code')
+  if code:
+    fb_url = "https://graph.facebook.com/oauth/access_token?client_id="+FACEBOOK_APP_ID+"&redirect_uri="+REDIRECT_URL+"&client_secret="+FACEBOOK_SECRET+"&code="+code
+    response = cgi.parse_qs(urllib2.urlopen(fb_url))
+    access_token = response["access_token"][-1]
+    profile = json.load(urllib2.urlopen("https://graph.facebook.com/me?" + urllib2.urlencode(dict(access_token=access_token))))
+    user = User(name=profile["name"], profile_id=str(profile["id"]), access_token=access_token)
+    session.add(user)
+    session.commit()
+    set_cookie(self.response, "fb_user", str(profile["id"]), expires=time.time() + 30 * 86400)
+    redirect("/")
+    return "success"
+  return "No code"
