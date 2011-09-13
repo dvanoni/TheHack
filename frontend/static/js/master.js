@@ -1,5 +1,5 @@
 // Accelerometer vars
-var ax = null, ay = null, az = null;
+var ax = 0, ay = 0, az = 0;
 
 var jQT = new $.jQTouch({
 	icon: 'wimf-icon.png',
@@ -14,18 +14,27 @@ var jQT = new $.jQTouch({
 		'/static/themes/jqt/img/whiteButton.png',
 		'/static/themes/jqt/img/loading.gif',
 		'/static/img/tabs/refrigerator-tab.png',
-		'/static/img/tabs/recipe.png',
 		'/static/img/tabs/social.png',
-		'/static/img/tabs/party.png',
-		'/static/img/ajax-loader.gif'
 	],
 	useFastTouch: true
 });
 
-function sendData() {
-	coords = getCoords();
+/*
+	Send data that has been acquired from the phone to our API for 
+	recommendations
+*/
+function sendData() {	
+	// Mash all the phone data together
+	coords = getCoords();	
+	phone_data = {
+		latitude: coords.latitude, 
+		longitude: coords.longitude,
+		accelerometer: ax + ',' + ay + ',' + az,
+		timestamp: Date.now() / 1000.0
+	};
 	
-	$.getJSON( '/api/recommend', { latitude: coords.latitude, longitude: coords.longitude }, function( data ) {
+	// Construct API call and work some magic
+	$.getJSON( '/api/recommend', phone_data, function( data ) {
 		console.log( data );
 		
 		var html = '';

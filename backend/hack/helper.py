@@ -14,9 +14,13 @@ def parse_accel( accel_data ):
   if accel_data is None:
     return ( None, None, None )
 
-  accel_data = accel_data.split( ',' )
-  
+  accel_data = accel_data.split( ',' )  
+  # Check to see if we have correct data
   if len( accel_data ) != 3:
     return ( None, None, None )
   
-  return ( float( accel_data[0] ), float( accel_data[1] ), float( accel_data[2] ) )
+  try:
+    return ( float( accel_data[0] ), float( accel_data[1] ), float( accel_data[2] ) )
+  except ValueError:
+    # For some reason we cannot convert these floats, return None
+    return ( None, None, None )
