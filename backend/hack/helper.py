@@ -1,3 +1,23 @@
+import backend.hack.states as states
+
+def analyze_accel( ax, ay, az ):
+  '''
+    Returns whether the, probable, user state based on accelerometer data
+    
+    Averages the accelerometer x, y, and z values and determines whether the
+    user is sitting, walking and running depending on thresholds set.
+  '''
+  
+  avg_accel = ( ax + ay + az ) / 3
+  
+  user_state = states.USER_STATE_SITTING
+  if avg_accel > 10 and avg_accel < 20:
+    user_state = states.USER_STATE_WALKING
+  elif avg_accel >= 20:
+    user_state = states.USER_STATE_RUNNING
+    
+  return user_state
+
 def parse_accel( accel_data ):
   '''
     Returns accelerometer x,y,z values that have been passed into the API from
@@ -24,3 +44,4 @@ def parse_accel( accel_data ):
   except ValueError:
     # For some reason we cannot convert these floats, return None
     return ( None, None, None )
+    

@@ -12,7 +12,7 @@ import json
 import urllib
 
 from bottle import request
-from hack.helper import parse_accel
+from hack.helper import parse_accel, analyze_accel
 from pprint import pprint
 
 ECHONEST_KEY = 'YBBLFZVQBRPQF1VKS'
@@ -55,6 +55,8 @@ def recommend():
   else:
     latitude  = float( latitude )
     longitude = float( longitude )
+    
+  user_state = analyze_accel( ax, ay, az )
   
   args = {\
       'api_key' : ECHONEST_KEY,\
