@@ -16,6 +16,8 @@ function isPad() {
 
 //Show a Google static map centered at a given position. Display the latitude and longitude coordinates associated with this position.
 function showLocation (position) {
+	latitude = position.coords.latitude;
+	longitude = position.coords.longitude;
 	console.log( latitude + ', ' + longitude );
 	alert( latitude + ', ' + longitude );
 }
