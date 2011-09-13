@@ -57,7 +57,12 @@ function Track(trackInfo) {
     };
 
     player.loadTrackByID = function (id) {
+        if (!player.playlist[id]) {
+            throw "Invalid track ID: " + id;
+        }
+        player.currentTrack = id;
         player.loadTrack(player.playlist[id]);
+        console.log("Loaded track " + id);
     };
 
     player.loadCurrentTrack = function () {
@@ -66,11 +71,7 @@ function Track(trackInfo) {
 
     player.gotoID = function (id) {
         player.trackLoaded = false;
-        if (!player.playlist[id]) {
-            throw "Invalid track ID: " + id;
-        }
-        player.currentTrack = id;
-        player.loadCurrentTrack();
+        player.loadTrackByID(id);
     };
 
     player.gotoNext = function () {
@@ -86,6 +87,7 @@ function Track(trackInfo) {
             player.loadCurrentTrack();
         }
         player.audioElem.get(0).play();
+        player.controls.playPause.html("pause");
     };
 
     player.playNext = function () {
@@ -100,15 +102,14 @@ function Track(trackInfo) {
 
     player.pause = function () {
         player.audioElem.get(0).pause();
+        player.controls.playPause.html("play");
     };
 
     player.playPause = function () {
         if (player.audioElem.get(0).paused) {
             player.play();
-            player.controls.playPause.html("pause");
         } else {
             player.pause();
-            player.controls.playPause.html("play");
         }
     };
 
