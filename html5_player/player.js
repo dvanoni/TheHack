@@ -36,14 +36,18 @@ function Track(trackInfo) {
     'use strict';
 
     player.audioElem = null;
+    player.albumArtImg = null;
     player.controls = {};
     player.controls.playPause = null;
     player.playlist = [];
     player.currentTrack = 0;
     player.trackLoaded = false;
 
+    player.loadAlbumArtSrc = function (src) {
+        player.albumArtImg.attr('src', src);
+    };
 
-    player.loadSrc = function (src) {
+    player.loadAudioSrc = function (src) {
         player.audioElem.get(0).src = src;
         player.audioElem.get(0).load();
     };
@@ -52,7 +56,8 @@ function Track(trackInfo) {
         if (!track) {
             throw "Invalid track: " + track;
         }
-        player.loadSrc(track.trackURL);
+        player.loadAudioSrc(track.trackURL);
+        player.loadAlbumArtSrc(track.albumArtURL);
         player.trackLoaded = true;
     };
 
@@ -124,6 +129,7 @@ function Track(trackInfo) {
 
     $(function () {
         player.audioElem = $('#player_audio audio');
+        player.albumArtImg = $('#player_album_art img');
         player.controls.playPause = $('#player_controls_playpause');
 
         player.audioElem.bind('ended', player.handlers.trackEnded);
