@@ -1,15 +1,12 @@
 #/bin/python
 
 import bottle
-<<<<<<< HEAD
 from bottle import template, request, redirect
 from pprint import pprint
 from models import *
 from demo_locations import route
 from sqlalchemy.orm.exc import NoResultFound
 
-=======
->>>>>>> 6f13ca4c14859c749e69a41b4d8b87035ef9976d
 import datetime
 import json
 import urllib2
