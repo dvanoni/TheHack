@@ -1,6 +1,6 @@
 import bottle
 
-from bottle import run, static_file
+from bottle import redirect, run, static_file
 
 from backend.server import BACK_END
 
@@ -17,11 +17,10 @@ def server_static( path ):
     Return static files situated at STATIC_PATH
     '''
     return static_file( path, root=STATIC_PATH )
-    
+
 @MAIN.route( '/' )
-@MAIN.route( '/index.html' )
 def index():
-    return 'hello world'
+    return redirect( '/front_end/index' )
 
 # Attach API functions
 MAIN.mount( FRONT_END, '/front_end' )
