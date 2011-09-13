@@ -23,14 +23,13 @@ class EchonestMagicError(Exception):
 class SearchError(Exception):
    pass
 
-@BACK_END.route( '/recommend' )
-def recommend():
+def get_user_category(get_request):
   # Grab phone data
-  accel_data  = request.GET.get( 'accelerometer' )
-  timestamp   = request.GET.get( 'timestamp' )
-  latitude    = request.GET.get( 'latitude' )
-  longitude   = request.GET.get( 'longitude' )
-  
+  accel_data  = get_request.get( 'accelerometer' )
+  timestamp   = get_request.get( 'timestamp' )
+  latitude    = get_request.get( 'latitude' )
+  longitude   = get_request.get( 'longitude' )
+
   # parse phone data
   ax, ay, az = parse_accel( accel_data )
   
@@ -49,7 +48,15 @@ def recommend():
   else:
     latitude  = float( latitude )
     longitude = float( longitude )
+
+  place_type = coord_to_place_type()
   
+
+@BACK_END.route( '/recommend' )
+def recommend():
+  category = get_user_category(request.GET)
+
+  # TODO: get parameters for echonest based on category
   args = {\
       'api_key' : ECHONEST_KEY,\
 
