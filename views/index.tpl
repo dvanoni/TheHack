@@ -3,15 +3,23 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>The Hack</title>	
+		
+		<!-- Apple iOS related stuffs -->
 		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-		<!-- 
 		<meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1">
 		<meta name="apple-mobile-web-app-capable" content="YES">
-		-->
+		<link rel='apple-touch-icon' href='/static/img/touch-icon-iphone.png' />
+		<link rel='apple-touch-icon' sizes='72x72' href='/static/img/touch-icon-ipad.png'/>
+		<link rel='apple-touch-icon' sizes='114x114' href='/static/img/touch-icon-iphone4.png'/>
+		<link rel='apple-touch-startup-image' href='/static/img/touch-startup.png' />
+		
+		<!-- jqTouch related stuffs -->
 		<style type="text/css" media="screen">@import "/static/jqtouch/jqtouch.css";</style>
 		<style type="text/css" media="screen">@import "/static/themes/apple/theme.css";</style>
 		<style type="text/css" media="screen">@import "/static/extensions/jqt.bars/jqt.bars.css";</style>
 		<style type="text/css" media="screen">@import "/static/extensions/jqt.bars/themes/apple/theme.css";</style>
+		
+		<!-- related stuffs -->
 		<link rel="stylesheet" type="text/css" href="/static/css/master.css">
 	</head>
 	<body>

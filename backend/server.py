@@ -1,20 +1,26 @@
 #/bin/python
 
 import bottle
+<<<<<<< HEAD
 from bottle import template, request, redirect
 from pprint import pprint
 from models import *
 from demo_locations import route
 from sqlalchemy.orm.exc import NoResultFound
 
+=======
+>>>>>>> 6f13ca4c14859c749e69a41b4d8b87035ef9976d
 import datetime
 import json
 import urllib2
 import cgi
 
 from bottle import request
-from hack.helper import parse_accel
+from demo_locations import route
+from hack.helper import parse_accel, analyze_accel
+from models import *
 from pprint import pprint
+from sqlalchemy.orm.exc import NoResultFound
 
 ECHONEST_KEY = 'YBBLFZVQBRPQF1VKS'
 ECHONEST_API = 'http://developer.echonest.com/api/v4/song/search'
@@ -61,19 +67,34 @@ USER_CATEGORIES = {
       'max_energy' : '.5'
     },
   'running'      : {
-      'min_tempo' : '300'
+      'min_tempo' : '300',
+      'min_danceability' : '.5',
+      'min_energy' : '.5'
     },
   'commuting'    : {
+      'min_tempo' : '300',
+      'min_danceability' : '.4',
+      'min_energy' : '.35'
     },
   'walking'      : {
+      'min_tempo' : '200',
+      'min_danceability' : '.35',
+      'min_energy' : '.3'
     },
   'waking_up'    : {
+      'max_tempo' : '200',
+      'max_energy' : '.5',
+      'mood' : 'happy'
     },
   'winding_down' : {
+      'max_tempo' : '300',
+      'max_energy' : '.7',
+      'mood' : 'happy'
     },
   'pre_party'    : {
       'min_danceability' : '.7',
-      'min_energy' : '.5'
+      'min_energy' : '.5',
+      'mood' : 'happy'
     }
 }
 
@@ -84,11 +105,11 @@ class SearchError(Exception):
    pass
 
 def coord_to_place_type(lat, lng):  
-  args = {\
-        'location' : '%s,%s' % (lat, lng),\
-        'radius'   : 10,\
-        'sensor'   : 'true',\
-        'key'      : PLACES_KEY,\
+  args = {
+        'location' : '%s,%s' % (lat, lng),
+        'radius'   : 10,
+        'sensor'   : 'true',
+        'key'      : PLACES_KEY,
         'types'    : '|'.join(PLACE_TYPES)
   }
 
@@ -96,13 +117,15 @@ def coord_to_place_type(lat, lng):
   result = json.load(urllib.urlopen(url))
 
   if 'Error' in result:
-      # An error occurred; raise an exception
-      raise SearchError, result['Error']
-
+    # An error occurred; raise an exception
+    raise SearchError, result['Error']
+      
+  if result[ 'status' ] == 'ZERO_RESULTS':
+    raise SearchError, 'Zero results'
+  
   for t in result['results'][0]['types']:
-      if t in PLACE_TYPES:
-        return t
-
+    if t in PLACE_TYPES:
+      return t
 
 def get_user_category(get_request):
   # Grab phone data
@@ -113,6 +136,7 @@ def get_user_category(get_request):
 
   # parse phone data
   ax, ay, az = parse_accel( accel_data )
+  user_state = analyze_accel( ax, ay, az )
   
   # Convert timestamp into a python datetime object
   try:
@@ -120,7 +144,7 @@ def get_user_category(get_request):
   except Exception:
     # use the server time if we can't parse the sucker
     timestamp = datetime.datetime.now()
-  
+
   # Convert lat/lng into floats
   if latitude is None or longitude is None:
     # If no lat/lng is specified, default to the MOMA
@@ -132,22 +156,20 @@ def get_user_category(get_request):
 
   place_type = coord_to_place_type(latitude, longitude)
   
-
 @BACK_END.route( '/recommend' )
 def recommend():
-  category = get_user_category(request.GET)
+  category = get_user_category(request.GET)  
 
-  # TODO: get parameters for echonest based on category
-  args = {\
-      'api_key' : ECHONEST_KEY,\
+  # TODO: use USER_CATEGORIES
+  args = {
+      'api_key' : ECHONEST_KEY,
 
       # limit songs to those found in 7digital catalog
-      'bucket'  : 'id:7digital-US',\
-      'limit'   : 'true',\
-
-      # TODO: our own magic parameters
-      'artist'  : 'Calvin Harris',\
+      'bucket'  : 'id:7digital-US',
+      'limit'   : 'true'
   }
+
+  args.update(USER_CATEGORIES['waking_up'])
 
   url = ECHONEST_API + '?' + urllib.urlencode(args) + '&bucket=tracks'
   result = json.load(urllib.urlopen(url))
@@ -158,7 +180,33 @@ def recommend():
     raise EchonestMagicError
 
   #pprint(result)
-  return json.dumps( result['response']['songs'] )
+  #return json.dumps( result['response']['songs'] )
+
+  track_data = []
+  print 'found %d songs!' % len(result['response']['songs'])
+
+  for s in result['response']['songs']:
+    if 'title' not in s:
+      continue
+
+    artist = ''
+    if 'artist_name' in s:
+      artist = s['artist_name']
+    
+    preview_url = ''
+    album_img = ''
+    if 'tracks' in s:
+      preview_url = s['tracks'][0]['preview_url']
+      album_img = s['tracks'][0]['release_image']
+
+    track_data.append({
+        'name'        : s['title'],
+        'artist'      : artist,
+        'preview_url' : preview_url,
+        'album_img'   : album_img
+    })
+
+  return json.dumps(track_data)
 
 @BACK_END.route('/places_magic', method='GET')
 def places_magic():
