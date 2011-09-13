@@ -36,7 +36,7 @@ $(function(){
 			y1 = e.accelerationIncludingGravity.y;
 			z1 = e.accelerationIncludingGravity.z;
 			
-			console.log( x1 + ', ' + y1 + ', ' + z1 );
+			//console.log( x1 + ', ' + y1 + ', ' + z1 );
 			
 		}, false);
 	}
