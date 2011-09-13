@@ -1,11 +1,13 @@
 #/bin/python
 
 import bottle
-from bottle import template, request
-from pprint import pprint
-
+import datetime
 import json
 import urllib
+
+from bottle import request
+from hack.helper import parse_accel
+from pprint import pprint
 
 ECHONEST_KEY = 'YBBLFZVQBRPQF1VKS'
 ECHONEST_API = 'http://developer.echonest.com/api/v4/song/search'
@@ -21,15 +23,32 @@ class EchonestMagicError(Exception):
 class SearchError(Exception):
    pass
 
-@BACK_END.route('/echonest_magic', method='GET')
-def echonest_magic():
-  # TODO: grab phone data
-  x_coordinate = request.GET.get('x_coordinate', '').strip()
-  y_coordinate = request.GET.get('y_coordinate', '').strip()
-  z_coordinate = request.GET.get('z_coordinate', '').strip()
-  timestamp = request.GET.get('timestamp', '').strip()
-  gps_location = request.GET.get('gps_location', '').strip()
-
+@BACK_END.route( '/recommend' )
+def recommend():
+  # Grab phone data
+  accel_data  = request.GET.get( 'accelerometer' )
+  timestamp   = request.GET.get( 'timestamp' )
+  latitude    = request.GET.get( 'latitude' )
+  longitude   = request.GET.get( 'longitude' )
+  
+  # parse phone data
+  ax, ay, az = parse_accel( accel_data )
+  
+  # Convert timestamp into a python datetime object
+  try:
+    timestamp = datetime.datetime.fromtimestamp( float( timestamp ) )
+  except Exception:
+    # use the server time if we can't parse the sucker
+    timestamp = datetime.datetime.now()
+  
+  # Convert lat/lng into floats
+  if latitude is None or longitude is None:
+    latitude  = 40.77905519999999
+    longitude = -73.96283459999999
+  else:
+    latitude  = float( latitude )
+    longitude = float( longitude )
+  
   args = {\
       'api_key' : ECHONEST_KEY,\
 
@@ -49,10 +68,8 @@ def echonest_magic():
     print 'Error querying Echonest:', echonest_status['message']
     raise EchonestMagicError
 
-  pprint(result)
-  songs = result['response']['songs']
-
-  return template('song_dump', songs=songs)
+  #pprint(result)
+  return json.dumps( result['response']['songs'] )
 
 @BACK_END.route('/places_magic', method='GET')
 def places_magic():
@@ -60,9 +77,10 @@ def places_magic():
   longitude = request.GET.get('longitude', '').strip()
 
   #TODO: the moma
-  latitude = '40.77905519999999'
-  longitude = '-73.96283459999999'
-
+  if len( latitude ) == 0 or len( longitude ) == 0:
+    latitude = '40.77905519999999'
+    longitude = '-73.96283459999999'
+    
   args = {\
       'location' : '%s,%s' % (latitude, longitude),\
       'radius'   : 10,\
@@ -73,7 +91,6 @@ def places_magic():
   url = PLACES_API + '?' + urllib.urlencode(args)
   result = json.load(urllib.urlopen(url))
 
-
   if 'Error' in result:
     # An error occurred; raise an exception
     raise SearchError, result['Error']
@@ -81,4 +98,4 @@ def places_magic():
   # grab the categories of the first place
   place = result['results'][0]
 
-  return place['types']
+  return json.dumps( place )
