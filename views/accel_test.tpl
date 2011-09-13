@@ -10,14 +10,19 @@
 <script type='text/javascript'>
 	var ax = 0, ay = 0, az = 0;
 	$( function() {
+		document.ax = 0;
+		document.ay =0;
+		document.az =0;
+		
 		// Start grabbing accelerometer data
 		if (typeof window.DeviceMotionEvent != 'undefined') {
 
 			// Listen to motion events and update the position
 			window.addEventListener('devicemotion', function (e) {
-				ax = Math.abs( Math.abs( e.accelerationIncludingGravity.x ) - ax );
-				ay = Math.abs( Math.abs( e.accelerationIncludingGravity.y ) - ay );
-				az = Math.abs( Math.abs( e.accelerationIncludingGravity.z ) - az );
+				document.ax = Math.abs( Math.abs( e.accelerationIncludingGravity.x ) - document.ax );
+				document.ay = Math.abs( Math.abs( e.accelerationIncludingGravity.y ) - document.ay );
+				document.az = Math.abs( Math.abs( e.accelerationIncludingGravity.z ) - document.az );
+				
 				$( '#accel' ).html( ax + '<br>' + ay + '<br>' + az );
 			}, false);
 		}
