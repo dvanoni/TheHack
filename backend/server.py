@@ -94,11 +94,11 @@ class SearchError(Exception):
    pass
 
 def coord_to_place_type(lat, lng):  
-  args = {\
-        'location' : '%s,%s' % (lat, lng),\
-        'radius'   : 10,\
-        'sensor'   : 'true',\
-        'key'      : PLACES_KEY,\
+  args = {
+        'location' : '%s,%s' % (lat, lng),
+        'radius'   : 10,
+        'sensor'   : 'true',
+        'key'      : PLACES_KEY,
         'types'    : '|'.join(PLACE_TYPES)
   }
 
@@ -147,16 +147,15 @@ def recommend():
   category = get_user_category(request.GET)
 
   # TODO: use USER_CATEGORIES
-  args = {\
-      'api_key' : ECHONEST_KEY,\
+  args = {
+      'api_key' : ECHONEST_KEY,
 
       # limit songs to those found in 7digital catalog
-      'bucket'  : 'id:7digital-US',\
-      'limit'   : 'true',\
-
-      # TODO: our own magic parameters
-      'artist'  : 'Calvin Harris',\
+      'bucket'  : 'id:7digital-US',
+      'limit'   : 'true'
   }
+
+  args.update(USER_CATEGORIES['waking_up'])
 
   url = ECHONEST_API + '?' + urllib.urlencode(args) + '&bucket=tracks'
   result = json.load(urllib.urlopen(url))
@@ -167,7 +166,33 @@ def recommend():
     raise EchonestMagicError
 
   #pprint(result)
-  return json.dumps( result['response']['songs'] )
+  #return json.dumps( result['response']['songs'] )
+
+  track_data = []
+  print 'found %d songs!' % len(result['response']['songs'])
+
+  for s in result['response']['songs']:
+    if 'title' not in s:
+      continue
+
+    artist = ''
+    if 'artist_name' in s:
+      artist = s['artist_name']
+    
+    preview_url = ''
+    album_img = ''
+    if 'tracks' in s:
+      preview_url = s['tracks'][0]['preview_url']
+      album_img = s['tracks'][0]['release_image']
+
+    track_data.append({
+        'name'        : s['title'],
+        'artist'      : artist,
+        'preview_url' : preview_url,
+        'album_img'   : album_img
+    })
+
+  return json.dumps(track_data)
 
 @BACK_END.route('/places_magic', method='GET')
 def places_magic():
