@@ -29,16 +29,16 @@ label.checkbox_label {
 
 .classList {
 	list-style: none;
-		margin: 0em 0em 0em 0em;
-			padding: 0em 0em 0em 1em;
+	margin: 0em 0em 0em 0em;
+	padding: 0em 0em 0em 1em;
 }
 .title > h1{
 	font-size: 18px;
 	background-color: #FFFFFF;
 	font-family: Calibri, Verdana, Sans-Serif;
-		font-variant: small-caps;
-			margin: 0px 0px 0px 0px;
-				padding: 0em;
+	font-variant: small-caps;
+	margin: 0px 0px 0px 0px;
+	padding: 0em;
     width: 140px;
     white-space: nowrap;
     overflow: hidden;
@@ -49,8 +49,8 @@ label.checkbox_label {
 	font-size: 12px;
 	background-color: #FFFFFF;
 	font-family: Calibri, Verdana, Sans-Serif;
-			margin: 0px 0px 0px 0px;
-				padding: 0em;
+	margin: 0px 0px 0px 0px;
+	padding: 0em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -63,13 +63,13 @@ label.checkbox_label {
 }
 img.portrait {
 	float: left;
-		border-bottom: solid 2px #CCCCCC;
-			border-right: solid 2px #CCCCCC;
-				border-top: solid 1px #EEEEEE;
-				  border-left: solid 1px #EEEEEE;
-						background-color: #FFFFFF;
-							margin: 0px 8px 0px 1px;
-								padding: 10px;
+	border-bottom: solid 2px #CCCCCC;
+	border-right: solid 2px #CCCCCC;
+	border-top: solid 1px #EEEEEE;
+	border-left: solid 1px #EEEEEE;
+	background-color: #FFFFFF;
+	margin: 0px 8px 0px 1px;
+	padding: 10px;
 }
 
 a.recipeView:link {

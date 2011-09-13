@@ -1,46 +1,9 @@
-#fridge > IMG {
-	margin-bottom:-5px;
+#tabbar {
+	position:fixed;
+	bottom:0;
 }
 
-.shelf {
-	background: url(/static/img/shelf.png);
-	height:109px;
-	position:relative;
-}
-
-.shelf-padding {
-	padding-top:44px;
-}
-
-.food {
-	float:left;
-	margin-left:64px;
-	height:64px;
-	width:64px;
-	background-repeat: no-repeat;
-}
-
-.lowfood {
-	display: none;
-}
-
-.spot {
-	float:left;
-	width:128px;
-	height:64px;
-}
-
-A.food-details {
-	float:left;
-}
-
-UL.fullscreen {
-	margin:0;
-	background:0;
-	padding:0;
-}
-
-UL.fullscreen > LI {
-	margin:0;
-	padding:0;
+.scroll {
+	overflow:scroll;
+	height:;
 }

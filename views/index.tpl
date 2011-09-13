@@ -42,6 +42,9 @@
 			// Some sample Javascript functions:
 			$(function(){
 				
+				var i = document.createElement('input'); 
+				alert( ('speech' in i || 'webkitSpeech' in i) );
+			
 				// Orientation callback event
 				$('body').bind('turn', function(e, data){
 					$('#orient').html('Orientation: ' + data.orientation);
@@ -113,15 +116,23 @@
 					<h1>The Hack</h1>
 				</div>
 				<div class="s-scrollwrapper">
-					<div>
-						<ul class="edgetoedge">
-							<li class="arrow"><a href="#music-player">Test</a></li>
-							<li class="arrow"><a href="#music-player">Test</a></li>
-							<li class="arrow"><a href="#music-player">Test</a></li>
-							<li class="arrow"><a href="#music-player">Test</a></li>
-							<li class="arrow"><a href="#music-player">Test</a></li>
-						</ul>
-					</div>
+					<ul class="edgetoedge">
+						<li class="arrow"><a href="#music-player">Test</a></li>
+						<li class="arrow"><a href="#music-player">Test</a></li>
+						<li class="arrow"><a href="#music-player">Test</a></li>
+						<li class="arrow"><a href="#music-player">Test</a></li>
+						<li class="arrow"><a href="#music-player">Test</a></li>
+						<li class="arrow"><a href="#music-player">Test</a></li>
+						<li class="arrow"><a href="#music-player">Test</a></li>
+						<li class="arrow"><a href="#music-player">Test</a></li>
+						<li class="arrow"><a href="#music-player">Test</a></li>
+						<li class="arrow"><a href="#music-player">Test</a></li>
+						<li class="arrow"><a href="#music-player">Test</a></li>
+						<li class="arrow"><a href="#music-player">Test</a></li>
+						<li class="arrow"><a href="#music-player">Test</a></li>
+						<li class="arrow"><a href="#music-player">Test</a></li>
+						<li class="arrow"><a href="#music-player">Test</a></li>
+					</ul>
 				</div>
 			</div>
 		</div>
