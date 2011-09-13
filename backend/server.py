@@ -83,55 +83,58 @@ def places_magic():
   latitude = request.GET.get('latitude', '').strip()
   longitude = request.GET.get('longitude', '').strip()
 
-  places_types = [
-    # WORKOUT
-    'gym',
-    'health',
-    # LOW KEY
-    'museum',
-    'park',
-    'aquarium',
-    'art_gallery',
-    'cafe',
-    'spa',
-    # SOCIAL
-    'bar',
-    'night_club',
-    # TRAVEL
-    'subway_station',
-    'taxi_stand',
-    'train_station',
-    # STUDY
-    'book_store',
-    'library',
-    'university',
-    'school'
-  ]
-
   r = ''
 
   for coords in route:
+    r += ('%s,%s' % (coords.lat, coords.lng)) + ': '
+    r += coordToPlaceType(coords) + '<br/>'
 
-    args = {\
+  return r
+
+def coordToPlaceType(coords):  
+  places_types = [
+      # WORKOUT
+      'gym',
+      'health',
+      # LOW KEY
+      'museum',
+      'park',
+      'aquarium',
+      'art_gallery',
+      'cafe',
+      'spa',
+      # SOCIAL
+      'bar',
+      'night_club',
+      # TRAVEL
+      'subway_station',
+      'taxi_stand',
+      'train_station',
+      # STUDY
+      'book_store',
+      'library',
+      'university',
+      'school'
+    ]
+
+  args = {\
         'location' : '%s,%s' % (coords.lat, coords.lng),\
         'radius'   : 10,\
         'sensor'   : 'true',\
         'key'      : PLACES_KEY,\
         'types'    : '|'.join(places_types)
-    }
+  }
 
-    url = PLACES_API + '?' + urllib.urlencode(args)
-    result = json.load(urllib.urlopen(url))
+  url = PLACES_API + '?' + urllib.urlencode(args)
+  result = json.load(urllib.urlopen(url))
 
-
-    if 'Error' in result:
+  if 'Error' in result:
       # An error occurred; raise an exception
       raise SearchError, result['Error']
 
-    r += ('%s,%s' % (coords.lat, coords.lng)) + '<br/>'
-    r += ', '.join(result['results'][0]['types']) + '<br/>'
-
-  return r
+  for t in result['results'][0]['types']:
+      if t in places_types:
+        return t
 
 @BACK_END.route('/coords', method='GET')
 def coords():
