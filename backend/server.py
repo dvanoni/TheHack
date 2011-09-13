@@ -59,7 +59,7 @@ def places_magic():
   latitude = request.GET.get('latitude', '').strip()
   longitude = request.GET.get('longitude', '').strip()
 
-  #TODO: the met
+  #TODO: the moma
   latitude = '40.77905519999999'
   longitude = '-73.96283459999999'
 
