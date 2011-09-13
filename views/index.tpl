@@ -26,7 +26,7 @@
 		<div id="tabbar"> 
 			<div><ul> 
 				<li> 
-					<a href="#home" mask="/static/img/tabs/refrigerator-tab.png" mask2x="/static/img/tabs/refrigerator-tab.png"> 
+					<a href="#home" mask="/static/img/tabs/music.png" mask2x="/static/img/tabs/music.png"> 
 						<strong>Music</strong> 
 					</a> 
 				</li> 
