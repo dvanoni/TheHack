@@ -18,15 +18,11 @@
 
 			// Listen to motion events and update the position
 			window.addEventListener('devicemotion', function (e) {
-				delta_x = Math.abs( document.ax ) - Math.abs(  e.accelerationIncludingGravity.x );
-				delta_y = Math.abs( document.ay ) - Math.abs(  e.accelerationIncludingGravity.y );
-				delta_z = Math.abs( document.az ) - Math.abs(  e.accelerationIncludingGravity.z );
-				
-				document.ax = e.accelerationIncludingGravity.x;
-				document.ay = e.accelerationIncludingGravity.y;
-				document.az = e.accelerationIncludingGravity.z;
+				document.ax = Math.abs( e.accelerationIncludingGravity.x );
+				document.ay = Math.abs( e.accelerationIncludingGravity.y );
+				document.az = Math.abs( e.accelerationIncludingGravity.z );
 
-				$( '#accel' ).html( delta_x + '<br>' + delta_y + '<br>' + delta_z );
+				$( '#accel' ).html( document.ax + '<br>' + document.ay + '<br>' + document.az );
 			}, false);
 		}
 	});
