@@ -8,22 +8,25 @@
 <meta name="apple-mobile-web-app-capable" content="YES">
 -->
 <script type='text/javascript'>
-	var ax = 0, ay = 0, az = 0;
 	$( function() {
 		document.ax = 0;
-		document.ay =0;
-		document.az =0;
+		document.ay = 0;
+		document.az = 0;
 		
 		// Start grabbing accelerometer data
 		if (typeof window.DeviceMotionEvent != 'undefined') {
 
 			// Listen to motion events and update the position
 			window.addEventListener('devicemotion', function (e) {
-				document.ax = Math.abs( Math.abs( e.accelerationIncludingGravity.x ) - document.ax );
-				document.ay = Math.abs( Math.abs( e.accelerationIncludingGravity.y ) - document.ay );
-				document.az = Math.abs( Math.abs( e.accelerationIncludingGravity.z ) - document.az );
+				delta_x = Math.abs( document.ax ) - Math.abs(  e.accelerationIncludingGravity.x );
+				delta_y = Math.abs( document.ay ) - Math.abs(  e.accelerationIncludingGravity.y );
+				delta_z = Math.abs( document.az ) - Math.abs(  e.accelerationIncludingGravity.z );
 				
-				$( '#accel' ).html( ax + '<br>' + ay + '<br>' + az );
+				document.ax = e.accelerationIncludingGravity.x;
+				document.ay = e.accelerationIncludingGravity.y;
+				document.az = e.accelerationIncludingGravity.z;
+
+				$( '#accel' ).html( delta_x + '<br>' + delta_y + '<br>' + delta_z );
 			}, false);
 		}
 	});
