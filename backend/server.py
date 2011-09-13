@@ -127,12 +127,11 @@ def get_user_category(get_request):
 
   place_type = coord_to_place_type(latitude, longitude)
   
-
 @BACK_END.route( '/recommend' )
 def recommend():
   category = get_user_category(request.GET)
 
-  # TODO: get parameters for echonest based on category
+  # TODO: use USER_CATEGORIES
   args = {\
       'api_key' : ECHONEST_KEY,\
 
