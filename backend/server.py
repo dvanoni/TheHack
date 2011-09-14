@@ -205,7 +205,7 @@ def amazon():
 def get_track_details():
   YAHOO_API = 'http://query.yahooapis.com/v1/public/yql'
 
-  title = 'Single Ladies'
+  title = request.GET.get( 'title', '' )
   args = {
     'q' : "SELECT * FROM music.track.search WHERE keyword = '%s'" % title,
     'format' : 'json'
