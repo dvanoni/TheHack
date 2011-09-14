@@ -6,5 +6,5 @@ route = [
 	Coordinate(40.770857, -73.955197), 	# Gym
 	Coordinate(40.776138, -73.969048),  # Park
 	Coordinate(40.784798, -73.977556), 	# Library
-	Coordinate(40.778364, -73.981977)	# Subway
+	Coordinate(40.778364, -73.981977)   # Subway
 	]
