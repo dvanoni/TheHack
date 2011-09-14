@@ -84,6 +84,9 @@
 							<img alt='next album'/>
 						</div>
 						<div id='current-album'>
+							<div id='play-btn'>
+								<img src='/static/img/play_button.png' alt='play button'>
+							</div>
 							<img alt='current album'/>
 						</div>
 					</div>
