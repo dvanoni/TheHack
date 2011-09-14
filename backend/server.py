@@ -31,10 +31,12 @@ BACK_END = bottle.Bottle()
 
 def get_user_category(get_request):
   # Grab phone data
-  accel_data  = get_request.get( 'accelerometer' )
-  timestamp   = get_request.get( 'timestamp' )
-  latitude    = get_request.get( 'latitude' )
-  longitude   = get_request.get( 'longitude' )
+  accel_data  = get_request.get('accelerometer')
+  timestamp   = get_request.get('timestamp')
+
+  # default gps to MOMA
+  latitude    = float(get_request.get('latitude',  '40.77905519999999'))
+  longitude   = float(get_request.get('longitude', '-73.96283459999999'))
 
   # parse phone data
   ax, ay, az = parse_accel( accel_data )
@@ -46,33 +48,29 @@ def get_user_category(get_request):
     # use the server time if we can't parse the sucker
     timestamp = datetime.datetime.now()
   
-  # Convert lat/lng into floats
-  if latitude is None or longitude is None:
-    # If no lat/lng is specified, default to the MOMA
-    latitude  = 40.77905519999999
-    longitude = -73.96283459999999
-  else:
-    latitude  = float( latitude )
-    longitude = float( longitude )
-
   place_type = places.coord_to_place_type(latitude, longitude)
-
 
   category = 'pre_party'  # the default
   
 @BACK_END.route( '/recommend' )
 def recommend():
+  debug = False
+  if request.GET.get('debug') is '1':
+    print 'Running debug...'
+    debug = True
+
   category = get_user_category(request.GET)
 
-  # TODO: for debugging
-  category = request.GET.get('c', '').strip()
+  if debug:
+    category = request.GET.get('c', '').strip()
 
   track_data = echonest.search(category)
 
-  #return json.dumps(track_data)
 
-  # for debugging
-  return template('song_dump', tracks=track_data)
+  if debug:
+    return template('song_dump', tracks=track_data)
+  else:
+    return json.dumps(track_data)
 
 @BACK_END.route('/places_magic', method='GET')
 def places_magic():
