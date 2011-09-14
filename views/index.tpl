@@ -80,47 +80,40 @@
 				</div>
 			</div>
 			<div id="home" class='current'>
-				<div>
-					<div id='artist-info'>
+				<div id='player'>
+					<div id='player-audio'>
+						<audio></audio>
+					</div>
+					<div id='player-track-info'>
 						<div>
-							<div class='artist'>Artist Name</div>
-							<div class='track'>Track Title</div>
+							<div class='artist'>Artist</div>
+							<div class='title'>Title</div>
 						</div>
 					</div>
-					<div id='album-art-area'>
+					<div id='player-album-art'>
 						<div id='next-album'>
-							<img id='next' src='http://cdn.7static.com/static/img/sleeveart/00/007/786/0000778648_200.jpg' width='140' class='album-art'>
+							<img alt='next album'/>
 						</div>
 						<div id='current-album'>
-							<img id='current' src='http://cdn.7static.com/static/img/sleeveart/00/010/561/0001056176_200.jpg' width='240' class='album-art'>
+							<img alt='current album'/>
 						</div>
+					</div>
+					<div id="player-controls">
+						<button class="repeat">repeat is <span>OFF</span></button>
 					</div>
 				</div>
 			</div>
 		</div>
 		<script src='/static/jqtouch/jquery-1.4.2.min.js' type='text/javascript'></script>
+		<!--<script src="/static/js/jquery-ui-1.8.16.custom.min.js" type='text/javascript' charset="utf-8"></script>-->
 		<script src="/static/jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
 		<script src="/static/extensions/jqt.bars/jqt.bars.js" type="application/x-javascript" charset="utf-8"></script> 
 		<script src="/static/js/geolocation.js" type='text/javascript' charset="utf-8"></script>
+		<script src="/static/js/player.js" type='text/javascript' charset="utf-8"></script>
 		<script src="/static/js/master.js" type='text/javascript' charset="utf-8"></script>
-		<script type="text/javascript" charset="utf-8">
+		<script type="text/javascript">
 			$(function() {
-				$.getJSON( '/front_end/dominant_color', { url: $( '#current' ).attr('src')}, function( color ) {
-						$( '#home').css( 'background-color', color );
-					});
-				
-				$( '#next' ).click( function() {
-					$( '#activity' ).fadeIn( 'fast' );
-					new_art = $( '#next' ).attr( 'src' )
-					$( '#current' ).attr( 'src', new_art );
-					$( '#next' ).attr( 'src', 'http://cdn.7static.com/static/img/sleeveart/00/008/225/0000822570_200.jpg' );
-					
-					$.getJSON( '/front_end/dominant_color', { url: $( '#current' ).attr('src')}, function( color ) {
-							$( '#home').css( 'background-color', color );
-							$( '#activity' ).fadeOut( 'fast' );
-						});
-					
-				});
+				sendData();
 			});
 		</script>
 	</body>

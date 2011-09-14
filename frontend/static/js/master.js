@@ -35,14 +35,11 @@ function sendData() {
 	
 	// Construct API call and work some magic
 	$.getJSON( '/api/recommend', phone_data, function( data ) {
-		console.log( data );
-		
-		var html = '';
-		for( var i = 0; i < data.length; i++ ) {
-			html += '<li class="arrow"><a href="#music-player">' + data[i].artist_name + ' - ' + data[i].title + '</a></li>'
+		// Add tracks to playlist
+		for (var i in data) {
+			player.addTrackToPlaylist(new Track(data[i]));
 		}
-		
-		$( '#playlist' ).html( html );
+		player.loadCurrentTrack();
 	});
 }
 
