@@ -10,7 +10,19 @@ from backend import echonest_api as e
 def main(category):
   print 'Returning results for %s...' %  category
   track_data = e.search(category)
-  pprint(track_data)
+  for t in track_data:
+    del t['preview_url'] 
+    del t['album_img'] 
+  pprint(remove_duplicates(track_data))
+
+def remove_duplicates(d):
+    encountered_entries = set()
+    for t in d:
+        if t['name'] in encountered_entries:
+            d.remove(t)
+        else:
+            encountered_entries.add(t['name'])
+    return d
 
 # ALKJASDLKFJASLDKFJADKFJADF WHYYYY
 #  f = open('song_dump.html', 'w')
