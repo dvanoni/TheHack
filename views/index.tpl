@@ -52,11 +52,11 @@
 					<h1>History</h1>
 				</div>
 				<div>
-					<ul class='edgetoedge'>
-						<li class='sep'>Studying</li>
+					<ul id='history-list' class='edgetoedge'>
+						<!--<li class='sep'>Studying</li>
 						<li>Test</li>
 						<li>Test</li>
-						<li>Test</li>
+						<li>Test</li>-->
 					</ul>
 				</div>
 			</div>

@@ -42,13 +42,14 @@ function Track(trackInfo) {
 
     player.addTrackToHistory = function (track) {
         var id = player.history.push(track) - 1;
-        $('<div></div>')
+        $('<li></li>')
             .html(track.trackName)
             .addClass('history_item')
-            .appendTo(player.ui.history)
+            .prependTo(player.ui.history)
             .click(function () {
                 player.loadHistoryTrack(id);
                 player.play();
+                $('#tab_1').click();
             });
     };
 
@@ -122,12 +123,12 @@ function Track(trackInfo) {
             player.loadCurrentTrack();
         }
         player.ui.audio.get(0).play();
-        player.ui.controls.playPause.html("pause");
+//        player.ui.controls.playPause.html("pause");
     };
 
     player.pause = function () {
         player.ui.audio.get(0).pause();
-        player.ui.controls.playPause.html("play");
+//        player.ui.controls.playPause.html("play");
     };
 
     player.playPause = function () {
