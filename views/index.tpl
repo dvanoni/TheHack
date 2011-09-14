@@ -58,7 +58,11 @@
 				</div>
 				<div style='padding:8px;background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CCC), color-stop(0.6, #CCC), to(#AAA));'>
 					<ul style='margin:0;'>
+%if login:
 						<li><a onClick="window.location='https://www.facebook.com/dialog/oauth?client_id=170844926329169&redirect_uri=http://thehack.dvanoni.com/api/facebook&display=touch'">Connect with Facebook</a></li>
+%else:
+						<li>Welcome, {{username}}</li>
+%end
 					</ul>
 				</div>
 				<div class='s-scrollwrapper'>
