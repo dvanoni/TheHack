@@ -8,7 +8,11 @@ FRONT_END = bottle.Bottle()
 def front_end_index():
 	login = True
 	s = bottle.request.environ.get('beaker.session')
-	username = s.get('username')
+
+	if s:
+		username = s.get('username')
+	else:
+		username = None
 
 	if username:
 		login = False

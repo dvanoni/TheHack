@@ -166,5 +166,3 @@ def facebook_login():
     s.save()
   redirect("/")
 
-
-
