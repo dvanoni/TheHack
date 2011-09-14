@@ -8,6 +8,15 @@
 	height:;
 }
 
+.loc {
+	position:absolute;
+	top:360px;
+	font-size:40px;
+	font-weight:bold;
+	color:#FFF;
+	-webkit-opacity: 0.25;
+}
+
 #player-album-art {
 	position:relative;
 	margin-left:8px;

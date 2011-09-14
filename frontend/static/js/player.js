@@ -7,6 +7,7 @@ function Track(trackInfo) {
     this.artistName = null;
     this.trackURL = null;
     this.albumArtURL = null;
+    this.loc = null;
 
     this.parseInput = function (input) {
         if (input.name) {
@@ -20,6 +21,9 @@ function Track(trackInfo) {
         }
         if (input.album_img) {
             this.albumArtURL = input.album_img;
+        }
+        if (input.loc) {
+            this.loc = input.loc;
         }
     };
 
@@ -80,9 +84,10 @@ function Track(trackInfo) {
         player.ui.nextAlbumArt.attr('src', src);
     };
 
-    player.setTrackInfo = function (title, artist) {
+    player.setTrackInfo = function (title, artist, loc) {
         player.ui.trackInfo.title.html(title);
         player.ui.trackInfo.artist.html(artist);
+        player.ui.trackInfo.loc.html(loc);
     };
 
     player.loadTrack = function (track) {
@@ -91,7 +96,7 @@ function Track(trackInfo) {
         }
         player.loadAudioSrc(track.trackURL);
         player.setCurrentAlbumArtSrc(track.albumArtURL);
-        player.setTrackInfo(track.trackName, track.artistName);
+        player.setTrackInfo(track.trackName, track.artistName, track.loc);
         player.trackLoaded = true;
     };
 
@@ -171,7 +176,8 @@ function Track(trackInfo) {
             'audio': $('#player-audio audio'),
             'trackInfo': {
                 'title': $('#player-track-info .title'),
-                'artist': $('#player-track-info .artist')
+                'artist': $('#player-track-info .artist'),
+                'loc' : $('#player-track-info .loc')
             },
             'currentAlbumArt': $('#current-album img'),
             'nextAlbumArt': $('#next-album img'),
