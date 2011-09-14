@@ -1,10 +1,12 @@
 // Accelerometer vars
 var ax = 0, ay = 0, az = 0;
 
+function getRandomInt (min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}		
+
 var jQT = new $.jQTouch({
-	icon: 'wimf-icon.png',
 	addGlossToIcon: false,
-	startupScreen: 'splashscreen.png',
 	statusBar: 'black',
 	preloadImages: [
 		'/static/themes/jqt/img/back_button.png',
@@ -23,7 +25,7 @@ var jQT = new $.jQTouch({
 	Send data that has been acquired from the phone to our API for 
 	recommendations
 */
-function sendData() {	
+function sendData() {
 	// Mash all the phone data together
 	coords = getCoords();	
 	phone_data = {
@@ -35,16 +37,43 @@ function sendData() {
 	
 	// Construct API call and work some magic
 	$.getJSON( '/api/recommend', phone_data, function( data ) {
-		console.log( data );
-		
-		var html = '';
-		for( var i = 0; i < data.length; i++ ) {
-			html += '<li class="arrow"><a href="#music-player">' + data[i].artist_name + ' - ' + data[i].title + '</a></li>'
+	    
+	    if( player.playlist.length > 1 ) {
+            player.playlist.splice( 1, player.playlist.length - 1 );
+	        console.log( player.playlist );
+	    }
+	    
+		// Add tracks to playlist
+		for (var i in data) {
+			player.addTrackToPlaylist(new Track(data[i]));
 		}
-		
-		$( '#playlist' ).html( html );
+		player.loadCurrentTrack();
 	});
 }
+
+function loadSocial() {
+	$( '#activity' ).fadeIn( 'fast' );
+	$( '#discover-map' ).html( '' ).scrollLeft( 80 ).scrollTop( 160 );
+	
+	$.getJSON( '/api/similar', null, function( data ) {
+		for( var i = 0; i < data.length; i++ ) {
+			var track = data[i];
+			var top  = getRandomInt( 16, 578 );
+			var left = getRandomInt( 16, 578 );
+			
+			if( track.album_img ) {
+				var html = "<div class='social-track' style='top:" + top + "px;left:" + left + "px;'>" +
+							"<img src='" + track.album_img + "' width='48'>" +
+							"</div>";
+				$( '#discover-map' ).append( html );
+			}
+		}
+		
+		$( '.social-track' ).fadeIn( 'slow' );
+		$( '#activity' ).fadeOut( 'fast' );
+	});
+}
+
 
 $(function(){
 	// Start acquiring our location
@@ -61,5 +90,6 @@ $(function(){
 		}, false);
 	}
 
+	sendData();
 	//setTimeout( sendData, 2000 );
 });

@@ -606,6 +606,10 @@ is not recognized, like...
             e.preventDefault();
             e.stopPropagation();
           });
+		  $( '#home' ).bind('touchmove', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+          });
 
           // Resize on rotation
           $('#jqt').bind('turn', function (e, data) {

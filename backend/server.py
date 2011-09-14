@@ -86,6 +86,18 @@ def get_user_category(place_type, day_state, user_state):
 
   return category
 
+def category_name(category):
+  if category in UserCategory.RUNNING:
+    return "Running"
+  if category in UserCategory.WALKING:
+    return "Walking"
+  if category in UserCategory.PRE_PARTY:
+    return "Party"
+  if category in UserCategory.COMMUTING:
+    return "Travel"
+  if category in UserCategory.STUDYING:
+    return "Studying"
+
 @BACK_END.route( '/similar', method='GET' )
 def similar():
   moods = {'happy','upbeat','inspiring'}
@@ -105,6 +117,8 @@ def recommend():
     category = request.GET.get('c', '').strip()
 
   track_data = echonest.getCategory(category)
+  for track in track_data:
+    track.update({'loc' : category_name(category)})
 
   if debug:
     return template('song_dump', tracks=track_data)
