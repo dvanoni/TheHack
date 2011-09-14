@@ -41,10 +41,10 @@ def parse_user_attributes(get_request):
   accel_data  = get_request.get('accelerometer')
   timestamp   = get_request.get('timestamp')
 
-  # default to rand
+  # default to route
   latitude    = route[ROUTE_COUNTER].lat
   longitude   = route[ROUTE_COUNTER].lng
-  if (ROUTE_COUNTER > len(route) - 1): 
+  if (ROUTE_COUNTER >= len(route) - 1): 
     ROUTE_COUNTER = 0
   else: 
     ROUTE_COUNTER+=1
@@ -69,13 +69,6 @@ def get_user_category(place_type, day_state, user_state):
 
   if place_type is 'park' and user_state is UserState.RUNNING:
     return UserCategory.RUNNING
-
-  if day_state is DayState.MORNING:
-    return UserCategory.WAKING_UP
-
-  if day_state is DayState.EVENING:
-    return UserCategory.WINDING_DOWN
-
   if place_type in places.WORKOUT:
     category = UserCategory.RUNNING
   elif place_type in places.LOWKEY:
@@ -111,7 +104,6 @@ def recommend():
     category = request.GET.get('c', '').strip()
 
   track_data = echonest.getCategory(category)
-
 
   if debug:
     return template('song_dump', tracks=track_data)
