@@ -88,8 +88,35 @@
 	color:#AAA;
 }
 
+#player-track-info .title {
+	font-weight:bold;
+}
+
 #player-audio, #player-audio * {
-    display:none;
+	display:none;
+}
+
+#player-controls .repeat {
+	display:none;
+}
+
+li.history-item {
+	height:40px;
+}
+
+.history-item .album {
+	float:left;
+	margin-right:10px;
+}
+
+.history-item .album img {
+	width:38px;
+	border:1px solid #666;
+}
+
+.history-item .artist {
+	font-size:14px;
+	font-weight:normal;
 }
 
 #play-btn {
@@ -97,6 +124,7 @@
 	width:240px;
 	height:240px;
 	z-index:10000;
+	opacity:.9;
 }
 
 #play-btn > img {
@@ -120,7 +148,7 @@
 	height:100px;
 	text-align:center;
 	border-radius:16px;
-	opacity:.9;
+	opacity:.8;
 }
 
 #discover-map-wrapper {

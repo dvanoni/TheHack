@@ -1,7 +1,7 @@
 #/bin/python
 
 import bottle
-from bottle import template, request, redirect, response
+from bottle import template, request, redirect
 from pprint import pprint
 from models import *
 from demo_locations import route
@@ -9,16 +9,9 @@ from sqlalchemy.orm.exc import NoResultFound
 from beaker.middleware import SessionMiddleware
 from boto.ecs import ECSConnection
 
-import datetime
 import json
 import urllib
 import cgi
-import base64
-import Cookie
-import email.utils
-
-from bottle import request
-from pprint import pprint
 
 from hack.helper import *
 
@@ -45,6 +38,11 @@ def parse_user_attributes(get_request):
   # default to route
   latitude    = route[ROUTE_COUNTER].lat
   longitude   = route[ROUTE_COUNTER].lng
+  if ROUTE_COUNTER == len( route ) - 1:
+    day_state = DayState.EVENING
+  else:
+    day_state = analyze_timestamp( timestamp )
+    
   if (ROUTE_COUNTER >= len(route) - 1): 
     ROUTE_COUNTER = 0
   else: 
@@ -56,7 +54,6 @@ def parse_user_attributes(get_request):
   ax, ay, az = parse_accel(accel_data)
   if ax is not None and ay is not None and az is not None:
     user_state = analyze_accel(ax, ay, az)
-  day_state = analyze_timestamp(timestamp)
 
   return (place_type, day_state, user_state)
 
@@ -70,7 +67,10 @@ def get_user_category(place_type, day_state, user_state):
 
   if place_type is 'park' and user_state is UserState.RUNNING:
     return UserCategory.RUNNING
-  if place_type in places.WORKOUT:
+    
+  if place_type in places.TRAVEL and day_state is DayState.EVENING:
+    category = UserCategory.PRE_PARTY
+  elif place_type in places.WORKOUT:
     category = UserCategory.RUNNING
   elif place_type in places.LOWKEY:
     category = UserCategory.WALKING

@@ -44,22 +44,51 @@ function Track(trackInfo) {
         player.playlist.push(track);
     };
 
+	player.initPlaylist = function (tracks) {
+		// add tracks to playlist
+		for (var t in tracks) {
+			player.addTrackToPlaylist(new Track(tracks[t]));
+		}
+		player.loadCurrentTrack();
+	};
+
+	player.updatePlaylist = function (tracks) {
+	    if (player.playlist.length > 1) {
+			// clear remaining tracks
+            player.playlist.splice(1, player.playlist.length - 1);
+
+			// add tracks to playlist
+			for (var t in tracks) {
+				player.addTrackToPlaylist(new Track(tracks[t]));
+			}
+
+			player.setNextAlbumArtSrc(player.playlist[1].albumArtURL);
+	    }
+	};
+
+
     player.addTrackToHistory = function (track) {
         var id = player.history.push(track) - 1;
         $('<li></li>')
-            .html(track.trackName)
-            .addClass('history_item')
+            .addClass('history-item')
             .prependTo(player.ui.history)
             .click(function () {
                 player.loadHistoryTrack(id);
                 player.play();
                 $('#tab_1').click();
-            });
+            })
+			.append('<div class="album"><img src="' + track.albumArtURL + '"/></div>')
+			.append($('<div></div>')
+				.append('<span class="artist">' + track.artistName + '</span><br/>')
+				.append('<span class="track">' + track.trackName + '</span>')
+			)
     };
 
     player.loadAudioSrc = function (src) {
         player.ui.audio.get(0).src = src;
         player.ui.audio.get(0).load();
+        player.ui.audio.get(0).play();
+        player.ui.audio.get(0).pause();
     };
 
     player.setBackgroundColor = function (url) {
@@ -106,10 +135,15 @@ function Track(trackInfo) {
         player.setNextAlbumArtSrc(player.playlist[1].albumArtURL);
     };
 
-    player.loadNextTrack = function () {
-        // remove first track from playlist and add it to history
-        player.addTrackToHistory(player.playlist.shift());
-        player.loadCurrentTrack();
+    player.loadNextTrack = function (callback) {
+		$('#activity').fadeIn(function () {
+			// remove first track from playlist and add it to history
+			player.addTrackToHistory(player.playlist.shift());
+			player.loadCurrentTrack();
+			if (callback) {
+				callback();
+			}
+		});
     };
 
     player.loadHistoryTrack = function (id) {
@@ -147,8 +181,9 @@ function Track(trackInfo) {
     };
 
     player.playNext = function () {
-        player.loadNextTrack();
-        player.play();
+        player.loadNextTrack(function () {
+			player.play();
+		});
     };
 
     player.toggleRepeat = function () {
@@ -163,6 +198,7 @@ function Track(trackInfo) {
 
     // player event handlers
     player.handlers = {};
+
     player.handlers.trackEnded = function (event) {
         if (player.repeatEnabled) {
             player.ui.audio.get(0).currentTime = 0;
@@ -171,6 +207,10 @@ function Track(trackInfo) {
             player.playNext();
         }
     };
+
+	player.handlers.trackCanPlay = function (event) {
+		$('#activity').fadeOut();
+	};
 
     $(function () {
         // player UI elements
@@ -191,7 +231,10 @@ function Track(trackInfo) {
         };
 
         // bind event handlers
-        player.ui.audio.bind('ended', player.handlers.trackEnded);
+        player.ui.audio.bind({
+			ended: player.handlers.trackEnded,
+			canplay: player.handlers.trackCanPlay
+		});
         player.ui.currentAlbumArt.click(player.playPause);
         player.ui.controls.playPause.click( player.playPause )
         player.ui.nextAlbumArt.click(player.playNext);
