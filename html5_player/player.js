@@ -31,21 +31,23 @@ function Track(trackInfo) {
 (function () {
     'use strict';
 
-    player.audioElem = null;
-    player.albumArtImg = null;
-    player.controls = {};
-    player.controls.playPause = null;
     player.playlist = [];
     player.currentTrack = 0;
     player.trackLoaded = false;
-
-    player.loadAlbumArtSrc = function (src) {
-        player.albumArtImg.attr('src', src);
-    };
+    player.repeatEnabled = false;
 
     player.loadAudioSrc = function (src) {
-        player.audioElem.get(0).src = src;
-        player.audioElem.get(0).load();
+        player.ui.audio.get(0).src = src;
+        player.ui.audio.get(0).load();
+    };
+
+    player.loadAlbumArtSrc = function (src) {
+        player.ui.albumArt.attr('src', src);
+    };
+
+    player.setTrackInfo = function (title, artist) {
+        player.ui.trackInfo.title.html(title);
+        player.ui.trackInfo.artist.html(artist);
     };
 
     player.loadTrack = function (track) {
@@ -54,6 +56,7 @@ function Track(trackInfo) {
         }
         player.loadAudioSrc(track.trackURL);
         player.loadAlbumArtSrc(track.albumArtURL);
+        player.setTrackInfo(track.trackName, track.artistName);
         player.trackLoaded = true;
     };
 
@@ -87,8 +90,8 @@ function Track(trackInfo) {
         if (!player.trackLoaded) {
             player.loadCurrentTrack();
         }
-        player.audioElem.get(0).play();
-        player.controls.playPause.html("pause");
+        player.ui.audio.get(0).play();
+        player.ui.controls.playPause.html("pause");
     };
 
     player.playNext = function () {
@@ -102,15 +105,25 @@ function Track(trackInfo) {
     };
 
     player.pause = function () {
-        player.audioElem.get(0).pause();
-        player.controls.playPause.html("play");
+        player.ui.audio.get(0).pause();
+        player.ui.controls.playPause.html("play");
     };
 
     player.playPause = function () {
-        if (player.audioElem.get(0).paused) {
+        if (player.ui.audio.get(0).paused) {
             player.play();
         } else {
             player.pause();
+        }
+    };
+
+    player.toggleRepeat = function () {
+        player.repeatEnabled = !player.repeatEnabled;
+        var span = player.ui.controls.repeat.find('span');
+        if (player.repeatEnabled) {
+            span.html("ON");
+        } else {
+            span.html("OFF");
         }
     };
 
@@ -118,16 +131,39 @@ function Track(trackInfo) {
         player.playlist.push(track);
     };
 
+    // player event handlers
     player.handlers = {};
     player.handlers.trackEnded = function (event) {
-        player.playNext();
+        if (player.repeatEnabled) {
+            player.ui.audio.get(0).currentTime = 0;
+            player.play();
+        } else {
+            player.playNext();
+        }
     };
 
     $(function () {
-        player.audioElem = $('#player_audio audio');
-        player.albumArtImg = $('#player_album_art img');
-        player.controls.playPause = $('#player_controls_playpause');
+        // player UI elements
+        player.ui = {
+            'audio': $('#player_audio audio'),
+            'trackInfo': {
+                'title': $('#player_track_info_title'),
+                'artist': $('#player_track_info_artist')
+            },
+            'albumArt': $('#player_album_art img'),
+            'controls': {
+                'playPause': $('#player_controls_playpause'),
+                'next': $('#player_controls_next'),
+                'prev': $('#player_controls_prev'),
+                'repeat': $('#player_controls_repeat')
+            }
+        };
 
-        player.audioElem.bind('ended', player.handlers.trackEnded);
+        // bind event handlers
+        player.ui.audio.bind('ended', player.handlers.trackEnded);
+        player.ui.controls.playPause.click(player.playPause);
+        player.ui.controls.next.click(player.playNext);
+        player.ui.controls.prev.click(player.playPrev);
+        player.ui.controls.repeat.click(player.toggleRepeat);
     });
 }());
