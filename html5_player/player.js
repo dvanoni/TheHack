@@ -5,25 +5,21 @@ function Track(trackInfo) {
     'use strict';
     this.trackName = null;
     this.artistName = null;
-    this.albumName = null;
     this.trackURL = null;
     this.albumArtURL = null;
 
     this.parseInput = function (input) {
-        if (input.trackName) {
-            this.trackName = input.trackName;
+        if (input.name) {
+            this.trackName = input.name;
         }
-        if (input.artistName) {
-            this.artistName = input.artistName;
+        if (input.artist) {
+            this.artistName = input.artist;
         }
-        if (input.albumName) {
-            this.albumName = input.albumName;
+        if (input.preview_url) {
+            this.trackURL = input.preview_url;
         }
-        if (input.trackURL) {
-            this.trackURL = input.trackURL;
-        }
-        if (input.albumArtURL) {
-            this.albumArtURL = input.albumArtURL;
+        if (input.album_img) {
+            this.albumArtURL = input.album_img;
         }
     };
 
@@ -133,12 +129,5 @@ function Track(trackInfo) {
         player.controls.playPause = $('#player_controls_playpause');
 
         player.audioElem.bind('ended', player.handlers.trackEnded);
-
-        player.playlist[0] = new Track();
-        player.playlist[0].trackURL = "http://previews.7digital.com/clips/34/9522.clip.mp3";
-
-        var t = new Track();
-        t.trackURL = "http://previews.7digital.com/clips/34/7736436.clip.mp3";
-        player.addTrack(t);
     });
 }());
