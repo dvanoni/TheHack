@@ -19,67 +19,14 @@ from bottle import request
 from hack.helper import parse_accel
 from pprint import pprint
 import echonest_api as echonest
+import places_api as places
 
-PLACES_KEY = 'AIzaSyCvfId0lM9v_F2igUi4AIRbFJHr8IlMFAY'
-PLACES_API = 'https://maps.googleapis.com/maps/api/place/search/json'
 
 FACEBOOK_APP_ID = '170844926329169'
 FACEBOOK_SECRET = '04e620adbd4f35209b04dda6269bf408'
 REDIRECT_URL    = 'http://thehack.dvanoni.com/api/facebook'
 
 BACK_END = bottle.Bottle()
-
-PLACE_TYPES = [
-  # WORKOUT
-  'gym',
-  'health',
-  # LOW KEY
-  'museum',
-  'park',
-  'aquarium',
-  'art_gallery',
-  'cafe',
-  'spa',
-  # SOCIAL
-  'bar',
-  'night_club',
-  # TRAVEL
-  'subway_station',
-  'taxi_stand',
-  'train_station',
-  # STUDY
-  'book_store',
-  'library',
-  'university',
-  'school'
-]
-
-class SearchError(Exception):
-   pass
-
-def coord_to_place_type(lat, lng):  
-  args = {
-        'location' : '%s,%s' % (lat, lng),
-        'radius'   : 10,
-        'sensor'   : 'true',
-        'key'      : PLACES_KEY,
-        'types'    : '|'.join(PLACE_TYPES)
-  }
-
-  url = PLACES_API + '?' + urllib.urlencode(args)
-  result = json.load(urllib.urlopen(url))
-
-  if 'Error' in result:
-    # An error occurred; raise an exception
-    raise SearchError, result['Error']
-      
-  if result[ 'status' ] == 'ZERO_RESULTS':
-    raise SearchError, 'Zero results'
-  
-  for t in result['results'][0]['types']:
-    if t in PLACE_TYPES:
-      return t
-
 
 def get_user_category(get_request):
   # Grab phone data
@@ -107,7 +54,10 @@ def get_user_category(get_request):
     latitude  = float( latitude )
     longitude = float( longitude )
 
-  place_type = coord_to_place_type(latitude, longitude)
+  place_type = places.coord_to_place_type(latitude, longitude)
+
+
+  category = 'pre_party'  # the default
   
 @BACK_END.route( '/recommend' )
 def recommend():
@@ -132,7 +82,7 @@ def places_magic():
 
   for coords in route:
     r += ('%s,%s' % (coords.lat, coords.lng)) + ': '
-    r += coord_to_place_type(coords.lat, coords.lng) + '<br/>'
+    r += places.coord_to_place_type(coords.lat, coords.lng) + '<br/>'
 
   return r
 
