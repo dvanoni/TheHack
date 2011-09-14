@@ -44,6 +44,9 @@ USER_CATEGORIES = {
     }
 }
 
+class EchonestMagicError(Exception):
+  pass
+
 def search(category):
   print 'echonest search for:', category
 
