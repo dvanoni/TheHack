@@ -53,13 +53,8 @@
 				</div>
 				<div style='padding:8px;background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CCC), color-stop(0.6, #CCC), to(#AAA));'>
 					<ul style='margin:0;'>
-						<li><input type='text' onkeyup='searchFriends(this);' placeholder='Search for missing ingredients!'></li>
-					</ul>
-				</div>
-				<div style='padding:8px;background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CCC), color-stop(0.6, #CCC), to(#AAA));'>
-					<ul style='margin:0;'>
 %if login:
-						<li><a onClick="window.location='https://www.facebook.com/dialog/oauth?client_id=170844926329169&redirect_uri=http://thehack.dvanoni.com/api/facebook&display=touch'">Connect with Facebook</a></li>
+						<li><a onClick="window.location='https://www.facebook.com/dialog/oauth?client_id=170844926329169&redirect_uri=http://thehack.dvanoni.com/api/facebook&display=touch'"><img src="/static/img/facebook.png" width=50 height=50 style="vertical-align:middle;" />Connect with Facebook!</a></li>
 %else:
 						<li><img src="{{fb_image}}" style="vertical-align:middle;" /> Welcome, {{username}}</li>
 %for artists in my_music["data"]:
