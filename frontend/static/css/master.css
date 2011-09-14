@@ -69,6 +69,20 @@
 	display:none;
 }
 
+li.history-item {
+	height:40px;
+}
+
+.history-item .album {
+	float:left;
+	margin-right:10px;
+}
+
+.history-item .album img {
+	width:38px;
+	border:1px solid #666;
+}
+
 .history-item .artist {
 	font-size:14px;
 	font-weight:normal;

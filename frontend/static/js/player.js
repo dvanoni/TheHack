@@ -77,8 +77,11 @@ function Track(trackInfo) {
                 player.play();
                 $('#tab_1').click();
             })
-            .append('<span class="artist">' + track.artistName + '</span><br/>')
-            .append('<span class="track">' + track.trackName + '</span>');
+			.append('<div class="album"><img src="' + track.albumArtURL + '"/></div>')
+			.append($('<div></div>')
+				.append('<span class="artist">' + track.artistName + '</span><br/>')
+				.append('<span class="track">' + track.trackName + '</span>')
+			)
     };
 
     player.loadAudioSrc = function (src) {
