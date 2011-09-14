@@ -1,30 +1,18 @@
 <html>
 <head>
-<title>Song dump</title>
 </head>
 
 <body>
-Songs retrieved are:
-<br>
-<div style="font-size:6pt">
 <table>
+<tr><th>name</th><th>artist</th><th>preview url</th><th>album img</th></tr>
+%for t in tracks:
   <tr>
-    <th>Echonest ID</th>
-    <th>7digital ID</th>
-    <th>Title</th>
+    <td>{{t['name']}}</td>
+    <td>{{t['artist']}}</td>
+    <td>{{t['preview_url']}}</td>
+    <td>{{t['album_img']}}</td>
   </tr>
-  %for song in songs:
-    %for i in song:
-    <tr>
-      <td>{{song['id']}}</td>
-      <td>{{song['tracks'][0]['foreign_id']}}</td>
-      <td>{{song['title']}}</td>
-    </tr>
-    %end
-  %end
-</table> 
-</div>
-
+%end
+</table>
 </body>
-
 </html>

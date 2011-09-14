@@ -1,7 +1,7 @@
 #/bin/python
 
 import bottle
-from bottle import template, request, redirect
+from bottle import template, request, redirect, response
 from pprint import pprint
 from models import *
 from demo_locations import route
@@ -10,15 +10,15 @@ from sqlalchemy.orm.exc import NoResultFound
 import datetime
 import json
 import urllib
-import urllib2
 import cgi
+import base64
+import Cookie
+import email.utils
 
 from bottle import request
-from demo_locations import route
-from hack.helper import parse_accel, analyze_accel
-from models import *
+from hack.helper import parse_accel
 from pprint import pprint
-from sqlalchemy.orm.exc import NoResultFound
+import echonest_api as echonest
 
 ECHONEST_KEY = 'YBBLFZVQBRPQF1VKS'
 ECHONEST_API = 'http://developer.echonest.com/api/v4/song/search'
@@ -60,17 +60,17 @@ PLACE_TYPES = [
 #TODO: add weather
 USER_CATEGORIES = {
   'studying'     : {
-      'max_tempo' : '200',
+      'max_tempo' : '100',
       'max_danceability' : '.5',
       'max_energy' : '.5'
     },
   'running'      : {
-      'min_tempo' : '300',
+      'min_tempo' : '200',
       'min_danceability' : '.5',
       'min_energy' : '.5'
     },
   'commuting'    : {
-      'min_tempo' : '300',
+      'min_tempo' : '200',
       'min_danceability' : '.4',
       'min_energy' : '.35'
     },
@@ -90,9 +90,7 @@ USER_CATEGORIES = {
       'mood' : 'happy'
     },
   'pre_party'    : {
-      'min_danceability' : '.7',
-      'min_energy' : '.5',
-      'mood' : 'happy'
+      'min_danceability' : '.3',
     }
 }
 
@@ -125,6 +123,7 @@ def coord_to_place_type(lat, lng):
     if t in PLACE_TYPES:
       return t
 
+
 def get_user_category(get_request):
   # Grab phone data
   accel_data  = get_request.get( 'accelerometer' )
@@ -134,7 +133,6 @@ def get_user_category(get_request):
 
   # parse phone data
   ax, ay, az = parse_accel( accel_data )
-  user_state = analyze_accel( ax, ay, az )
   
   # Convert timestamp into a python datetime object
   try:
@@ -142,7 +140,7 @@ def get_user_category(get_request):
   except Exception:
     # use the server time if we can't parse the sucker
     timestamp = datetime.datetime.now()
-
+  
   # Convert lat/lng into floats
   if latitude is None or longitude is None:
     # If no lat/lng is specified, default to the MOMA
@@ -156,55 +154,17 @@ def get_user_category(get_request):
   
 @BACK_END.route( '/recommend' )
 def recommend():
-  category = get_user_category(request.GET)  
+  category = get_user_category(request.GET)
 
-  # TODO: use USER_CATEGORIES
-  args = {
-      'api_key' : ECHONEST_KEY,
+  # TODO: for debugging
+  category = request.GET.get('c', '').strip()
 
-      # limit songs to those found in 7digital catalog
-      'bucket'  : 'id:7digital-US',
-      'limit'   : 'true'
-  }
+  track_data = echonest.search(category)
 
-  args.update(USER_CATEGORIES['waking_up'])
+  #return json.dumps(track_data)
 
-  url = ECHONEST_API + '?' + urllib.urlencode(args) + '&bucket=tracks'
-  result = json.load(urllib.urlopen(url))
-
-  echonest_status = result['response']['status']
-  if echonest_status['code'] != 0:
-    print 'Error querying Echonest:', echonest_status['message']
-    raise EchonestMagicError
-
-  #pprint(result)
-  #return json.dumps( result['response']['songs'] )
-
-  track_data = []
-  print 'found %d songs!' % len(result['response']['songs'])
-
-  for s in result['response']['songs']:
-    if 'title' not in s:
-      continue
-
-    artist = ''
-    if 'artist_name' in s:
-      artist = s['artist_name']
-    
-    preview_url = ''
-    album_img = ''
-    if 'tracks' in s:
-      preview_url = s['tracks'][0]['preview_url']
-      album_img = s['tracks'][0]['release_image']
-
-    track_data.append({
-        'name'        : s['title'],
-        'artist'      : artist,
-        'preview_url' : preview_url,
-        'album_img'   : album_img
-    })
-
-  return json.dumps(track_data)
+  # for debugging
+  return template('song_dump', tracks=track_data)
 
 @BACK_END.route('/places_magic', method='GET')
 def places_magic():
@@ -237,13 +197,16 @@ def facebook_login():
   code = request.GET.get('code')
   if code:
     fb_url = "https://graph.facebook.com/oauth/access_token?client_id="+FACEBOOK_APP_ID+"&redirect_uri="+REDIRECT_URL+"&client_secret="+FACEBOOK_SECRET+"&code="+code
-    response = cgi.parse_qs(urllib2.urlopen(fb_url))
-    access_token = response["access_token"][-1]
-    profile = json.load(urllib2.urlopen("https://graph.facebook.com/me?" + urllib2.urlencode(dict(access_token=access_token))))
-    user = User(name=profile["name"], profile_id=str(profile["id"]), access_token=access_token)
-    session.add(user)
-    session.commit()
-    set_cookie(self.response, "fb_user", str(profile["id"]), expires=time.time() + 30 * 86400)
-    redirect("/")
-    return "success"
-  return "No code"
+    fb_response = cgi.parse_qs(urllib.urlopen(fb_url).read())
+    access_token = fb_response["access_token"][-1]
+    profile = json.load(urllib.urlopen("https://graph.facebook.com/me?" + urllib.urlencode(dict(access_token=access_token))))
+    profile_id = str(profile["id"])
+    if not request.get_cookie("account", profile_id):
+      user = User(name=profile["name"], profile_id=profile_id, access_token=access_token)
+      response.set_cookie("account", profile_id)
+      session.add(user)
+      session.commit()
+  redirect("/")
+
+
+
