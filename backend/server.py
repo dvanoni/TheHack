@@ -6,6 +6,7 @@ from pprint import pprint
 from models import *
 from demo_locations import route
 from sqlalchemy.orm.exc import NoResultFound
+from beaker.middleware import SessionMiddleware
 
 import datetime
 import json
@@ -108,11 +109,11 @@ def facebook_login():
     access_token = fb_response["access_token"][-1]
     profile = json.load(urllib.urlopen("https://graph.facebook.com/me?" + urllib.urlencode(dict(access_token=access_token))))
     profile_id = str(profile["id"])
-    if not request.get_cookie("account", profile_id):
-      user = User(name=profile["name"], profile_id=profile_id, access_token=access_token)
-      response.set_cookie("account", profile_id)
-      session.add(user)
-      session.commit()
+    user = User(name=profile["name"], profile_id=profile_id, access_token=access_token)
+    s = bottle.request.environ.get('beaker.session')
+    s['username'] = profile["name"]
+    s['profile_id'] = profile_id
+    s.save()
   redirect("/")
 
 
