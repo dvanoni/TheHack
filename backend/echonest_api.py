@@ -81,6 +81,10 @@ def getSimilarArtist(artist):
 def getCategory(category):
   print 'echonest search for:', category
 
+  # default category
+  if category is None or category is '':
+    category = UserCategory.PRE_PARTY
+
   args = {
       'api_key' : ECHONEST_KEY,
       'bucket'  : 'id:7digital-US',
