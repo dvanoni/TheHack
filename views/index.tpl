@@ -26,13 +26,19 @@
 		<div id="tabbar"> 
 			<div><ul> 
 				<li> 
-					<a href="#history" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png"></a> 
+					<a href="#history" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png">
+						<strong>History</strong>
+					</a> 
 				</li>
 				<li> 
-					<a onclick='sendData();' href="#home" mask="/static/img/tabs/music.png" mask2x="/static/img/tabs/music.png"> </a> 
+					<a onclick='sendData();' href="#home" mask="/static/img/tabs/music.png" mask2x="/static/img/tabs/music.png">
+						<strong>Music</strong>
+					</a> 
 				</li> 
 				<li> 
-					<a onclick='loadSocial();' href="#social" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png"> </a> 
+					<a onclick='loadSocial();' href="#social" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png">
+						<strong>Discover</strong>
+					</a> 
 				</li> 
 			</ul></div> 
 		</div>
