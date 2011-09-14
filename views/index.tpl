@@ -61,7 +61,7 @@
 %if login:
 						<li><a onClick="window.location='https://www.facebook.com/dialog/oauth?client_id=170844926329169&redirect_uri=http://thehack.dvanoni.com/api/facebook&display=touch'">Connect with Facebook</a></li>
 %else:
-						<li>Welcome, {{username}}</li>
+						<li><img src="{{fb_image}}" style="vertical-align:middle;" /> Welcome, {{username}}</li>
 %end
 					</ul>
 				</div>
