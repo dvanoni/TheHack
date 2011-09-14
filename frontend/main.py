@@ -13,13 +13,17 @@ def front_end_index():
 
 	if s:
 		username = s.get('username')
+		profile_id = s.get('profile_id')
+		fb_image = "https://graph.facebook.com/%s/picture" % profile_id
+
 	else:
 		username = None
+		fb_image = None
 
 	if username:
 		login = False
 
-	return template('index', login=login, username=username)
+	return template('index', login=login, username=username, fb_image=fb_image)
 	
 @FRONT_END.route( '/dominant_color' )
 def dominant_color():
