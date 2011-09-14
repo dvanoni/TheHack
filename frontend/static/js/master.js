@@ -48,7 +48,7 @@ function sendData() {
 
 $(function(){
 	// Start acquiring our location
-	acquireLocation();
+	//acquireLocation();
 	
 	// Start grabbing accelerometer data
 	if (typeof window.DeviceMotionEvent != 'undefined') {
@@ -61,5 +61,5 @@ $(function(){
 		}, false);
 	}
 
-	setTimeout( sendData, 2000 );
+	//setTimeout( sendData, 2000 );
 });
