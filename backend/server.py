@@ -27,7 +27,7 @@ PLACES_API = 'https://maps.googleapis.com/maps/api/place/search/json'
 
 FACEBOOK_APP_ID = '170844926329169'
 FACEBOOK_SECRET = '04e620adbd4f35209b04dda6269bf408'
-REDIRECT_URL    = 'thehack.dvanoni.com/api/fbgraph'
+REDIRECT_URL    = 'http://thehack.dvanoni.com/api/facebook'
 
 BACK_END = bottle.Bottle()
 
