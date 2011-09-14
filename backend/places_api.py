@@ -51,8 +51,10 @@ class SearchError(Exception):
    pass
 
 def coord_to_place_type(lat, lng):  
-  lat  = 40.77905519999999
-  lng = -73.96283459999999
+
+  if lat is None or lng is None:
+    print 'INVALID coordinates:', lat, lng
+    return None
 
   flattened_places =\
       [place for sublist in PLACE_TYPES for place in sublist]
