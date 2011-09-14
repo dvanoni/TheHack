@@ -83,10 +83,10 @@
 					</div>
 					<div id='album-art-area'>
 						<div id='next-album'>
-							<img id='next' src='/static/img/queen.png' width='140' class='album-art'>
+							<img id='next' src='http://farm7.static.flickr.com/6204/6144054545_0620580270.jpg' width='140' class='album-art'>
 						</div>
 						<div id='current-album'>
-							<img id='current' src='/static/img/album-art.jpg' width='240' class='album-art'>
+							<img id='current' src='http://farm7.static.flickr.com/6064/6139558300_2cab708c94.jpg' width='240' class='album-art'>
 						</div>
 					</div>
 				</div>
@@ -99,12 +99,22 @@
 		<script src="/static/js/master.js" type='text/javascript' charset="utf-8"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(function() {
+				$.getJSON( '/front_end/dominant_color', { url: $( '#current' ).attr('src')}, function( color ) {
+						$( '#home').css( 'background-color', color );
+					});
+				
 				$( '#next' ).click( function() {
 					$( '#activity' ).fadeIn( 'fast' );
 					new_art = $( '#next' ).attr( 'src' )
 					$( '#current' ).attr( 'src', new_art );
-					$( '#next' ).attr( 'src', '/static/img/album-art.jpg' );
-					$( '#activity' ).fadeOut( 'fast' );
+					$( '#next' ).attr( 'src', 'http://1.bp.blogspot.com/_WC5D7MIXrq8/TRRPP8Qz23I/AAAAAAAAAME/1sXt_IUQwUE/s640/black.square.jpg' );
+					
+					$.getJSON( '/front_end/dominant_color', { url: $( '#current' ).attr('src')}, function( color ) {
+							console.log( color );
+							$( '#home').css( 'background-color', color );
+							$( '#activity' ).fadeOut( 'fast' );
+						});
+					
 				});
 			});
 		</script>
