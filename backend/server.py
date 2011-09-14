@@ -108,9 +108,17 @@ def facebook_login():
     profile = json.load(urllib.urlopen("https://graph.facebook.com/me?" + urllib.urlencode(dict(access_token=access_token))))
     profile_id = str(profile["id"])
     user = User(name=profile["name"], profile_id=profile_id, access_token=access_token)
+    session.merge(user)
+    session.commit()
     s = bottle.request.environ.get('beaker.session')
     s['username'] = profile["name"]
     s['profile_id'] = profile_id
+    s['access_token'] = access_token
     s.save()
   redirect("/")
 
+@BACK_END.route('/logout', method='GET')
+def logout():
+  s = bottle.request.environ.get('beaker.session')
+  s.delete()
+  redirect("/")

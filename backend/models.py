@@ -30,9 +30,6 @@ class User(Base):
 		self.profile_id = profile_id
 		self.access_token = access_token
 
-	def __repr__(self):
-		return "User <%s, %s, %s>" % (username, password, email)
-
 class Coordinate(Base):
 	__tablename__ = 'coordinates'
 
