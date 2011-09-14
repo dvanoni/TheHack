@@ -1,6 +1,10 @@
 // Accelerometer vars
 var ax = 0, ay = 0, az = 0;
 
+function getRandomInt (min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}		
+
 var jQT = new $.jQTouch({
 	addGlossToIcon: false,
 	statusBar: 'black',
@@ -41,6 +45,29 @@ function sendData() {
 	});
 }
 
+function loadSocial() {
+	$( '#activity' ).fadeIn( 'fast' );
+	$( '#discover-map' ).html( '' ).scrollLeft( 80 ).scrollTop( 160 );
+	
+	$.getJSON( '/api/similar', null, function( data ) {
+		for( var i = 0; i < data.length; i++ ) {
+			var track = data[i];
+			var top  = getRandomInt( 16, 578 );
+			var left = getRandomInt( 16, 578 );
+			
+			if( track.album_img ) {
+				var html = "<div class='social-track' style='top:" + top + "px;left:" + left + "px;'>" +
+							"<img src='" + track.album_img + "' width='48'>" +
+							"</div>";
+				$( '#discover-map' ).append( html );
+			}
+		}
+		
+		$( '.social-track' ).fadeIn( 'slow' );
+		$( '#activity' ).fadeOut( 'fast' );
+	});
+}
+
 $(function(){
 	// Start acquiring our location
 	//acquireLocation();
@@ -56,5 +83,6 @@ $(function(){
 		}, false);
 	}
 
+	sendData();
 	//setTimeout( sendData, 2000 );
 });
