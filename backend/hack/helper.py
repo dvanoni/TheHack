@@ -10,6 +10,16 @@ class DayState:
   AFTERNOON = 1
   EVENING   = 2
 
+class UserCategory:
+  STUDYING = 'studying'
+  RUNNING = 'running'
+  COMMUTING = 'commuting'
+  WALKING = 'walking'
+  WAKING_UP = 'waking_up'
+  WINDING_DOWN = 'winding_down'
+  PRE_PARTY = 'pre_party'
+
+
 def analyze_accel( ax, ay, az ):
   '''
     Returns whether the, probable, user state based on accelerometer data
@@ -75,3 +85,37 @@ def analyze_timestamp(timestamp):
     return DayState.AFTERNOON
   else:
     return DayState.EVENING
+
+def get_user_category(place_type, day_state, user_state):
+
+  # special cases
+  if place_type is 'park'\
+      and user_state is UserState.SITTING\
+      or user_state is UserState.WALKING:
+    return UserCategory.STUDYING
+
+  if place_type is 'park' and user_state is UserState.RUNNING:
+    return UserCategory.RUNNING
+
+  if day_state is DayState.MORNING:
+    return UserCategory.WAKING_UP
+
+  if day_state is DayState.EVENING:
+    return UserCategory.WINDING_DOWN
+
+  if place_type in places.WORKOUT:
+    category = UserCategory.RUNNING
+  elif place_type in places.LOWKEY:
+    category = UserCategory.WALKING
+  elif place_type in places.SOCIAL:
+    category = UserCategory.PRE_PARTY
+  elif place_type in places.TRAVEL:
+    category = UserCategory.COMMUTING
+  elif place_type in places.STUDY:
+    category = UserCategory.STUDYING
+  else:
+    print 'Using default category'
+    category = UserCategory.PRE_PARTY  # the default
+
+  return category
+

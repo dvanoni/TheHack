@@ -5,19 +5,12 @@ from pprint import pprint
 import sys
 import urllib
 
+from hack.helper import UserCategory
+from hack.helper import get_user_category
+
 ECHONEST_KEY = 'YBBLFZVQBRPQF1VKS'
 ECHONEST_API = 'http://developer.echonest.com/api/v4/song/search'
 ECHONEST_ARTIST = 'http://developer.echonest.com/api/v4/artist/similar'
-
-class UserCategory:
-  STUDYING = 'studying'
-  RUNNING = 'running'
-  COMMUTING = 'commuting'
-  WALKING = 'walking'
-  WAKING_UP = 'waking_up'
-  WINDING_DOWN = 'winding_down'
-  PRE_PARTY = 'pre_party'
-
 
 USER_CATEGORIES = {
   UserCategory.STUDYING : {
