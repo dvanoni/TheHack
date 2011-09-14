@@ -37,6 +37,21 @@ function Track(trackInfo) {
     player.repeatEnabled = false;
     player.history = [];
 
+    player.addTrackToPlaylist = function (track) {
+        player.playlist.push(track);
+    };
+
+    player.addTrackToHistory = function (track) {
+        var id = player.history.push(track) - 1;
+        $('<div></div>')
+            .html(track.trackName)
+            .addClass('history_item')
+            .appendTo(player.ui.history)
+            .click(function() {
+                console.log("Play history track " + id);
+            });
+    };
+
     player.loadAudioSrc = function (src) {
         player.ui.audio.get(0).src = src;
         player.ui.audio.get(0).load();
@@ -58,7 +73,7 @@ function Track(trackInfo) {
         player.loadAudioSrc(track.trackURL);
         player.loadAlbumArtSrc(track.albumArtURL);
         player.setTrackInfo(track.trackName, track.artistName);
-        player.history.push(track);
+        player.addTrackToHistory(track);
         player.trackLoaded = true;
     };
 
@@ -129,10 +144,6 @@ function Track(trackInfo) {
         }
     };
 
-    player.addTrack = function (track) {
-        player.playlist.push(track);
-    };
-
     // player event handlers
     player.handlers = {};
     player.handlers.trackEnded = function (event) {
@@ -158,7 +169,8 @@ function Track(trackInfo) {
                 'next': $('#player_controls_next'),
                 'prev': $('#player_controls_prev'),
                 'repeat': $('#player_controls_repeat')
-            }
+            },
+            'history': $('#history')
         };
 
         // bind event handlers
