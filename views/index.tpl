@@ -14,10 +14,10 @@
 		<link rel='apple-touch-startup-image' href='/static/img/touch-startup.png' />
 		
 		<!-- jqTouch related stuffs -->
-		<style type="text/css" media="screen">@import "/static/jqtouch/jqtouch.css";</style>
-		<style type="text/css" media="screen">@import "/static/themes/apple/theme.css";</style>
-		<style type="text/css" media="screen">@import "/static/extensions/jqt.bars/jqt.bars.css";</style>
-		<style type="text/css" media="screen">@import "/static/extensions/jqt.bars/themes/apple/theme.css";</style>
+		<link rel='stylesheet' type='text/css' href='/static/jqtouch/jqtouch.css' />
+		<link rel='stylesheet' type='text/css' href='/static/themes/apple/theme.css' />
+		<link rel='stylesheet' type='text/css' href='/static/extensions/jqt.bars/jqt.bars.css' />
+		<link rel='stylesheet' type='text/css' href='/static/extensions/jqt.bars/themes/apple/theme.css' />
 
 		<!-- related stuffs -->
 		<link rel="stylesheet" type="text/css" href="/static/css/master.css">
@@ -29,7 +29,7 @@
 					<a href="#history" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png"></a> 
 				</li>
 				<li> 
-					<a href="#home" mask="/static/img/tabs/music.png" mask2x="/static/img/tabs/music.png"> </a> 
+					<a onclick='sendData();' href="#home" mask="/static/img/tabs/music.png" mask2x="/static/img/tabs/music.png"> </a> 
 				</li> 
 				<li> 
 					<a onclick='loadSocial();' href="#social" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png"> </a> 
@@ -65,9 +65,7 @@
 					<div id='discover-map-wrapper'>
 						<img src='/static/img/staticmap.png'>
 						<div id='discover-map' style='position:absolute;top:0;left:0;'></div>
-					</div>					
-					<div style='display:none;background-image:url(/static/img/staticmap.png);width:320px;height:460px;background-position:-160px -160px;'>
-					</div>					
+					</div>
 				</div>
 			</div>
 			<div id="home" class='current'>
@@ -77,8 +75,9 @@
 					</div>
 					<div id='player-track-info'>
 						<div>
-							<div class='artist'>Artist</div>
-							<div class='title'>Title</div>
+							<div class='loc' style="z-index:20">LOCATION</div>
+							<div class='artist' style="position:relative;z-index:50">Artist</div>
+							<div class='title' style="position:relative;z-index:51">Title</div>
 						</div>
 					</div>
 					<div id='player-album-art'>
@@ -86,6 +85,9 @@
 							<img alt='next album'/>
 						</div>
 						<div id='current-album'>
+							<div id='play-btn'>
+								<img src='/static/img/play_button.png' alt='play button'>
+							</div>
 							<img alt='current album'/>
 						</div>
 					</div>
@@ -102,38 +104,5 @@
 		<script src="/static/js/geolocation.js" type='text/javascript' charset="utf-8"></script>
 		<script src="/static/js/player.js" type='text/javascript' charset="utf-8"></script>
 		<script src="/static/js/master.js" type='text/javascript' charset="utf-8"></script>
-		<script type="text/javascript">
-			function getRandomInt (min, max) {
-		    	return Math.floor(Math.random() * (max - min + 1)) + min;
-			}		
-			
-			function loadSocial() {
-				$( '#activity' ).fadeIn( 'fast' );
-				$( '#discover-map' ).html( '' ).scrollLeft( 80 ).scrollTop( 160 );
-				
-				$.getJSON( '/api/similar', null, function( data ) {
-					for( var i = 0; i < data.length; i++ ) {
-						var track = data[i];
-						var top  = getRandomInt( 16, 578 );
-						var left = getRandomInt( 16, 578 );
-						
-						if( track.album_img ) {
-							var html = "<div class='social-track' style='top:" + top + "px;left:" + left + "px;'>" +
-										"<img src='" + track.album_img + "' width='48'>" +
-										"</div>";
-							$( '#discover-map' ).append( html );
-						}
-					}
-					
-					$( '.social-track' ).fadeIn( 'slow' );
-					$( '#activity' ).fadeOut( 'fast' );
-				});				
-
-			}
-			
-			$(function() {
-				sendData();
-			});
-		</script>
 	</body>
 </html>

@@ -7,6 +7,7 @@ function Track(trackInfo) {
     this.artistName = null;
     this.trackURL = null;
     this.albumArtURL = null;
+    this.loc = null;
 
     this.parseInput = function (input) {
         if (input.name) {
@@ -20,6 +21,9 @@ function Track(trackInfo) {
         }
         if (input.album_img) {
             this.albumArtURL = input.album_img;
+        }
+        if (input.loc) {
+            this.loc = input.loc;
         }
     };
 
@@ -83,9 +87,10 @@ function Track(trackInfo) {
         player.ui.nextAlbumArt.attr('src', src);
     };
 
-    player.setTrackInfo = function (title, artist) {
+    player.setTrackInfo = function (title, artist, loc) {
         player.ui.trackInfo.title.html(title);
         player.ui.trackInfo.artist.html(artist);
+        player.ui.trackInfo.loc.html(loc);
     };
 
     player.loadTrack = function (track) {
@@ -94,7 +99,7 @@ function Track(trackInfo) {
         }
         player.loadAudioSrc(track.trackURL);
         player.setCurrentAlbumArtSrc(track.albumArtURL);
-        player.setTrackInfo(track.trackName, track.artistName);
+        player.setTrackInfo(track.trackName, track.artistName, track.loc);
         player.trackLoaded = true;
     };
 
@@ -131,12 +136,14 @@ function Track(trackInfo) {
             player.loadCurrentTrack();
         }
         player.ui.audio.get(0).play();
+		player.ui.controls.playPause.attr( 'src', '/static/img/pause_button.png' )
 //        player.ui.controls.playPause.html("pause");
     };
 
     player.pause = function () {
         player.ui.audio.get(0).pause();
 //        player.ui.controls.playPause.html("play");
+		player.ui.controls.playPause.attr( 'src', '/static/img/play_button.png' )
     };
 
     player.playPause = function () {
@@ -185,12 +192,14 @@ function Track(trackInfo) {
             'audio': $('#player-audio audio'),
             'trackInfo': {
                 'title': $('#player-track-info .title'),
-                'artist': $('#player-track-info .artist')
+                'artist': $('#player-track-info .artist'),
+                'loc' : $('#player-track-info .loc')
             },
-            'currentAlbumArt': $('#current-album img'),
-            'nextAlbumArt': $('#next-album img'),
+            'currentAlbumArt': $('#current-album > img'),
+            'nextAlbumArt': $('#next-album > img'),
             'controls': {
-                'repeat': $('#player-controls .repeat')
+                'repeat': $('#player-controls .repeat'),
+                'playPause': $( '#play-btn > img' )
             },
             'history': $('#history-list')
         };
@@ -201,6 +210,7 @@ function Track(trackInfo) {
 			canplay: player.handlers.trackCanPlay
 		});
         player.ui.currentAlbumArt.click(player.playPause);
+        player.ui.controls.playPause.click( player.playPause )
         player.ui.nextAlbumArt.click(player.playNext);
         player.ui.controls.repeat.click(player.toggleRepeat);
     });
