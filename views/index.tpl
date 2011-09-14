@@ -83,10 +83,10 @@
 					</div>
 					<div id='album-art-area'>
 						<div id='next-album'>
-							<img id='next' src='http://farm7.static.flickr.com/6204/6144054545_0620580270.jpg' width='140' class='album-art'>
+							<img id='next' src='http://cdn.7static.com/static/img/sleeveart/00/007/786/0000778648_200.jpg' width='140' class='album-art'>
 						</div>
 						<div id='current-album'>
-							<img id='current' src='http://farm7.static.flickr.com/6064/6139558300_2cab708c94.jpg' width='240' class='album-art'>
+							<img id='current' src='http://cdn.7static.com/static/img/sleeveart/00/010/561/0001056176_200.jpg' width='240' class='album-art'>
 						</div>
 					</div>
 				</div>
@@ -107,7 +107,7 @@
 					$( '#activity' ).fadeIn( 'fast' );
 					new_art = $( '#next' ).attr( 'src' )
 					$( '#current' ).attr( 'src', new_art );
-					$( '#next' ).attr( 'src', 'http://1.bp.blogspot.com/_WC5D7MIXrq8/TRRPP8Qz23I/AAAAAAAAAME/1sXt_IUQwUE/s640/black.square.jpg' );
+					$( '#next' ).attr( 'src', 'http://cdn.7static.com/static/img/sleeveart/00/008/225/0000822570_200.jpg' );
 					
 					$.getJSON( '/front_end/dominant_color', { url: $( '#current' ).attr('src')}, function( color ) {
 							console.log( color );
