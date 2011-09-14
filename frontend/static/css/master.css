@@ -96,6 +96,10 @@
 	display:none;
 }
 
+#player-controls .repeat {
+	display:none;
+}
+
 li.history-item {
 	height:40px;
 }
