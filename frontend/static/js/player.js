@@ -44,6 +44,29 @@ function Track(trackInfo) {
         player.playlist.push(track);
     };
 
+	player.initPlaylist = function (tracks) {
+		// add tracks to playlist
+		for (var t in tracks) {
+			player.addTrackToPlaylist(new Track(tracks[t]));
+		}
+		player.loadCurrentTrack();
+	};
+
+	player.updatePlaylist = function (tracks) {
+	    if (player.playlist.length > 1) {
+			// clear remaining tracks
+            player.playlist.splice(1, player.playlist.length - 1);
+
+			// add tracks to playlist
+			for (var t in tracks) {
+				player.addTrackToPlaylist(new Track(tracks[t]));
+			}
+
+			player.setNextAlbumArtSrc(player.playlist[1].albumArtURL);
+	    }
+	};
+
+
     player.addTrackToHistory = function (track) {
         var id = player.history.push(track) - 1;
         $('<li></li>')
