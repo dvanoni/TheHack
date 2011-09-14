@@ -24,6 +24,8 @@ from hack.helper import *
 import echonest_api as echonest
 import places_api as places
 
+from echonest_api import UserCategory
+
 
 FACEBOOK_APP_ID = '170844926329169'
 FACEBOOK_SECRET = '04e620adbd4f35209b04dda6269bf408'
@@ -31,14 +33,21 @@ REDIRECT_URL    = 'http://thehack.dvanoni.com/api/facebook'
 
 BACK_END = bottle.Bottle()
 
-def get_user_category(get_request):
+ROUTE_COUNTER = 0
+
+def parse_user_attributes(get_request):
+  global ROUTE_COUNTER
   # Grab phone data
   accel_data  = get_request.get('accelerometer')
   timestamp   = get_request.get('timestamp')
 
-  # default gps to MOMA
-  latitude    = float(get_request.get('latitude',  '40.77905519999999'))
-  longitude   = float(get_request.get('longitude', '-73.96283459999999'))
+  # default to rand
+  latitude    = route[ROUTE_COUNTER].lat
+  longitude   = route[ROUTE_COUNTER].lng
+  if (ROUTE_COUNTER > len(route) - 1): 
+    ROUTE_COUNTER = 0
+  else: 
+    ROUTE_COUNTER+=1
 
   # parse phone data
   place_type = places.coord_to_place_type(latitude, longitude)
@@ -48,18 +57,45 @@ def get_user_category(get_request):
     user_state = analyze_accel(ax, ay, az)
   day_state = analyze_timestamp(timestamp)
 
-  if place_type in places.WORKOUT:
-    print 'workout'
-  elif place_type in places.LOWKEY:
-    print 'lowkey'
-  elif place_type in places.SOCIAL:
-    print 'social'
-  elif place_type in places.TRAVEL:
-    print 'travel'
-  elif place_type in places.STUDY:
-    print 'study'
+  return (place_type, day_state, user_state)
 
-  category = 'pre_party'  # the default
+def get_user_category(place_type, day_state, user_state):
+
+  # special cases
+  if place_type is 'park'\
+      and user_state is UserState.SITTING\
+      or user_state is UserState.WALKING:
+    return UserCategory.STUDYING
+
+  if place_type is 'park' and user_state is UserState.RUNNING:
+    return UserCategory.RUNNING
+
+  if day_state is DayState.MORNING:
+    return UserCategory.WAKING_UP
+
+  if day_state is DayState.EVENING:
+    return UserCategory.WINDING_DOWN
+
+  if place_type in places.WORKOUT:
+    category = UserCategory.RUNNING
+  elif place_type in places.LOWKEY:
+    category = UserCategory.WALKING
+  elif place_type in places.SOCIAL:
+    category = UserCategory.PRE_PARTY
+  elif place_type in places.TRAVEL:
+    category = UserCategory.COMMUTING
+  elif place_type in places.STUDY:
+    category = UserCategory.STUDYING
+  else:
+    print 'Using default category'
+    category = UserCategory.PRE_PARTY  # the default
+
+  return category
+
+@BACK_END.route( '/similar', method='GET' )
+def similar():
+  moods = {'happy','upbeat','inspiring'}
+  return json.dumps(echonest.getSimilarMood(moods))
   
 @BACK_END.route( '/recommend' )
 def recommend():
@@ -68,12 +104,13 @@ def recommend():
     print 'Running debug...'
     debug = True
 
-  category = get_user_category(request.GET)
+  (place_state, user_state, day_state) = parse_user_attributes(request.GET)
+  category = get_user_category(place_state, user_state, day_state)
 
   if debug:
     category = request.GET.get('c', '').strip()
 
-  track_data = echonest.search(category)
+  track_data = echonest.getCategory(category)
 
 
   if debug:
@@ -117,9 +154,17 @@ def facebook_login():
     profile = json.load(urllib.urlopen("https://graph.facebook.com/me?" + urllib.urlencode(dict(access_token=access_token))))
     profile_id = str(profile["id"])
     user = User(name=profile["name"], profile_id=profile_id, access_token=access_token)
+    session.merge(user)
+    session.commit()
     s = bottle.request.environ.get('beaker.session')
     s['username'] = profile["name"]
     s['profile_id'] = profile_id
+    s['access_token'] = access_token
     s.save()
   redirect("/")
 
+@BACK_END.route('/logout', method='GET')
+def logout():
+  s = bottle.request.environ.get('beaker.session')
+  s.delete()
+  redirect("/")

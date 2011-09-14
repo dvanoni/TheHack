@@ -30,15 +30,24 @@ class User(Base):
 		self.profile_id = profile_id
 		self.access_token = access_token
 
-	def __repr__(self):
-		return "User <%s, %s, %s>" % (username, password, email)
-
 class Coordinate(Base):
 	__tablename__ = 'coordinates'
 
 	id = Column(Integer, primary_key=True)
 	lat = Column(Float)
 	lng = Column(Float)
+	artists = Column(String)
+	moods = Column(String)
+	activities = Column(String)
+
+	def getArists():
+		return artists.split(",")
+
+	def getMoods():
+		return moods.split(",")
+
+	def getActivities():
+		return activities.split(",")
 
 	def __init__(self, lat, lng):
 		self.lat = lat
