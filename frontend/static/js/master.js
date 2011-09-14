@@ -40,7 +40,6 @@ function sendData() {
 	    
 	    if( player.playlist.length > 1 ) {
             player.playlist.splice( 1, player.playlist.length - 1 );
-	        console.log( player.playlist );
 	    }
 	    
 		// Add tracks to playlist
