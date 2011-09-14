@@ -56,12 +56,7 @@
 					<h1>History</h1>
 				</div>
 				<div style='margin-top:44px;'>
-					<ul id='history-list' class='edgetoedge'>
-						<!--<li class='sep'>Studying</li>
-						<li>Test</li>
-						<li>Test</li>
-						<li>Test</li>-->
-					</ul>
+					<ul id='history-list' class='edgetoedge'></ul>
 				</div>
 			</div>
 			<div id='social'>

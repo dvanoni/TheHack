@@ -46,7 +46,8 @@ function Track(trackInfo) {
 
 	player.initPlaylist = function (tracks) {
 		// add tracks to playlist
-		for (var t in tracks) {
+		var t;
+		for (t in tracks) {
 			player.addTrackToPlaylist(new Track(tracks[t]));
 		}
 		player.loadCurrentTrack();
@@ -58,7 +59,8 @@ function Track(trackInfo) {
             player.playlist.splice(1, player.playlist.length - 1);
 
 			// add tracks to playlist
-			for (var t in tracks) {
+			var t;
+			for (t in tracks) {
 				player.addTrackToPlaylist(new Track(tracks[t]));
 			}
 
@@ -69,8 +71,8 @@ function Track(trackInfo) {
 
     player.addTrackToHistory = function (track) {
         var id = player.history.push(track) - 1;
-        $('<li></li>')
-            .addClass('history-item')
+
+        var historyItem = $('<li class="history-item"></li>')
             .prependTo(player.ui.history)
             .click(function () {
                 player.loadHistoryTrack(id);
@@ -80,8 +82,15 @@ function Track(trackInfo) {
 			.append('<div class="album"><img src="' + track.albumArtURL + '"/></div>')
 			.append($('<div></div>')
 				.append('<span class="artist">' + track.artistName + '</span><br/>')
-				.append('<span class="track">' + track.trackName + '</span>')
-			)
+				.append('<span class="track">' + track.trackName + '</span>'));
+
+		var sep = historyItem.siblings('.sep').first();
+		console.log(sep);
+		if (sep.size() === 1 && sep.hasClass(track.loc)) {
+			sep.detach().prependTo(player.ui.history);
+		} else {
+			$('<li class="sep"></li>').addClass(track.loc).html(track.loc).prependTo(player.ui.history);
+		}
     };
 
     player.loadAudioSrc = function (src) {
