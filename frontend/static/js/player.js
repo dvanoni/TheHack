@@ -201,10 +201,19 @@ function Track(trackInfo) {
 
 function toggleInfoDiv() {
     var d = $('#trackinfo');
+    var i = $('#info-content');
     if (d.css('display') == 'none') {
-        var i = $('#info-content');
-        i.html('<span style="font-size:42px;">'+player.playlist[0].artistName+'</span>');
-        d.fadeIn();
+        track_data = {title : player.playlist[0].trackName, artist : player.playlist[0].artistName}
+        $.getJSON( '/api/amazon', track_data, function( data ) {
+            var html = '<span style="font-size:42px;">'+player.playlist[0].artistName+'</span>';
+            var url = 'http://www.amazon.com'
+            if (data != null) {
+                url = data.url
+            }
+            html += '<br /><a href="'+url+'" style="color:#fff;">Buy this album!</a>';
+            i.html(html);
+            d.fadeIn();
+        });
     } else {
         d.fadeOut();
     }
