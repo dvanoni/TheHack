@@ -17,8 +17,10 @@ import Cookie
 import email.utils
 
 from bottle import request
-from hack.helper import parse_accel
 from pprint import pprint
+
+from hack.helper import *
+
 import echonest_api as echonest
 import places_api as places
 
@@ -39,16 +41,23 @@ def get_user_category(get_request):
   longitude   = float(get_request.get('longitude', '-73.96283459999999'))
 
   # parse phone data
-  ax, ay, az = parse_accel( accel_data )
-  
-  # Convert timestamp into a python datetime object
-  try:
-    timestamp = datetime.datetime.fromtimestamp( float( timestamp ) )
-  except Exception:
-    # use the server time if we can't parse the sucker
-    timestamp = datetime.datetime.now()
-  
   place_type = places.coord_to_place_type(latitude, longitude)
+  user_state = UserState.SITTING
+  ax, ay, az = parse_accel(accel_data)
+  if ax is not None and ay is not None and az is not None:
+    user_state = analyze_accel(ax, ay, az)
+  day_state = analyze_timestamp(timestamp)
+
+  if place_type in places.WORKOUT:
+    print 'workout'
+  elif place_type in places.LOWKEY:
+    print 'lowkey'
+  elif place_type in places.SOCIAL:
+    print 'social'
+  elif place_type in places.TRAVEL:
+    print 'travel'
+  elif place_type in places.STUDY:
+    print 'study'
 
   category = 'pre_party'  # the default
   
