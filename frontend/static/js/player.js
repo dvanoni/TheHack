@@ -194,3 +194,15 @@ function Track(trackInfo) {
         player.ui.controls.repeat.click(player.toggleRepeat);
     });
 }());
+
+function toggleInfoDiv() {
+    var d = $('#trackinfo');
+    if (d.css('display') == 'none') {
+        var i = $('#info-content');
+        i.html('<span style="font-size:42px;">'+player.playlist[0].artistName+'</span>');
+        d.fadeIn();
+    } else {
+        d.fadeOut();
+    }
+    
+}

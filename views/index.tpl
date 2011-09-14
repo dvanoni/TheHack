@@ -40,6 +40,10 @@
 			<div style='margin:16px 0;'><img src='/static/img/ajax-loader.gif'></div>
 			<div>Loading...</div>
 		</div>
+		<div id='trackinfo'>
+			<div style="float:right;"><a href="javascript:toggleInfoDiv();"><img src="/static/img/x.png" width=32 /></a></div>
+			<div id='info-content'></div>
+		</div>
 		<div id="jqt">
 			<div id='history'>
 				<div class="toolbar">
@@ -91,6 +95,7 @@
 					<div id="player-controls">
 						<button class="repeat">repeat is <span>OFF</span></button>
 					</div>
+					<div class='info_icon'><a href="javascript:toggleInfoDiv();"><img src="/static/img/info_icon.png"/></a></class>
 				</div>
 			</div>
 		</div>

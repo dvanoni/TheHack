@@ -68,6 +68,7 @@ function loadSocial() {
 	});
 }
 
+
 $(function(){
 	// Start acquiring our location
 	//acquireLocation();
