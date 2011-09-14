@@ -66,6 +66,7 @@ def get_user_category(get_request):
     category = 'running'
 
   if place_type in places.WORKOUT:
+    print 'h'
   elif place_type in places.LOWKEY:
     print 'lowkey'
   elif place_type in places.SOCIAL:
