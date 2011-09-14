@@ -35,6 +35,7 @@ function Track(trackInfo) {
     player.currentTrack = 0;
     player.trackLoaded = false;
     player.repeatEnabled = false;
+    player.history = [];
 
     player.loadAudioSrc = function (src) {
         player.ui.audio.get(0).src = src;
@@ -57,6 +58,7 @@ function Track(trackInfo) {
         player.loadAudioSrc(track.trackURL);
         player.loadAlbumArtSrc(track.albumArtURL);
         player.setTrackInfo(track.trackName, track.artistName);
+        player.history.push(track);
         player.trackLoaded = true;
     };
 
