@@ -31,17 +31,10 @@ function Track(trackInfo) {
 (function () {
     'use strict';
 
-    // player UI elements
-    player.ui = {
-        'audio': null,
-        'trackInfo': {'title': null, 'artist': null},
-        'albumArt': null,
-        'controls': {'playPause': null}
-    };
-
     player.playlist = [];
     player.currentTrack = 0;
     player.trackLoaded = false;
+    player.repeatEnabled = false;
 
     player.loadAudioSrc = function (src) {
         player.ui.audio.get(0).src = src;
@@ -124,22 +117,53 @@ function Track(trackInfo) {
         }
     };
 
+    player.toggleRepeat = function () {
+        player.repeatEnabled = !player.repeatEnabled;
+        var span = player.ui.controls.repeat.find('span');
+        if (player.repeatEnabled) {
+            span.html("ON");
+        } else {
+            span.html("OFF");
+        }
+    };
+
     player.addTrack = function (track) {
         player.playlist.push(track);
     };
 
+    // player event handlers
     player.handlers = {};
     player.handlers.trackEnded = function (event) {
-        player.playNext();
+        if (player.repeatEnabled) {
+            player.ui.audio.get(0).currentTime = 0;
+            player.play();
+        } else {
+            player.playNext();
+        }
     };
 
     $(function () {
-        player.ui.audio = $('#player_audio audio');
-        player.ui.albumArt = $('#player_album_art img');
-        player.ui.trackInfo.title = $('#player_track_info_title');
-        player.ui.trackInfo.artist = $('#player_track_info_artist');
-        player.ui.controls.playPause = $('#player_controls_playpause');
+        // player UI elements
+        player.ui = {
+            'audio': $('#player_audio audio'),
+            'trackInfo': {
+                'title': $('#player_track_info_title'),
+                'artist': $('#player_track_info_artist')
+            },
+            'albumArt': $('#player_album_art img'),
+            'controls': {
+                'playPause': $('#player_controls_playpause'),
+                'next': $('#player_controls_next'),
+                'prev': $('#player_controls_prev'),
+                'repeat': $('#player_controls_repeat')
+            }
+        };
 
+        // bind event handlers
         player.ui.audio.bind('ended', player.handlers.trackEnded);
+        player.ui.controls.playPause.click(player.playPause);
+        player.ui.controls.next.click(player.playNext);
+        player.ui.controls.prev.click(player.playPrev);
+        player.ui.controls.repeat.click(player.toggleRepeat);
     });
 }());
