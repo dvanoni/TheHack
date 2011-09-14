@@ -40,6 +40,7 @@ function sendData() {
 			player.addTrackToPlaylist(new Track(data[i]));
 		}
 		player.loadCurrentTrack();
+		player.play();
 	});
 }
 

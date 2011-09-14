@@ -51,8 +51,17 @@
 	color:#AAA;
 }
 
+#player-track-info .title {
+	font-weight:bold;
+}
+
 #player-audio, #player-audio * {
-    display:none;
+	display:none;
+}
+
+.history-item .artist {
+	font-size:14px;
+	font-weight:normal;
 }
 
 #activity {

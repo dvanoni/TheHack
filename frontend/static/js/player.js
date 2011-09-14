@@ -43,14 +43,15 @@ function Track(trackInfo) {
     player.addTrackToHistory = function (track) {
         var id = player.history.push(track) - 1;
         $('<li></li>')
-            .html(track.trackName)
-            .addClass('history_item')
+            .addClass('history-item')
             .prependTo(player.ui.history)
             .click(function () {
                 player.loadHistoryTrack(id);
                 player.play();
                 $('#tab_1').click();
-            });
+            })
+            .append('<span class="artist">' + track.artistName + '</span><br/>')
+            .append('<span class="track">' + track.trackName + '</span>');
     };
 
     player.loadAudioSrc = function (src) {
