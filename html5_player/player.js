@@ -31,12 +31,14 @@ function Track(trackInfo) {
 (function () {
     'use strict';
 
-    player.ui = {};
-    player.ui.audio = null;
-    player.ui.albumArt = null;
-    player.ui.trackInfo = null;
-    player.ui.controls = {};
-    player.ui.controls.playPause = null;
+    // player UI elements
+    player.ui = {
+        'audio': null,
+        'trackInfo': {'title': null, 'artist': null},
+        'albumArt': null,
+        'controls': {'playPause': null}
+    };
+
     player.playlist = [];
     player.currentTrack = 0;
     player.trackLoaded = false;
@@ -51,8 +53,8 @@ function Track(trackInfo) {
     };
 
     player.setTrackInfo = function (title, artist) {
-        player.ui.trackInfo.find('#player_track_info_title').html(title);
-        player.ui.trackInfo.find('#player_track_info_artist').html(artist);
+        player.ui.trackInfo.title.html(title);
+        player.ui.trackInfo.artist.html(artist);
     };
 
     player.loadTrack = function (track) {
@@ -134,7 +136,8 @@ function Track(trackInfo) {
     $(function () {
         player.ui.audio = $('#player_audio audio');
         player.ui.albumArt = $('#player_album_art img');
-        player.ui.trackInfo = $('#player_track_info');
+        player.ui.trackInfo.title = $('#player_track_info_title');
+        player.ui.trackInfo.artist = $('#player_track_info_artist');
         player.ui.controls.playPause = $('#player_controls_playpause');
 
         player.ui.audio.bind('ended', player.handlers.trackEnded);
