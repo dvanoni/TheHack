@@ -50,31 +50,38 @@ def parse_user_attributes(get_request):
 
   return (place_type, day_state, user_state)
 
-def get_user_category(get_request):
-  (place_type, day_state, user_state) =\
-      parse_user_attributes(get_request)
-
-  category = 'pre_party'  # the default
+def get_user_category(place_type, day_state, user_state):
 
   # special cases
   if place_type is 'park'\
       and user_state is UserState.SITTING\
       or user_state is UserState.WALKING:
-    return 'studying'
+    return UserCategory.STUDYING
 
   if place_type is 'park' and user_state is UserState.RUNNING:
-    category = 'running'
+    return UserCategory.RUNNING
+
+  if day_state is DayState.MORNING:
+    return UserCategory.WAKING_UP
+
+  if day_state is DayState.EVENING:
+    return UserCategory.WINDING_DOWN
 
   if place_type in places.WORKOUT:
-    print 'h'
+    category = UserCategory.RUNNING
   elif place_type in places.LOWKEY:
-    print 'lowkey'
+    category = UserCategory.WALKING
   elif place_type in places.SOCIAL:
-    print 'social'
+    category = UserCategory.PRE_PARTY
   elif place_type in places.TRAVEL:
-    print 'travel'
+    category = UserCategory.COMMUTING
   elif place_type in places.STUDY:
-    print 'study'
+    category = UserCategory.STUDYING
+  else:
+    print 'Using default category'
+    category = UserCategory.PRE_PARTY  # the default
+
+  return category
 
   
 @BACK_END.route( '/recommend' )
@@ -84,7 +91,8 @@ def recommend():
     print 'Running debug...'
     debug = True
 
-  category = get_user_category(request.GET)
+  (place_state, user_state, day_state) = parse_user_attributes(request.GET)
+  category = get_user_category(place_state, user_state, day_state)
 
   if debug:
     category = request.GET.get('c', '').strip()

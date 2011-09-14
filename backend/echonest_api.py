@@ -9,41 +9,48 @@ ECHONEST_KEY = 'YBBLFZVQBRPQF1VKS'
 ECHONEST_API = 'http://developer.echonest.com/api/v4/song/search'
 
 class UserCategory:
-  STUDYING = 0
+  STUDYING = 'studying'
+  RUNNING = 'running'
+  COMMUTING = 'commuting'
+  WALKING = 'walking'
+  WAKING_UP = 'waking_up'
+  WINDING_DOWN = 'winding_down'
+  PRE_PARTY = 'pre_party'
+
 
 USER_CATEGORIES = {
-  'studying'     : {
+  UserCategory.STUDYING : {
       'sort' : 'song_hotttnesss-desc',
       'max_danceability' : '.2',
       'max_energy' : '.2',
       'max_loudness' : '20'
     },
-  'running'      : {
+  UserCategory.RUNNING : {
       'sort' : 'song_hotttnesss-desc',
       'min_tempo' : '240',
       'min_danceability' : '.6',
       'min_energy' : '.6'
     },
-  'commuting'    : {
+  UserCategory.COMMUTING : {
       'song_min_hotttnesss' : '.75',
       'min_danceability' : '.5',
       'min_energy' : '.5'
     },
-  'walking'      : {    
+  UserCategory.WALKING : {    
       'sort' : 'song_hotttnesss-desc',
       'min_tempo' : '200',
       'min_danceability' : '.35',
       'min_energy' : '.5'
     },
-  'waking_up'    : {
+  UserCategory.WAKING_UP : {
       'sort' : 'song_hotttnesss-desc',
       'max_energy' : '.4',
     },
-  'winding_down' : {
+  UserCategory.WINDING_DOWN : {
       'max_tempo' : '80',
       'sort' : 'song_hotttnesss-desc'
     },
-  'pre_party'    : {
+  UserCategory.PRE_PARTY : {
       'song_min_hotttnesss' : '.85',
       'artist_start_year_after' : '2000'
     }
