@@ -8,13 +8,13 @@
 	height:;
 }
 
-.album-art {
-	-webkit-box-reflect:below 1px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.8, transparent), to(white));
-}
-
-#album-art-area {
+#player-album-art {
 	position:relative;
 	margin-left:8px;
+}
+
+#player-album-art img {
+	-webkit-box-reflect:below 1px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.8, transparent), to(white));
 }
 
 #next-album {
@@ -24,23 +24,35 @@
 	opacity:.50;
 }
 
+#next-album img {
+	width:140px;
+}
+
 #current-album {
 	position:absolute;
 }
 
-#artist-info {
+#current-album img {
+	width:240px;
+}
+
+#player-track-info {
 	background:#000;
 	color:#FFF;
 	margin-bottom:32px;
 }
 
-#artist-info > div {
+#player-track-info > div {
 	padding:16px;
 	text-align:center;
 }
 
-#artist-info > div > .artist {
+#player-track-info .artist {
 	color:#AAA;
+}
+
+#player-audio, #player-audio * {
+    display:none;
 }
 
 #activity {
