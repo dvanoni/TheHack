@@ -8,6 +8,9 @@ import urllib
 ECHONEST_KEY = 'YBBLFZVQBRPQF1VKS'
 ECHONEST_API = 'http://developer.echonest.com/api/v4/song/search'
 
+class UserCategory:
+  STUDYING = 0
+
 USER_CATEGORIES = {
   'studying'     : {
       'sort' : 'song_hotttnesss-desc',
@@ -94,7 +97,8 @@ def search(category):
         'name'        : s['title'],
         'artist'      : artist,
         'preview_url' : preview_url,
-        'album_img'   : album_img
+        'album_img'   : album_img,
+        'id'          : s['id']
     })
 
   return track_data

@@ -6,6 +6,9 @@ import cStringIO
 from bottle import template, request
 from PIL import Image
 
+import json
+import urllib
+
 FRONT_END = bottle.Bottle()
 
 @FRONT_END.route( '/index' )
@@ -16,16 +19,20 @@ def front_end_index():
 	if s:
 		username = s.get('username')
 		profile_id = s.get('profile_id')
-		fb_image = "https://graph.facebook.com/%s/picture" % profile_id
+		access_token = s.get('access_token')
+		fb_image = "https://graph.facebook.com/me/picture?access_token=%s" % access_token
+		fb_music = "https://graph.facebook.com/me/music?access_token=%s" % access_token
+		music = json.load(urllib.urlopen(fb_music))
 
 	else:
 		username = None
 		fb_image = None
+		music = None
 
 	if username:
 		login = False
 
-	return template('index', login=login, username=username, fb_image=fb_image)
+	return template('index', login=login, username=username, fb_image=fb_image, my_music=music)
 	
 @FRONT_END.route( '/dominant_color' )
 def dominant_color():

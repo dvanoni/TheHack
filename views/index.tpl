@@ -67,11 +67,14 @@
 				<div>
 					<div style='padding:8px;background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CCC), color-stop(0.6, #CCC), to(#AAA));'>
 						<ul style='margin:0;'>
-	%if login:
-							<li><a onClick="window.location='https://www.facebook.com/dialog/oauth?client_id=170844926329169&redirect_uri=http://thehack.dvanoni.com/api/facebook&display=touch'">Connect with Facebook</a></li>
-	%else:
+						%if login:
+							<li><a onClick="window.location='https://www.facebook.com/dialog/oauth?client_id=170844926329169&redirect_uri=http://thehack.dvanoni.com/api/facebook&display=touch'"><img src="/static/img/facebook.png" width=50 height=50 style="vertical-align:middle;" />Connect with Facebook!</a></li>
+						%else:
 							<li><img src="{{fb_image}}" style="vertical-align:middle;" /> Welcome, {{username}}</li>
-	%end
+							%for artists in my_music["data"]:
+								<li>{{artists["name"]}}</li>
+								%end
+						%end
 						</ul>
 					</div>
 				</div>
