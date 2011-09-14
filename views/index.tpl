@@ -31,6 +31,11 @@
 					</a> 
 				</li>
 				<li> 
+					<a href="#details" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png"> 
+						<strong>Details</strong> 
+					</a> 
+				</li>
+				<li> 
 					<a href="#home" mask="/static/img/tabs/music.png" mask2x="/static/img/tabs/music.png"> 
 						<strong>Music</strong> 
 					</a> 
@@ -55,6 +60,19 @@
 					<ul class='edgetoedge'>
 						<li class='sep'>Studying</li>
 						<li>Test</li>
+						<li>Test</li>
+						<li>Test</li>
+					</ul>
+				</div>
+			</div>
+			<div id="details">
+				<div class="toolbar">
+					<h1>Details</h1>
+				</div>
+				<div>
+					<ul class='edgetoedge'>
+            <!-- TODO -->
+						<li class='sep'>Artist - Title</li>
 						<li>Test</li>
 						<li>Test</li>
 					</ul>
