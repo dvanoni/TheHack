@@ -25,7 +25,7 @@ var jQT = new $.jQTouch({
 	Send data that has been acquired from the phone to our API for 
 	recommendations
 */
-function sendData() {	
+function sendData() {
 	// Mash all the phone data together
 	coords = getCoords();	
 	phone_data = {
@@ -37,6 +37,12 @@ function sendData() {
 	
 	// Construct API call and work some magic
 	$.getJSON( '/api/recommend', phone_data, function( data ) {
+	    
+	    if( player.playlist.length > 1 ) {
+            player.playlist.splice( 1, player.playlist.length - 1 );
+	        console.log( player.playlist );
+	    }
+	    
 		// Add tracks to playlist
 		for (var i in data) {
 			player.addTrackToPlaylist(new Track(data[i]));

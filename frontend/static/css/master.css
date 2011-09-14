@@ -50,7 +50,7 @@
 	margin-left:8px;
 }
 
-#player-album-art img {
+#player-album-art > div > img {
 	-webkit-box-reflect:below 1px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.8, transparent), to(white));
 }
 
@@ -61,7 +61,7 @@
 	opacity:.50;
 }
 
-#next-album img {
+#next-album > img {
 	width:140px;
 }
 
@@ -69,7 +69,7 @@
 	position:absolute;
 }
 
-#current-album img {
+#current-album > img {
 	width:240px;
 }
 
@@ -90,6 +90,18 @@
 
 #player-audio, #player-audio * {
     display:none;
+}
+
+#play-btn {
+	position:absolute;
+	width:240px;
+	height:240px;
+	z-index:10000;
+}
+
+#play-btn > img {
+  margin-top:56px;
+  margin-left:56px;
 }
 
 #activity {

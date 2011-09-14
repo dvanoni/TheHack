@@ -128,12 +128,14 @@ function Track(trackInfo) {
             player.loadCurrentTrack();
         }
         player.ui.audio.get(0).play();
+		player.ui.controls.playPause.attr( 'src', '/static/img/pause_button.png' )
 //        player.ui.controls.playPause.html("pause");
     };
 
     player.pause = function () {
         player.ui.audio.get(0).pause();
 //        player.ui.controls.playPause.html("play");
+		player.ui.controls.playPause.attr( 'src', '/static/img/play_button.png' )
     };
 
     player.playPause = function () {
@@ -179,10 +181,11 @@ function Track(trackInfo) {
                 'artist': $('#player-track-info .artist'),
                 'loc' : $('#player-track-info .loc')
             },
-            'currentAlbumArt': $('#current-album img'),
-            'nextAlbumArt': $('#next-album img'),
+            'currentAlbumArt': $('#current-album > img'),
+            'nextAlbumArt': $('#next-album > img'),
             'controls': {
-                'repeat': $('#player-controls .repeat')
+                'repeat': $('#player-controls .repeat'),
+                'playPause': $( '#play-btn > img' )
             },
             'history': $('#history-list')
         };
@@ -190,6 +193,7 @@ function Track(trackInfo) {
         // bind event handlers
         player.ui.audio.bind('ended', player.handlers.trackEnded);
         player.ui.currentAlbumArt.click(player.playPause);
+        player.ui.controls.playPause.click( player.playPause )
         player.ui.nextAlbumArt.click(player.playNext);
         player.ui.controls.repeat.click(player.toggleRepeat);
     });

@@ -29,7 +29,7 @@
 					<a href="#history" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png"></a> 
 				</li>
 				<li> 
-					<a href="#home" mask="/static/img/tabs/music.png" mask2x="/static/img/tabs/music.png"> </a> 
+					<a onclick='sendData();' href="#home" mask="/static/img/tabs/music.png" mask2x="/static/img/tabs/music.png"> </a> 
 				</li> 
 				<li> 
 					<a onclick='loadSocial();' href="#social" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png"> </a> 
@@ -89,6 +89,9 @@
 							<img alt='next album'/>
 						</div>
 						<div id='current-album'>
+							<div id='play-btn'>
+								<img src='/static/img/play_button.png' alt='play button'>
+							</div>
 							<img alt='current album'/>
 						</div>
 					</div>
