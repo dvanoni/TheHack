@@ -4,9 +4,10 @@
 
 <body>
 <table>
-<tr><th>name</th><th>artist</th><th>preview url</th><th>album img</th></tr>
+<tr><th>id</th><th>name</th><th>artist</th><th>preview url</th><th>album img</th></tr>
 %for t in tracks:
   <tr>
+    <td>{{t['id']}}</td>
     <td>{{t['name']}}</td>
     <td>{{t['artist']}}</td>
     <td>{{t['preview_url']}}</td>

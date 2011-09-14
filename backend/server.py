@@ -31,7 +31,7 @@ REDIRECT_URL    = 'http://thehack.dvanoni.com/api/facebook'
 
 BACK_END = bottle.Bottle()
 
-def get_user_category(get_request):
+def parse_user_attributes(get_request):
   # Grab phone data
   accel_data  = get_request.get('accelerometer')
   timestamp   = get_request.get('timestamp')
@@ -48,8 +48,25 @@ def get_user_category(get_request):
     user_state = analyze_accel(ax, ay, az)
   day_state = analyze_timestamp(timestamp)
 
+  return (place_type, day_state, user_state)
+
+def get_user_category(get_request):
+  (place_type, day_state, user_state) =\
+      parse_user_attributes(get_request)
+
+  category = 'pre_party'  # the default
+
+  # special cases
+  if place_type is 'park'\
+      and user_state is UserState.SITTING\
+      or user_state is UserState.WALKING:
+    return 'studying'
+
+  if place_type is 'park' and user_state is UserState.RUNNING:
+    category = 'running'
+
   if place_type in places.WORKOUT:
-    print 'workout'
+    print 'h'
   elif place_type in places.LOWKEY:
     print 'lowkey'
   elif place_type in places.SOCIAL:
@@ -59,7 +76,6 @@ def get_user_category(get_request):
   elif place_type in places.STUDY:
     print 'study'
 
-  category = 'pre_party'  # the default
   
 @BACK_END.route( '/recommend' )
 def recommend():
