@@ -36,7 +36,7 @@
 					</a> 
 				</li> 
 				<li> 
-					<a href="#social" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png"> 
+					<a onclick='loadSocial();' href="#social" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png"> 
 						<strong>Social</strong> 
 					</a> 
 				</li> 
@@ -77,13 +77,9 @@
 						%end
 						</ul>
 					</div>
-					<div style='width:320px;height:460px;overflow:scroll;position:relative;'>
+					<div id='discover-map-wrapper'>
 						<img src='/static/img/staticmap.png'>
-						<div style='position:absolute;top:0;left:0;'>
-							<div style='position:absolute;width:48px;height:48px;top:16px;left:16px;box-shadow: 0 0 2px 2px #888;'>
-								<img src='http://cdn.7static.com/static/img/sleeveart/00/010/561/0001056176_200.jpg' width='48'>
-							</div>
-						</div>
+						<div id='discover-map' style='position:absolute;top:0;left:0;'></div>
 					</div>					
 					<div style='display:none;background-image:url(/static/img/staticmap.png);width:320px;height:460px;background-position:-160px -160px;'>
 					</div>					
@@ -114,6 +110,34 @@
 		<script src="/static/js/geolocation.js" type='text/javascript' charset="utf-8"></script>
 		<script src="/static/js/master.js" type='text/javascript' charset="utf-8"></script>
 		<script type="text/javascript" charset="utf-8">
+			function getRandomInt (min, max) {
+		    	return Math.floor(Math.random() * (max - min + 1)) + min;
+			}		
+			
+			function loadSocial() {
+				$( '#activity' ).fadeIn( 'fast' );
+				$( '#discover-map' ).html( '' ).scrollLeft( 80 ).scrollTop( 160 );
+				
+				$.getJSON( '/api/similar', null, function( data ) {
+					for( var i = 0; i < data.length; i++ ) {
+						var track = data[i];
+						var top  = getRandomInt( 16, 578 );
+						var left = getRandomInt( 16, 578 );
+						
+						if( track.album_img ) {
+							var html = "<div class='social-track' style='top:" + top + "px;left:" + left + "px;'>" +
+										"<img src='" + track.album_img + "' width='48'>" +
+										"</div>";
+							$( '#discover-map' ).append( html );
+						}
+					}
+					
+					$( '.social-track' ).fadeIn( 'slow' );
+					$( '#activity' ).fadeOut( 'fast' );
+				});				
+
+			}
+			
 			$(function() {
 				$.getJSON( '/front_end/dominant_color', { url: $( '#current' ).attr('src')}, function( color ) {
 						$( '#home').css( 'background-color', color );
