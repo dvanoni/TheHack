@@ -31,27 +31,28 @@ function Track(trackInfo) {
 (function () {
     'use strict';
 
-    player.audioElem = null;
-    player.albumArtImg = null;
-    player.trackInfoElem = null;
-    player.controls = {};
-    player.controls.playPause = null;
+    player.ui = {};
+    player.ui.audio = null;
+    player.ui.albumArt = null;
+    player.ui.trackInfo = null;
+    player.ui.controls = {};
+    player.ui.controls.playPause = null;
     player.playlist = [];
     player.currentTrack = 0;
     player.trackLoaded = false;
 
     player.loadAudioSrc = function (src) {
-        player.audioElem.get(0).src = src;
-        player.audioElem.get(0).load();
+        player.ui.audio.get(0).src = src;
+        player.ui.audio.get(0).load();
     };
 
     player.loadAlbumArtSrc = function (src) {
-        player.albumArtImg.attr('src', src);
+        player.ui.albumArt.attr('src', src);
     };
 
     player.setTrackInfo = function (title, artist) {
-        player.trackInfoElem.find('#player_track_info_title').html(title);
-        player.trackInfoElem.find('#player_track_info_artist').html(artist);
+        player.ui.trackInfo.find('#player_track_info_title').html(title);
+        player.ui.trackInfo.find('#player_track_info_artist').html(artist);
     };
 
     player.loadTrack = function (track) {
@@ -94,8 +95,8 @@ function Track(trackInfo) {
         if (!player.trackLoaded) {
             player.loadCurrentTrack();
         }
-        player.audioElem.get(0).play();
-        player.controls.playPause.html("pause");
+        player.ui.audio.get(0).play();
+        player.ui.controls.playPause.html("pause");
     };
 
     player.playNext = function () {
@@ -109,12 +110,12 @@ function Track(trackInfo) {
     };
 
     player.pause = function () {
-        player.audioElem.get(0).pause();
-        player.controls.playPause.html("play");
+        player.ui.audio.get(0).pause();
+        player.ui.controls.playPause.html("play");
     };
 
     player.playPause = function () {
-        if (player.audioElem.get(0).paused) {
+        if (player.ui.audio.get(0).paused) {
             player.play();
         } else {
             player.pause();
@@ -131,11 +132,11 @@ function Track(trackInfo) {
     };
 
     $(function () {
-        player.audioElem = $('#player_audio audio');
-        player.albumArtImg = $('#player_album_art img');
-        player.trackInfoElem = $('#player_track_info');
-        player.controls.playPause = $('#player_controls_playpause');
+        player.ui.audio = $('#player_audio audio');
+        player.ui.albumArt = $('#player_album_art img');
+        player.ui.trackInfo = $('#player_track_info');
+        player.ui.controls.playPause = $('#player_controls_playpause');
 
-        player.audioElem.bind('ended', player.handlers.trackEnded);
+        player.ui.audio.bind('ended', player.handlers.trackEnded);
     });
 }());
