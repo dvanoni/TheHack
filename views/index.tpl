@@ -47,29 +47,32 @@
 			<div>Loading...</div>
 		</div>
 		<div id="jqt">
+			<div id='history'>
+				<div class="toolbar">
+					<h1>History</h1>
+				</div>
+				<div>
+					<ul class='edgetoedge'>
+						<li class='sep'>Studying</li>
+						<li>Test</li>
+						<li>Test</li>
+						<li>Test</li>
+					</ul>
+				</div>
+			</div>
 			<div id='social'>
 				<div class="toolbar">
-					<h1>SongConnect</h1>
+					<h1>Discover</h1>
 				</div>
-				<div style='padding:8px;background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CCC), color-stop(0.6, #CCC), to(#AAA));'>
-					<ul style='margin:0;'>
-						<li><input type='text' onkeyup='searchFriends(this);' placeholder='Search for missing ingredients!'></li>
-					</ul>
-				</div>
-				<div style='padding:8px;background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CCC), color-stop(0.6, #CCC), to(#AAA));'>
-					<ul style='margin:0;'>
-%if login:
-						<li><a onClick="window.location='https://www.facebook.com/dialog/oauth?client_id=170844926329169&redirect_uri=http://thehack.dvanoni.com/api/facebook&display=touch'">Connect with Facebook</a></li>
-%else:
-						<li><img src="{{fb_image}}" style="vertical-align:middle;" /> Welcome, {{username}}</li>
-%end
-					</ul>
-				</div>
-				<div class='s-scrollwrapper'>
-					<div>
-						<div style='height:420px;'>
-							<ul id='friends' class="plastic"></ul>
-						</div>
+				<div>
+					<div style='padding:8px;background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CCC), color-stop(0.6, #CCC), to(#AAA));'>
+						<ul style='margin:0;'>
+	%if login:
+							<li><a onClick="window.location='https://www.facebook.com/dialog/oauth?client_id=170844926329169&redirect_uri=http://thehack.dvanoni.com/api/facebook&display=touch'">Connect with Facebook</a></li>
+	%else:
+							<li><img src="{{fb_image}}" style="vertical-align:middle;" /> Welcome, {{username}}</li>
+	%end
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -110,7 +113,6 @@
 					$( '#next' ).attr( 'src', 'http://cdn.7static.com/static/img/sleeveart/00/008/225/0000822570_200.jpg' );
 					
 					$.getJSON( '/front_end/dominant_color', { url: $( '#current' ).attr('src')}, function( color ) {
-							console.log( color );
 							$( '#home').css( 'background-color', color );
 							$( '#activity' ).fadeOut( 'fast' );
 						});
