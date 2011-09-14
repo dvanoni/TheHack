@@ -18,13 +18,18 @@
 		<style type="text/css" media="screen">@import "/static/themes/apple/theme.css";</style>
 		<style type="text/css" media="screen">@import "/static/extensions/jqt.bars/jqt.bars.css";</style>
 		<style type="text/css" media="screen">@import "/static/extensions/jqt.bars/themes/apple/theme.css";</style>
-		
+
 		<!-- related stuffs -->
 		<link rel="stylesheet" type="text/css" href="/static/css/master.css">
 	</head>
 	<body>
 		<div id="tabbar"> 
 			<div><ul> 
+				<li> 
+					<a href="#history" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png"> 
+						<strong>History</strong> 
+					</a> 
+				</li>
 				<li> 
 					<a href="#home" mask="/static/img/tabs/music.png" mask2x="/static/img/tabs/music.png"> 
 						<strong>Music</strong> 
@@ -36,6 +41,10 @@
 					</a> 
 				</li> 
 			</ul></div> 
+		</div>
+		<div id='activity'>
+			<div style='margin:16px 0;'><img src='/static/img/ajax-loader.gif'></div>
+			<div>Loading...</div>
 		</div>
 		<div id="jqt">
 			<div id='social'>
@@ -64,27 +73,22 @@
 					</div>
 				</div>
 			</div>
-			<div id="music-player">
-				<div class="toolbar">
-					<h1>Music Player</h1>
-					<a href="#home" class="back">Back</a>
-				</div>
-				<div class='s-scrollwrapper'>
-					<div>
-						Music player here
-					</div>
-				</div>
-			</div>
 			<div id="home" class='current'>
-				<div class="toolbar">
-					<h1>The Hack</h1>
-				</div>
-				<div class="s-scrollwrapper">
-					<ul id='playlist' class="edgetoedge">
-						<li class="arrow"><a href="#music-player">Test</a></li>
-						<li class="arrow"><a href="#music-player">Test</a></li>
-						<li class="arrow"><a href="#music-player">Test</a></li>
-					</ul>
+				<div>
+					<div id='artist-info'>
+						<div>
+							<div class='artist'>Artist Name</div>
+							<div class='track'>Track Title</div>
+						</div>
+					</div>
+					<div id='album-art-area'>
+						<div id='next-album'>
+							<img id='next' src='/static/img/queen.png' width='140' class='album-art'>
+						</div>
+						<div id='current-album'>
+							<img id='current' src='/static/img/album-art.jpg' width='240' class='album-art'>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -93,5 +97,16 @@
 		<script src="/static/extensions/jqt.bars/jqt.bars.js" type="application/x-javascript" charset="utf-8"></script> 
 		<script src="/static/js/geolocation.js" type='text/javascript' charset="utf-8"></script>
 		<script src="/static/js/master.js" type='text/javascript' charset="utf-8"></script>
+		<script type="text/javascript" charset="utf-8">
+			$(function() {
+				$( '#next' ).click( function() {
+					$( '#activity' ).fadeIn( 'fast' );
+					new_art = $( '#next' ).attr( 'src' )
+					$( '#current' ).attr( 'src', new_art );
+					$( '#next' ).attr( 'src', '/static/img/album-art.jpg' );
+					$( '#activity' ).fadeOut( 'fast' );
+				});
+			});
+		</script>
 	</body>
 </html>

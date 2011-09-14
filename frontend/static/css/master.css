@@ -7,3 +7,57 @@
 	overflow:scroll;
 	height:;
 }
+
+.album-art {
+	-webkit-box-reflect:below 1px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.8, transparent), to(white));
+}
+
+#album-art-area {
+	position:relative;
+	margin-left:8px;
+}
+
+#next-album {
+	float:left;
+	margin-left:175px;
+	margin-top:32px;
+	opacity:.75;
+}
+
+#current-album {
+	position:absolute;
+}
+
+#artist-info {
+	background:#000;
+	color:#FFF;
+	margin-bottom:32px;
+}
+
+#artist-info > div {
+	padding:16px;
+	text-align:center;
+}
+
+#artist-info > div > .artist {
+	color:#AAA;
+}
+
+#activity {
+	display:none;
+	position:absolute;
+	top:50%;
+	left:50%;
+	margin-top:-58px;
+	margin-left:-58px;
+	z-index:1000;
+	color:#FFF;
+	font-family:Helvetica;
+	padding:16px;
+	background-color:#000;
+	width:100px;
+	height:100px;
+	text-align:center;
+	border-radius:16px;
+	opacity:.9;
+}
