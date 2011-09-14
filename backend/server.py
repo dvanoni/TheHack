@@ -243,13 +243,12 @@ def facebook_login():
     access_token = fb_response["access_token"][-1]
     profile = json.load(urllib.urlopen("https://graph.facebook.com/me?" + urllib.urlencode(dict(access_token=access_token))))
     profile_id = str(profile["id"])
-    user = User(name=profile["name"], profile_id=profile_id, access_token=access_token)
-    response.set_cookie("account", profile_id)
-    session.add(user)
-    session.commit()
-    redirect("/")
-    return "success"
-  return "No code"
+    if not request.get_cookie("account", profile_id):
+      user = User(name=profile["name"], profile_id=profile_id, access_token=access_token)
+      response.set_cookie("account", profile_id)
+      session.add(user)
+      session.commit()
+  redirect("/")
 
 
 

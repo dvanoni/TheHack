@@ -21,9 +21,8 @@ class AppData(Base):
 class User(Base):
 	__tablename__ = 'users'
 
-	id = Column(Integer, primary_key=True)
 	name = Column(String)
-	profile_id = Column(String)
+	profile_id = Column(String, primary_key=True)
 	access_token = Column(String)
 
 	def __init__(self, name, profile_id, access_token):
