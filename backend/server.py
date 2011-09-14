@@ -24,6 +24,8 @@ from hack.helper import *
 import echonest_api as echonest
 import places_api as places
 
+from echonest_api import UserCategory
+
 
 FACEBOOK_APP_ID = '170844926329169'
 FACEBOOK_SECRET = '04e620adbd4f35209b04dda6269bf408'
@@ -31,14 +33,21 @@ REDIRECT_URL    = 'http://thehack.dvanoni.com/api/facebook'
 
 BACK_END = bottle.Bottle()
 
+ROUTE_COUNTER = 0
+
 def parse_user_attributes(get_request):
+  global ROUTE_COUNTER
   # Grab phone data
   accel_data  = get_request.get('accelerometer')
   timestamp   = get_request.get('timestamp')
 
-  # default gps to MOMA
-  latitude    = float(get_request.get('latitude',  '40.77905519999999'))
-  longitude   = float(get_request.get('longitude', '-73.96283459999999'))
+  # default to rand
+  latitude    = route[ROUTE_COUNTER].lat
+  longitude   = route[ROUTE_COUNTER].lng
+  if (ROUTE_COUNTER > len(route) - 1): 
+    ROUTE_COUNTER = 0
+  else: 
+    ROUTE_COUNTER+=1
 
   # parse phone data
   place_type = places.coord_to_place_type(latitude, longitude)
