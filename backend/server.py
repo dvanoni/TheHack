@@ -189,3 +189,54 @@ def amazonSearch(artist, title):
   conn = ECSConnection(aws_access_key_id='AKIAJBGKXZBAD2PVHD6A',aws_secret_access_key='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')
   music = conn.item_search("Music", Artist=artist, Title=title, Count=1, Sort='salesrank')
   return music
+
+@BACK_END.route('/amazon_search', method='GET')
+def amazon():
+  album = request.GET.get('album')
+  print 'searching for ', album
+
+  conn = ECSConnection(aws_access_key_id='AKIAJBGKXZBAD2PVHD6A',aws_secret_access_key='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')
+  music = conn.item_search('MP3Downloads', Title=album)#, Count=1, Sort='salesrank')
+
+  for result in music:
+    return result.DetailPageURL
+
+@BACK_END.route('/track_details', method='GET')
+def get_track_details():
+  YAHOO_API = 'http://query.yahooapis.com/v1/public/yql'
+
+  title = 'Single Ladies'
+  args = {
+    'q' : "SELECT * FROM music.track.search WHERE keyword = '%s'" % title,
+    'format' : 'json'
+  }
+
+  url = YAHOO_API + '?' + urllib.urlencode(args)
+  response = json.load(urllib.urlopen(url))
+  result = response['query']['results']
+  
+  # for some reason Yahoo! yql fails for some unknown reason.just try again
+  if result is None:
+    print 'ERROR'
+    return
+
+  track_info = result['Track']
+  
+  # only collect album if it has img
+  albums = []
+  i = 0
+  for t in track_info:
+    if 'Album' in t:
+      album = t['Album']['Release']
+      d = { 'title' : album['title'] }
+      if 'Image' in album:
+        d.update({'img_url' : album['Image'][0]['url']})
+        albums.append(d)
+        i = i + 1
+        if i is 3:
+          break
+
+  #pprint(albums)
+
+  #return amazon(albums[0]['title'])
+  return albums
