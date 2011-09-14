@@ -2,9 +2,7 @@
 var ax = 0, ay = 0, az = 0;
 
 var jQT = new $.jQTouch({
-	icon: 'wimf-icon.png',
 	addGlossToIcon: false,
-	startupScreen: 'splashscreen.png',
 	statusBar: 'black',
 	preloadImages: [
 		'/static/themes/jqt/img/back_button.png',

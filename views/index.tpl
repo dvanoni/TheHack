@@ -14,10 +14,10 @@
 		<link rel='apple-touch-startup-image' href='/static/img/touch-startup.png' />
 		
 		<!-- jqTouch related stuffs -->
-		<style type="text/css" media="screen">@import "/static/jqtouch/jqtouch.css";</style>
-		<style type="text/css" media="screen">@import "/static/themes/apple/theme.css";</style>
-		<style type="text/css" media="screen">@import "/static/extensions/jqt.bars/jqt.bars.css";</style>
-		<style type="text/css" media="screen">@import "/static/extensions/jqt.bars/themes/apple/theme.css";</style>
+		<link rel='stylesheet' type='text/css' href='/static/jqtouch/jqtouch.css' />
+		<link rel='stylesheet' type='text/css' href='/static/themes/apple/theme.css' />
+		<link rel='stylesheet' type='text/css' href='/static/extensions/jqt.bars/jqt.bars.css' />
+		<link rel='stylesheet' type='text/css' href='/static/extensions/jqt.bars/themes/apple/theme.css' />
 
 		<!-- related stuffs -->
 		<link rel="stylesheet" type="text/css" href="/static/css/master.css">
