@@ -75,8 +75,9 @@
 					</div>
 					<div id='player-track-info'>
 						<div>
-							<div class='artist'>Artist</div>
-							<div class='title'>Title</div>
+							<div class='loc' style="z-index:20">LOCATION</div>
+							<div class='artist' style="position:relative;z-index:50">Artist</div>
+							<div class='title' style="position:relative;z-index:51">Title</div>
 						</div>
 					</div>
 					<div id='player-album-art'>
