@@ -7,6 +7,7 @@ from models import *
 from demo_locations import route
 from sqlalchemy.orm.exc import NoResultFound
 from beaker.middleware import SessionMiddleware
+from boto.ecs import ECSConnection
 
 import datetime
 import json
@@ -160,3 +161,17 @@ def logout():
   s = bottle.request.environ.get('beaker.session')
   s.delete()
   redirect("/")
+
+@BACK_END.route( '/search', method='GET')
+def search():
+  artist = request.GET.get('artist')
+  title = request.GET.get('title')
+  results  = amazonSearch(artist, title)
+  s = ''
+  for result in results:
+    return result.DetailPageURL
+
+def amazonSearch(artist, title):
+  conn = ECSConnection(aws_access_key_id='AKIAJBGKXZBAD2PVHD6A',aws_secret_access_key='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')
+  music = conn.item_search("Music", Artist=artist, Title=title, Count=1, Sort='salesrank')
+  return music
