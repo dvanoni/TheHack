@@ -42,7 +42,7 @@ USER_CATEGORIES = {
     },
   'pre_party'    : {
       'song_min_hotttnesss' : '.85',
-      'artist_start_year_after' : '2000'
+      'artist_start_year_after' : '2002',
     }
 }
 
