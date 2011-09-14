@@ -62,6 +62,9 @@
 						<li><a onClick="window.location='https://www.facebook.com/dialog/oauth?client_id=170844926329169&redirect_uri=http://thehack.dvanoni.com/api/facebook&display=touch'">Connect with Facebook</a></li>
 %else:
 						<li><img src="{{fb_image}}" style="vertical-align:middle;" /> Welcome, {{username}}</li>
+%for artists in my_music["data"]:
+						<li>{{artists["name"]}}</li>
+%end
 %end
 					</ul>
 				</div>
@@ -83,10 +86,10 @@
 					</div>
 					<div id='album-art-area'>
 						<div id='next-album'>
-							<img id='next' src='/static/img/queen.png' width='140' class='album-art'>
+							<img id='next' src='http://cdn.7static.com/static/img/sleeveart/00/007/786/0000778648_200.jpg' width='140' class='album-art'>
 						</div>
 						<div id='current-album'>
-							<img id='current' src='/static/img/album-art.jpg' width='240' class='album-art'>
+							<img id='current' src='http://cdn.7static.com/static/img/sleeveart/00/010/561/0001056176_200.jpg' width='240' class='album-art'>
 						</div>
 					</div>
 				</div>
@@ -99,12 +102,22 @@
 		<script src="/static/js/master.js" type='text/javascript' charset="utf-8"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(function() {
+				$.getJSON( '/front_end/dominant_color', { url: $( '#current' ).attr('src')}, function( color ) {
+						$( '#home').css( 'background-color', color );
+					});
+				
 				$( '#next' ).click( function() {
 					$( '#activity' ).fadeIn( 'fast' );
 					new_art = $( '#next' ).attr( 'src' )
 					$( '#current' ).attr( 'src', new_art );
-					$( '#next' ).attr( 'src', '/static/img/album-art.jpg' );
-					$( '#activity' ).fadeOut( 'fast' );
+					$( '#next' ).attr( 'src', 'http://cdn.7static.com/static/img/sleeveart/00/008/225/0000822570_200.jpg' );
+					
+					$.getJSON( '/front_end/dominant_color', { url: $( '#current' ).attr('src')}, function( color ) {
+							console.log( color );
+							$( '#home').css( 'background-color', color );
+							$( '#activity' ).fadeOut( 'fast' );
+						});
+					
 				});
 			});
 		</script>

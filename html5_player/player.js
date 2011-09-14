@@ -32,9 +32,25 @@ function Track(trackInfo) {
     'use strict';
 
     player.playlist = [];
-    player.currentTrack = 0;
+    player.history = [];
     player.trackLoaded = false;
     player.repeatEnabled = false;
+
+    player.addTrackToPlaylist = function (track) {
+        player.playlist.push(track);
+    };
+
+    player.addTrackToHistory = function (track) {
+        var id = player.history.push(track) - 1;
+        $('<div></div>')
+            .html(track.trackName)
+            .addClass('history_item')
+            .appendTo(player.ui.history)
+            .click(function () {
+                player.loadHistoryTrack(id);
+                player.play();
+            });
+    };
 
     player.loadAudioSrc = function (src) {
         player.ui.audio.get(0).src = src;
@@ -60,30 +76,26 @@ function Track(trackInfo) {
         player.trackLoaded = true;
     };
 
-    player.loadTrackByID = function (id) {
-        if (!player.playlist[id]) {
-            throw "Invalid track ID: " + id;
-        }
-        player.currentTrack = id;
-        player.loadTrack(player.playlist[id]);
-        console.log("Loaded track " + id);
-    };
-
     player.loadCurrentTrack = function () {
-        player.loadTrackByID(player.currentTrack);
-    };
-
-    player.gotoID = function (id) {
         player.trackLoaded = false;
-        player.loadTrackByID(id);
+        player.loadTrack(player.playlist[0]);
     };
 
-    player.gotoNext = function () {
-        player.gotoID(player.currentTrack + 1);
+    player.loadNextTrack = function () {
+        // remove first track from playlist and add it to history
+        player.addTrackToHistory(player.playlist.shift());
+        player.loadCurrentTrack();
     };
 
-    player.gotoPrev = function () {
-        player.gotoID(player.currentTrack - 1);
+    player.loadHistoryTrack = function (id) {
+        if (!player.history[id]) {
+            throw "Invalid history track ID: " + id;
+        }
+        // remove first track from playlist and add it to history
+        player.addTrackToHistory(player.playlist.shift());
+        // push history track into front of playlist
+        player.playlist.unshift(player.history[id]);
+        player.loadCurrentTrack();
     };
 
     player.play = function () {
@@ -92,16 +104,6 @@ function Track(trackInfo) {
         }
         player.ui.audio.get(0).play();
         player.ui.controls.playPause.html("pause");
-    };
-
-    player.playNext = function () {
-        player.gotoNext();
-        player.play();
-    };
-
-    player.playPrev = function () {
-        player.gotoPrev();
-        player.play();
     };
 
     player.pause = function () {
@@ -117,6 +119,11 @@ function Track(trackInfo) {
         }
     };
 
+    player.playNext = function () {
+        player.loadNextTrack();
+        player.play();
+    };
+
     player.toggleRepeat = function () {
         player.repeatEnabled = !player.repeatEnabled;
         var span = player.ui.controls.repeat.find('span');
@@ -125,10 +132,6 @@ function Track(trackInfo) {
         } else {
             span.html("OFF");
         }
-    };
-
-    player.addTrack = function (track) {
-        player.playlist.push(track);
     };
 
     // player event handlers
@@ -154,16 +157,15 @@ function Track(trackInfo) {
             'controls': {
                 'playPause': $('#player_controls_playpause'),
                 'next': $('#player_controls_next'),
-                'prev': $('#player_controls_prev'),
                 'repeat': $('#player_controls_repeat')
-            }
+            },
+            'history': $('#history')
         };
 
         // bind event handlers
         player.ui.audio.bind('ended', player.handlers.trackEnded);
         player.ui.controls.playPause.click(player.playPause);
         player.ui.controls.next.click(player.playNext);
-        player.ui.controls.prev.click(player.playPrev);
         player.ui.controls.repeat.click(player.toggleRepeat);
     });
 }());
