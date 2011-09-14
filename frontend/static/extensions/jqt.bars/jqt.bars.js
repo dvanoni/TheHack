@@ -591,11 +591,21 @@ is not recognized, like...
         function initializations() {
           jQT.barsReady = false;
 
-          $('#jqt > *').each(function () {
-            init_iScroll($(this));
-          });
+          // $('#jqt > *').each(function () {
+          //   init_iScroll($(this));
+          // });
+          // Prevent navbar pull-down
           initTabbar();
           //initToolbar();
+
+          $('.toolbar').bind('touchmove', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+          });
+		  $( '#tabbar' ).bind('touchmove', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+          });
 
           // Resize on rotation
           $('#jqt').bind('turn', function (e, data) {
