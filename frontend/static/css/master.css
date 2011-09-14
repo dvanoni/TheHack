@@ -15,6 +15,7 @@
 	font-weight:bold;
 	color:#FFF;
 	-webkit-opacity: 0.25;
+	-webkit-text-stroke: 1px black;
 }
 
 #player-album-art {
