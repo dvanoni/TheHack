@@ -10,6 +10,7 @@ from hack.helper import get_user_category
 
 ECHONEST_KEY = 'YBBLFZVQBRPQF1VKS'
 ECHONEST_API = 'http://developer.echonest.com/api/v4/song/search'
+ECHONEST_ARTIST = 'http://developer.echonest.com/api/v4/artist/similar'
 
 USER_CATEGORIES = {
   UserCategory.STUDYING : {
@@ -52,13 +53,36 @@ USER_CATEGORIES = {
 class EchonestMagicError(Exception):
   pass
 
-def search(category):
+
+def getSimilarMood(moods):
+  args = {
+    'api_key' : ECHONEST_KEY,
+    'bucket'  : 'id:7digital-US',
+    'limit'   : 'true'
+  }
+
+  for mood in moods:
+    args.update({'mood' : mood})
+
+  url = ECHONEST_API + '?' + urllib.urlencode(args) + '&bucket=tracks'
+  return search(url)
+
+def getSimilarArtist(artist):
+  args = {
+    'api_key' : ECHONEST_KEY,
+    'bucket'  : 'id:7digital-US',
+    'limit'   : 'true'
+    'name'    | artist
+  }
+
+  url = ECHONEST_ARTIST + '?' + urllib.urlencode(args) + '&bucket=tracks'
+  return search(url)
+
+def getCategory(category):
   print 'echonest search for:', category
 
   args = {
       'api_key' : ECHONEST_KEY,
-
-      # limit songs to those found in 7digital catalog
       'bucket'  : 'id:7digital-US',
       'limit'   : 'true'
   }
@@ -66,6 +90,10 @@ def search(category):
   args.update(USER_CATEGORIES[category])
 
   url = ECHONEST_API + '?' + urllib.urlencode(args) + '&bucket=tracks'
+  return search(url)
+
+# Peforce search and return trakcks
+def search(url):
   result = json.load(urllib.urlopen(url))
 
   echonest_status = result['response']['status']

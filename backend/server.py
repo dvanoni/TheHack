@@ -50,6 +50,44 @@ def parse_user_attributes(get_request):
 
   return (place_type, day_state, user_state)
 
+def get_user_category(place_type, day_state, user_state):
+
+  # special cases
+  if place_type is 'park'\
+      and user_state is UserState.SITTING\
+      or user_state is UserState.WALKING:
+    return UserCategory.STUDYING
+
+  if place_type is 'park' and user_state is UserState.RUNNING:
+    return UserCategory.RUNNING
+
+  if day_state is DayState.MORNING:
+    return UserCategory.WAKING_UP
+
+  if day_state is DayState.EVENING:
+    return UserCategory.WINDING_DOWN
+
+  if place_type in places.WORKOUT:
+    category = UserCategory.RUNNING
+  elif place_type in places.LOWKEY:
+    category = UserCategory.WALKING
+  elif place_type in places.SOCIAL:
+    category = UserCategory.PRE_PARTY
+  elif place_type in places.TRAVEL:
+    category = UserCategory.COMMUTING
+  elif place_type in places.STUDY:
+    category = UserCategory.STUDYING
+  else:
+    print 'Using default category'
+    category = UserCategory.PRE_PARTY  # the default
+
+  return category
+
+@BACK_END.route( '/similar', method='GET' )
+def similar():
+  moods = {'happy','upbeat','inspiring'}
+  return json.dumps(echonest.getSimilarMood(moods))
+  
 @BACK_END.route( '/recommend' )
 def recommend():
   debug = False
@@ -63,7 +101,7 @@ def recommend():
   if debug:
     category = request.GET.get('c', '').strip()
 
-  track_data = echonest.search(category)
+  track_data = echonest.getCategory(category)
 
 
   if debug:
