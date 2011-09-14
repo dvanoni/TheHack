@@ -20,9 +20,6 @@ from hack.helper import parse_accel
 from pprint import pprint
 import echonest_api as echonest
 
-ECHONEST_KEY = 'YBBLFZVQBRPQF1VKS'
-ECHONEST_API = 'http://developer.echonest.com/api/v4/song/search'
-
 PLACES_KEY = 'AIzaSyCvfId0lM9v_F2igUi4AIRbFJHr8IlMFAY'
 PLACES_API = 'https://maps.googleapis.com/maps/api/place/search/json'
 
@@ -56,46 +53,6 @@ PLACE_TYPES = [
   'university',
   'school'
 ]
-
-#TODO: add weather
-USER_CATEGORIES = {
-  'studying'     : {
-      'max_tempo' : '100',
-      'max_danceability' : '.5',
-      'max_energy' : '.5'
-    },
-  'running'      : {
-      'min_tempo' : '200',
-      'min_danceability' : '.5',
-      'min_energy' : '.5'
-    },
-  'commuting'    : {
-      'min_tempo' : '200',
-      'min_danceability' : '.4',
-      'min_energy' : '.35'
-    },
-  'walking'      : {
-      'min_tempo' : '200',
-      'min_danceability' : '.35',
-      'min_energy' : '.3'
-    },
-  'waking_up'    : {
-      'max_tempo' : '200',
-      'max_energy' : '.5',
-      'mood' : 'happy'
-    },
-  'winding_down' : {
-      'max_tempo' : '300',
-      'max_energy' : '.7',
-      'mood' : 'happy'
-    },
-  'pre_party'    : {
-      'min_danceability' : '.3',
-    }
-}
-
-class EchonestMagicError(Exception):
-  pass
 
 class SearchError(Exception):
    pass
