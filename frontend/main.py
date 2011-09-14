@@ -27,6 +27,7 @@ def front_end_index():
 	else:
 		username = None
 		fb_image = None
+		music = None
 
 	if username:
 		login = False
