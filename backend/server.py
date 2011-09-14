@@ -83,6 +83,10 @@ def get_user_category(place_type, day_state, user_state):
 
   return category
 
+@BACK_END.route( '/similar', method='GET' )
+def similar():
+  moods = {'happy','upbeat','inspiring'}
+  return json.dumps(echonest.getSimilarMood(moods))
   
 @BACK_END.route( '/recommend' )
 def recommend():
@@ -97,7 +101,7 @@ def recommend():
   if debug:
     category = request.GET.get('c', '').strip()
 
-  track_data = echonest.search(category)
+  track_data = echonest.getCategory(category)
 
 
   if debug:
