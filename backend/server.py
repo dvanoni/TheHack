@@ -123,6 +123,10 @@ def recommend():
   if debug:
     return template('song_dump', tracks=track_data)
   else:
+    if ROUTE_COUNTER == 0:
+      track2 = track_data[2]
+      track_data[2] = track_data[0]
+      track_data[0] = track2
     return json.dumps(track_data)
 
 @BACK_END.route('/places_magic', method='GET')
