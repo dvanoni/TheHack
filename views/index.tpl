@@ -26,7 +26,7 @@
 		<div id="tabbar"> 
 			<div><ul> 
 				<li> 
-					<a href="#home" mask="/static/img/tabs/refrigerator-tab.png" mask2x="/static/img/tabs/refrigerator-tab.png"> 
+					<a href="#home" mask="/static/img/tabs/music.png" mask2x="/static/img/tabs/music.png"> 
 						<strong>Music</strong> 
 					</a> 
 				</li> 
@@ -49,7 +49,7 @@
 				</div>
 				<div style='padding:8px;background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CCC), color-stop(0.6, #CCC), to(#AAA));'>
 					<ul style='margin:0;'>
-						<li><a href="https://www.facebook.com/dialog/oauth?client_id=170844926329169&redirect_uri=thehack.dvanoni.com/api/facebook&scope=user_likes&display=touch">Connect with Facebook</a></li>
+						<li><a onClick="window.location='https://www.facebook.com/dialog/oauth?client_id=170844926329169&redirect_uri=http://thehack.dvanoni.com/api/facebook&display=touch'">Connect with Facebook</a></li>
 					</ul>
 				</div>
 				<div class='s-scrollwrapper'>
