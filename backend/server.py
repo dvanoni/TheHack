@@ -103,6 +103,8 @@ def recommend():
   if debug:
     category = request.GET.get('c', '').strip()
 
+  #TODO: hacked to work on thehack
+  category = UserCategory.PRE_PARTY
   track_data = echonest.getCategory(category)
 
   if debug:

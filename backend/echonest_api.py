@@ -46,7 +46,7 @@ USER_CATEGORIES = {
     },
   UserCategory.PRE_PARTY : {
       'song_min_hotttnesss' : '.85',
-      'artist_start_year_after' : '2000'
+      'artist_start_year_after' : '2002',
     }
 }
 
@@ -80,6 +80,10 @@ def getSimilarArtist(artist):
 
 def getCategory(category):
   print 'echonest search for:', category
+
+  # default category
+  if category is None or category is '':
+    category = UserCategory.PRE_PARTY
 
   args = {
       'api_key' : ECHONEST_KEY,
