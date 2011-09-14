@@ -10,37 +10,39 @@ ECHONEST_API = 'http://developer.echonest.com/api/v4/song/search'
 
 USER_CATEGORIES = {
   'studying'     : {
-      'max_tempo' : '100',
-      'max_danceability' : '.5',
-      'max_energy' : '.5'
+      'sort' : 'song_hotttnesss-desc',
+      'max_danceability' : '.2',
+      'max_energy' : '.2',
+      'max_loudness' : '20'
     },
   'running'      : {
-      'min_tempo' : '200',
+      'sort' : 'song_hotttnesss-desc',
+      'min_tempo' : '240',
+      'min_danceability' : '.6',
+      'min_energy' : '.6'
+    },
+  'commuting'    : {
+      'song_min_hotttnesss' : '.75',
       'min_danceability' : '.5',
       'min_energy' : '.5'
     },
-  'commuting'    : {
-      'min_tempo' : '200',
-      'min_danceability' : '.4',
-      'min_energy' : '.35'
-    },
-  'walking'      : {
+  'walking'      : {    
+      'sort' : 'song_hotttnesss-desc',
       'min_tempo' : '200',
       'min_danceability' : '.35',
-      'min_energy' : '.3'
+      'min_energy' : '.5'
     },
   'waking_up'    : {
-      'max_tempo' : '200',
-      'max_energy' : '.5',
-      'mood' : 'happy'
+      'sort' : 'song_hotttnesss-desc',
+      'max_energy' : '.4',
     },
   'winding_down' : {
-      'max_tempo' : '300',
-      'max_energy' : '.7',
-      'mood' : 'happy'
+      'max_tempo' : '80',
+      'sort' : 'song_hotttnesss-desc'
     },
   'pre_party'    : {
-      'min_danceability' : '.3',
+      'song_min_hotttnesss' : '.85',
+      'artist_start_year_after' : '2000'
     }
 }
 

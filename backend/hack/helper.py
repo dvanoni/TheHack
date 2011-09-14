@@ -1,4 +1,14 @@
-import backend.hack.states as states
+import datetime
+
+class UserState:
+  SITTING = 0
+  WALKING = 1
+  RUNNING = 2
+
+class DayState:
+  MORNING   = 0
+  AFTERNOON = 1
+  EVENING   = 2
 
 def analyze_accel( ax, ay, az ):
   '''
@@ -9,15 +19,15 @@ def analyze_accel( ax, ay, az ):
   '''
   
   if ax is None or ay is None or az is None:
-    return states.USER_STATE_SITTING
+    return UserState.SITTING
     
   avg_accel = ( ax + ay + az ) / 3
   
-  user_state = states.USER_STATE_SITTING
+  user_state = UserState.SITTING
   if avg_accel > 10 and avg_accel < 20:
-    user_state = states.USER_STATE_WALKING
+    user_state = UserState.WALKING
   elif avg_accel >= 20:
-    user_state = states.USER_STATE_RUNNING
+    user_state = UserState.RUNNING
     
   return user_state
 
@@ -48,3 +58,20 @@ def parse_accel( accel_data ):
     # For some reason we cannot convert these floats, return None
     return ( None, None, None )
     
+def analyze_timestamp(timestamp):
+  """timestamp as seconds from 1970"""
+
+  # Convert timestamp into a python datetime object
+  try:
+    timestamp = datetime.datetime.fromtimestamp(float(timestamp))
+  except Exception:
+    # use the server time if we can't parse the sucker
+    timestamp = datetime.datetime.now()
+
+  hour = timestamp.time().hour
+  if hour < 12:
+    return DayState.MORNING
+  elif hour < 17:
+    return DayState.AFTERNOON
+  else:
+    return DayState.EVENING
