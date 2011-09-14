@@ -26,19 +26,13 @@
 		<div id="tabbar"> 
 			<div><ul> 
 				<li> 
-					<a href="#history" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png"> 
-						<strong>History</strong> 
-					</a> 
+					<a href="#history" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png"></a> 
 				</li>
 				<li> 
-					<a href="#home" mask="/static/img/tabs/music.png" mask2x="/static/img/tabs/music.png"> 
-						<strong>Music</strong> 
-					</a> 
+					<a href="#home" mask="/static/img/tabs/music.png" mask2x="/static/img/tabs/music.png"> </a> 
 				</li> 
 				<li> 
-					<a href="#social" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png"> 
-						<strong>Social</strong> 
-					</a> 
+					<a onclick='loadSocial();' href="#social" mask="/static/img/tabs/social.png" mask2x="/static/img/tabs/social.png"> </a> 
 				</li> 
 			</ul></div> 
 		</div>
@@ -51,7 +45,7 @@
 				<div class="toolbar">
 					<h1>History</h1>
 				</div>
-				<div>
+				<div style='margin-top:44px;'>
 					<ul id='history-list' class='edgetoedge'>
 						<!--<li class='sep'>Studying</li>
 						<li>Test</li>
@@ -63,20 +57,17 @@
 			<div id='social'>
 				<div class="toolbar">
 					<h1>Discover</h1>
-				</div>
-				<div>
-					<div style='padding:8px;background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CCC), color-stop(0.6, #CCC), to(#AAA));'>
-						<ul style='margin:0;'>
-						%if login:
-							<li><a onClick="window.location='https://www.facebook.com/dialog/oauth?client_id=170844926329169&redirect_uri=http://thehack.dvanoni.com/api/facebook&display=touch'"><img src="/static/img/facebook.png" width=50 height=50 style="vertical-align:middle;" />Connect with Facebook!</a></li>
-						%else:
-							<li><img src="{{fb_image}}" style="vertical-align:middle;" /> Welcome, {{username}}</li>
-							%for artists in my_music["data"]:
-								<li>{{artists["name"]}}</li>
-								%end
-						%end
-						</ul>
+					<div style='float:right;margin-top:-4px;'>
+						<a onClick="window.location='https://www.facebook.com/dialog/oauth?client_id=170844926329169&amp;redirect_uri=http://thehack.dvanoni.com/api/facebook&amp;display=touch'"><img src="/static/img/facebook.png" width=32 height=32 style="vertical-align:middle;" /></a>
 					</div>
+				</div>
+				<div style='margin-top:44px;'>
+					<div id='discover-map-wrapper'>
+						<img src='/static/img/staticmap.png'>
+						<div id='discover-map' style='position:absolute;top:0;left:0;'></div>
+					</div>					
+					<div style='display:none;background-image:url(/static/img/staticmap.png);width:320px;height:460px;background-position:-160px -160px;'>
+					</div>					
 				</div>
 			</div>
 			<div id="home" class='current'>
@@ -112,6 +103,34 @@
 		<script src="/static/js/player.js" type='text/javascript' charset="utf-8"></script>
 		<script src="/static/js/master.js" type='text/javascript' charset="utf-8"></script>
 		<script type="text/javascript">
+			function getRandomInt (min, max) {
+		    	return Math.floor(Math.random() * (max - min + 1)) + min;
+			}		
+			
+			function loadSocial() {
+				$( '#activity' ).fadeIn( 'fast' );
+				$( '#discover-map' ).html( '' ).scrollLeft( 80 ).scrollTop( 160 );
+				
+				$.getJSON( '/api/similar', null, function( data ) {
+					for( var i = 0; i < data.length; i++ ) {
+						var track = data[i];
+						var top  = getRandomInt( 16, 578 );
+						var left = getRandomInt( 16, 578 );
+						
+						if( track.album_img ) {
+							var html = "<div class='social-track' style='top:" + top + "px;left:" + left + "px;'>" +
+										"<img src='" + track.album_img + "' width='48'>" +
+										"</div>";
+							$( '#discover-map' ).append( html );
+						}
+					}
+					
+					$( '.social-track' ).fadeIn( 'slow' );
+					$( '#activity' ).fadeOut( 'fast' );
+				});				
+
+			}
+			
 			$(function() {
 				sendData();
 			});

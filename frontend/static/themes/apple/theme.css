@@ -22,7 +22,9 @@ body {
     padding: 10px;
     height: 45px;
     background: url(img/toolbar.png) #6d84a2 repeat-x;
-    position: relative;
+    position: fixed;
+	top:0;
+	width:320px;
 }
 
 #jqt .black-translucent .toolbar {
