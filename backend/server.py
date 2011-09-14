@@ -74,7 +74,7 @@ def coord_to_place_type(lat, lng):
     raise SearchError, result['Error']
       
   if result[ 'status' ] == 'ZERO_RESULTS':
-    raise SearchError, 'Zero results'
+    return 'book_store'
   
   for t in result['results'][0]['types']:
     if t in PLACE_TYPES:
