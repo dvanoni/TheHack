@@ -64,7 +64,7 @@
 				<div class="toolbar">
 					<h1>Discover</h1>
 				</div>
-				<div>
+				<div style='margin-top:44px;'>
 					<div style='padding:8px;background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CCC), color-stop(0.6, #CCC), to(#AAA));'>
 						<ul style='margin:0;'>
 						%if login:
@@ -77,6 +77,16 @@
 						%end
 						</ul>
 					</div>
+					<div style='width:320px;height:460px;overflow:scroll;position:relative;'>
+						<img src='/static/img/staticmap.png'>
+						<div style='position:absolute;top:0;left:0;'>
+							<div style='position:absolute;width:48px;height:48px;top:16px;left:16px;box-shadow: 0 0 2px 2px #888;'>
+								<img src='http://cdn.7static.com/static/img/sleeveart/00/010/561/0001056176_200.jpg' width='48'>
+							</div>
+						</div>
+					</div>					
+					<div style='display:none;background-image:url(/static/img/staticmap.png);width:320px;height:460px;background-position:-160px -160px;'>
+					</div>					
 				</div>
 			</div>
 			<div id="home" class='current'>
@@ -108,7 +118,7 @@
 				$.getJSON( '/front_end/dominant_color', { url: $( '#current' ).attr('src')}, function( color ) {
 						$( '#home').css( 'background-color', color );
 					});
-				
+					
 				$( '#next' ).click( function() {
 					$( '#activity' ).fadeIn( 'fast' );
 					new_art = $( '#next' ).attr( 'src' )
