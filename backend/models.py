@@ -18,6 +18,21 @@ class AppData(Base):
 	def __repr__(self):
 		return "%s Version %s - %s" % (self.app_name, self.version_number, self.description)
 
+class User(Base):
+	__tablename__ = 'users'
+
+	name = Column(String)
+	profile_id = Column(String, primary_key=True)
+	access_token = Column(String)
+
+	def __init__(self, name, profile_id, access_token):
+		self.name = name
+		self.profile_id = profile_id
+		self.access_token = access_token
+
+	def __repr__(self):
+		return "User <%s, %s, %s>" % (username, password, email)
+
 class Coordinate(Base):
 	__tablename__ = 'coordinates'
 

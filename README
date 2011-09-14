@@ -1,0 +1,4 @@
+PlayLS
+------------
+
+PlayLS is a user context and location aware playlist generator.  It uses gps, time, accelerometer, and personal and social history to determine the best songs to suggest for you at any given moment.

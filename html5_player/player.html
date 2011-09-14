@@ -4,6 +4,15 @@
     <title>player</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
     <script type="text/javascript" src="player.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var data = [{"preview_url": "http://previews.7digital.com/clips/34/11605954.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/010/561/0001056176_200.jpg", "name": "My Deception", "artist": "XOC"}, {"preview_url": "http://previews.7digital.com/clips/34/8616965.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/007/786/0000778648_200.jpg", "name": "Hem till mej", "artist": "Pappas Eget Band"}, {"preview_url": "http://previews.7digital.com/clips/34/9080287.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/008/225/0000822570_200.jpg", "name": "Lefteri", "artist": "Trio Hellenique"}, {"preview_url": "http://previews.7digital.com/clips/34/11307735.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/010/287/0001028787_200.jpg", "name": "We Are the Elite", "artist": "Askeleton"}, {"preview_url": "http://previews.7digital.com/clips/34/7968801.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/007/188/0000718852_200.jpg", "name": "Kill Everyone Alive", "artist": "Askeleton"}, {"preview_url": "http://previews.7digital.com/clips/34/8680509.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/007/846/0000784611_200.jpg", "name": "I min s\u00e4ng", "artist": "Pappas Eget Band"}, {"preview_url": "http://previews.7digital.com/clips/34/8616968.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/007/786/0000778648_200.jpg", "name": "Ta det lite lugnt", "artist": "Pappas Eget Band"}, {"preview_url": "http://previews.7digital.com/clips/34/8680534.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/007/846/0000784611_200.jpg", "name": "Supermarket", "artist": "Pappas Eget Band"}, {"preview_url": "http://previews.7digital.com/clips/34/9080297.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/008/225/0000822570_200.jpg", "name": "Sou Topa Mia", "artist": "Trio Hellenique"}, {"preview_url": "http://previews.7digital.com/clips/34/13531810.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/012/230/0001223029_200.jpg", "name": "Andy", "artist": "Maureen Tucker"}, {"preview_url": "http://previews.7digital.com/clips/34/11307253.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/010/287/0001028764_200.jpg", "name": "The Girl With the White Hair", "artist": "Askeleton"}, {"preview_url": "http://previews.7digital.com/clips/34/8680515.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/007/846/0000784611_200.jpg", "name": "Det liknar semester", "artist": "Pappas Eget Band"}, {"preview_url": "http://previews.7digital.com/clips/34/8616963.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/007/786/0000778648_200.jpg", "name": "Doften av en kvinna", "artist": "Pappas Eget Band"}, {"preview_url": "http://previews.7digital.com/clips/34/11307246.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/010/287/0001028764_200.jpg", "name": "Isolationist", "artist": "Askeleton"}, {"preview_url": "http://previews.7digital.com/clips/34/11307739.clip.mp3", "album_img": "http://cdn.7static.com/static/img/sleeveart/00/010/287/0001028787_200.jpg", "name": "Transhumanist", "artist": "Askeleton"}];
+
+            for (var i in data) {
+                player.addTrack(new Track(data[i]));
+            }
+        });
+    </script>
     <link rel="stylesheet" href="player.css" type="text/css"/>
 </head>
 <body>
@@ -15,6 +24,9 @@
             <button id="player_controls_prev" onclick="player.playPrev()">prev</button>
             <button id="player_controls_playpause" onclick="player.playPause()">play</button>
             <button id="player_controls_next" onclick="player.playNext()">next</button>
+        </div>
+        <div id="player_album_art">
+            <img/>
         </div>
     </div>
 </body>

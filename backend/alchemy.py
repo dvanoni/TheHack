@@ -5,10 +5,11 @@ from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-#SqlAlchemy setup
+# SqlAlchemy setup
 Base = declarative_base()
 Session = sessionmaker()
 
-#initialize db
+# initialize db
 engine = create_engine('mysql+mysqldb://hackallstar:lumpyspace@mysql.dvanoni.com/thehack')
 Session.configure(bind=engine)
+

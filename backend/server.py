@@ -1,7 +1,7 @@
 #/bin/python
 
 import bottle
-from bottle import template, request
+from bottle import template, request, redirect, response
 from pprint import pprint
 from models import *
 from demo_locations import route
@@ -10,6 +10,10 @@ from sqlalchemy.orm.exc import NoResultFound
 import datetime
 import json
 import urllib
+import cgi
+import base64
+import Cookie
+import email.utils
 
 from bottle import request
 from hack.helper import parse_accel
@@ -21,6 +25,10 @@ ECHONEST_API = 'http://developer.echonest.com/api/v4/song/search'
 
 PLACES_KEY = 'AIzaSyCvfId0lM9v_F2igUi4AIRbFJHr8IlMFAY'
 PLACES_API = 'https://maps.googleapis.com/maps/api/place/search/json'
+
+FACEBOOK_APP_ID = '170844926329169'
+FACEBOOK_SECRET = '04e620adbd4f35209b04dda6269bf408'
+REDIRECT_URL    = 'http://thehack.dvanoni.com/api/facebook'
 
 BACK_END = bottle.Bottle()
 
@@ -105,12 +113,15 @@ def coord_to_place_type(lat, lng):
   result = json.load(urllib.urlopen(url))
 
   if 'Error' in result:
-      # An error occurred; raise an exception
-      raise SearchError, result['Error']
-
+    # An error occurred; raise an exception
+    raise SearchError, result['Error']
+      
+  if result[ 'status' ] == 'ZERO_RESULTS':
+    raise SearchError, 'Zero results'
+  
   for t in result['results'][0]['types']:
-      if t in PLACE_TYPES:
-        return t
+    if t in PLACE_TYPES:
+      return t
 
 
 def get_user_category(get_request):
@@ -179,3 +190,23 @@ def coords():
     return str(location)
   except NoResultFound, e:
     return "Location was not found in our database"
+
+@BACK_END.route('/facebook', method='GET')
+def facebook_login():
+  session = Session()
+  code = request.GET.get('code')
+  if code:
+    fb_url = "https://graph.facebook.com/oauth/access_token?client_id="+FACEBOOK_APP_ID+"&redirect_uri="+REDIRECT_URL+"&client_secret="+FACEBOOK_SECRET+"&code="+code
+    fb_response = cgi.parse_qs(urllib.urlopen(fb_url).read())
+    access_token = fb_response["access_token"][-1]
+    profile = json.load(urllib.urlopen("https://graph.facebook.com/me?" + urllib.urlencode(dict(access_token=access_token))))
+    profile_id = str(profile["id"])
+    if not request.get_cookie("account", profile_id):
+      user = User(name=profile["name"], profile_id=profile_id, access_token=access_token)
+      response.set_cookie("account", profile_id)
+      session.add(user)
+      session.commit()
+  redirect("/")
+
+
+

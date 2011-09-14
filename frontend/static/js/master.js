@@ -13,7 +13,7 @@ var jQT = new $.jQTouch({
 		'/static/themes/jqt/img/grayButton.png',
 		'/static/themes/jqt/img/whiteButton.png',
 		'/static/themes/jqt/img/loading.gif',
-		'/static/img/tabs/refrigerator-tab.png',
+		'/static/img/tabs/music.png',
 		'/static/img/tabs/social.png',
 	],
 	useFastTouch: true
