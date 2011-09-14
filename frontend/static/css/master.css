@@ -102,6 +102,7 @@
 
 li.history-item {
 	height:40px;
+	white-space:nowrap;
 }
 
 .history-item .album {
