@@ -20,9 +20,8 @@ from bottle import request
 from hack.helper import parse_accel
 from pprint import pprint
 import echonest_api as echonest
+import places_api as places
 
-PLACES_KEY = 'AIzaSyCvfId0lM9v_F2igUi4AIRbFJHr8IlMFAY'
-PLACES_API = 'https://maps.googleapis.com/maps/api/place/search/json'
 
 FACEBOOK_APP_ID = '170844926329169'
 FACEBOOK_SECRET = '04e620adbd4f35209b04dda6269bf408'
@@ -30,64 +29,14 @@ REDIRECT_URL    = 'http://thehack.dvanoni.com/api/facebook'
 
 BACK_END = bottle.Bottle()
 
-PLACE_TYPES = [
-  # WORKOUT
-  'gym',
-  'health',
-  # LOW KEY
-  'museum',
-  'park',
-  'aquarium',
-  'art_gallery',
-  'cafe',
-  'spa',
-  # SOCIAL
-  'bar',
-  'night_club',
-  # TRAVEL
-  'subway_station',
-  'taxi_stand',
-  'train_station',
-  # STUDY
-  'book_store',
-  'library',
-  'university',
-  'school'
-]
-
-class SearchError(Exception):
-   pass
-
-def coord_to_place_type(lat, lng):  
-  args = {
-        'location' : '%s,%s' % (lat, lng),
-        'radius'   : 10,
-        'sensor'   : 'true',
-        'key'      : PLACES_KEY,
-        'types'    : '|'.join(PLACE_TYPES)
-  }
-
-  url = PLACES_API + '?' + urllib.urlencode(args)
-  result = json.load(urllib.urlopen(url))
-
-  if 'Error' in result:
-    # An error occurred; raise an exception
-    raise SearchError, result['Error']
-      
-  if result[ 'status' ] == 'ZERO_RESULTS':
-    return 'book_store'
-  
-  for t in result['results'][0]['types']:
-    if t in PLACE_TYPES:
-      return t
-
-
 def get_user_category(get_request):
   # Grab phone data
-  accel_data  = get_request.get( 'accelerometer' )
-  timestamp   = get_request.get( 'timestamp' )
-  latitude    = get_request.get( 'latitude' )
-  longitude   = get_request.get( 'longitude' )
+  accel_data  = get_request.get('accelerometer')
+  timestamp   = get_request.get('timestamp')
+
+  # default gps to MOMA
+  latitude    = float(get_request.get('latitude',  '40.77905519999999'))
+  longitude   = float(get_request.get('longitude', '-73.96283459999999'))
 
   # parse phone data
   ax, ay, az = parse_accel( accel_data )
@@ -99,30 +48,29 @@ def get_user_category(get_request):
     # use the server time if we can't parse the sucker
     timestamp = datetime.datetime.now()
   
-  # Convert lat/lng into floats
-  if latitude is None or longitude is None:
-    # If no lat/lng is specified, default to the MOMA
-    latitude  = 40.77905519999999
-    longitude = -73.96283459999999
-  else:
-    latitude  = float( latitude )
-    longitude = float( longitude )
+  place_type = places.coord_to_place_type(latitude, longitude)
 
-  place_type = coord_to_place_type(latitude, longitude)
+  category = 'pre_party'  # the default
   
 @BACK_END.route( '/recommend' )
 def recommend():
+  debug = False
+  if request.GET.get('debug') is '1':
+    print 'Running debug...'
+    debug = True
+
   category = get_user_category(request.GET)
 
-  # TODO: for debugging
-  category = request.GET.get('c', '').strip()
+  if debug:
+    category = request.GET.get('c', '').strip()
 
   track_data = echonest.search(category)
 
-  #return json.dumps(track_data)
 
-  # for debugging
-  return template('song_dump', tracks=track_data)
+  if debug:
+    return template('song_dump', tracks=track_data)
+  else:
+    return json.dumps(track_data)
 
 @BACK_END.route('/places_magic', method='GET')
 def places_magic():
@@ -133,7 +81,7 @@ def places_magic():
 
   for coords in route:
     r += ('%s,%s' % (coords.lat, coords.lng)) + ': '
-    r += coord_to_place_type(coords.lat, coords.lng) + '<br/>'
+    r += places.coord_to_place_type(coords.lat, coords.lng) + '<br/>'
 
   return r
 
