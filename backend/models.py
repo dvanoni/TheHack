@@ -27,9 +27,9 @@ class User(Base):
 	access_token = Column(String)
 
 	def __init__(self, name, profile_id, access_token):
-		this.name = name
-		this.profile_id = profile_id
-		this.access_token = access_token
+		self.name = name
+		self.profile_id = profile_id
+		self.access_token = access_token
 
 	def __repr__(self):
 		return "User <%s, %s, %s>" % (username, password, email)
